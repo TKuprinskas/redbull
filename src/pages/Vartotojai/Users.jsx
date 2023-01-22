@@ -62,7 +62,7 @@ const Users = () => {
     };
 
     return (
-        <Container maxWidth="xl" sx={{ m: { xs: 1, md: 2 } }}>
+        <Container maxWidth="lg" sx={{ m: { xs: 1, md: 2 } }}>
             <ToastContainer
                 position="top-center"
                 autoClose={1500}
@@ -85,7 +85,7 @@ const Users = () => {
                         <Box
                             sx={{
                                 mt: 2,
-                                display: 'flex',
+                                display: { xs: 'none', md: 'flex' },
                                 width: '100%',
                                 justifyContent: 'space-between',
                                 borderBottom: '1px solid #1976d2',
@@ -130,40 +130,65 @@ const Users = () => {
                                 sx={{
                                     mt: 2,
                                     display: 'flex',
+                                    flexDirection: { xs: 'column', md: 'row' },
                                     width: '100%',
                                     justifyContent: 'space-between',
                                     borderBottom: '1px solid #1976d2',
                                 }}
                             >
-                                <Typography
-                                    variant="h6"
-                                    component="div"
-                                    gutterBottom
-                                    sx={{ flex: 1, width: 0, textAlign: 'center' }}
-                                >
-                                    {user.username}
-                                </Typography>
-                                <Typography
-                                    variant="h6"
-                                    component="div"
-                                    gutterBottom
-                                    sx={{ flex: 1, width: 0, textAlign: 'center' }}
-                                >
-                                    {user.role}
-                                </Typography>
-                                <Box sx={{ flex: 1, width: 0, textAlign: 'center' }}>
-                                    <Button
-                                        variant="contained"
-                                        sx={{ mb: 2 }}
-                                        onClick={() => handleResetPassword(user)}
+                                <Box sx={{ display: 'flex', flex: { xs: 0, md: 1 }, width: { xs: 1, md: 0 } }}>
+                                    <PersonOutlineOutlinedIcon
+                                        sx={{ mr: 1, color: '#1976d2', display: { xs: 'flex', md: 'none' } }}
+                                    />
+                                    <Typography
+                                        variant="h6"
+                                        component="div"
+                                        gutterBottom
+                                        sx={{ flex: 1, width: 0, textAlign: 'center' }}
                                     >
-                                        Reset password
-                                    </Button>
+                                        {user.username}
+                                    </Typography>
                                 </Box>
-                                <Box sx={{ flex: 1, width: 0, textAlign: 'center' }}>
-                                    <Button variant="contained" sx={{ mb: 2 }} onClick={() => confirmDelete(user.id)}>
-                                        Delete user
-                                    </Button>
+                                <Box sx={{ display: 'flex', flex: { xs: 0, md: 1 }, width: { xs: 1, md: 0 } }}>
+                                    <RememberMeOutlinedIcon
+                                        sx={{ mr: 1, color: '#1976d2', display: { xs: 'flex', md: 'none' } }}
+                                    />
+                                    <Typography
+                                        variant="h6"
+                                        component="div"
+                                        gutterBottom
+                                        sx={{ flex: 1, width: 0, textAlign: 'center' }}
+                                    >
+                                        {user.role}
+                                    </Typography>
+                                </Box>
+                                <Box sx={{ display: 'flex', flex: { xs: 0, md: 1 }, width: { xs: 1, md: 0 } }}>
+                                    <LockResetOutlinedIcon
+                                        sx={{ mr: 1, color: '#1976d2', display: { xs: 'flex', md: 'none' } }}
+                                    />
+                                    <Box sx={{ flex: 1, width: 0, textAlign: 'center' }}>
+                                        <Button
+                                            variant="contained"
+                                            sx={{ mb: 2 }}
+                                            onClick={() => handleResetPassword(user)}
+                                        >
+                                            Pakeisti slaptažodį
+                                        </Button>
+                                    </Box>
+                                </Box>
+                                <Box sx={{ display: 'flex', flex: { xs: 0, md: 1 }, width: { xs: 1, md: 0 } }}>
+                                    <PersonRemoveAlt1OutlinedIcon
+                                        sx={{ mr: 1, color: '#1976d2', display: { xs: 'flex', md: 'none' } }}
+                                    />
+                                    <Box sx={{ flex: 1, width: 0, textAlign: 'center' }}>
+                                        <Button
+                                            variant="contained"
+                                            sx={{ mb: 2 }}
+                                            onClick={() => confirmDelete(user.id)}
+                                        >
+                                            Ištrinti vartotoją
+                                        </Button>
+                                    </Box>
                                 </Box>
                             </Box>
                         ))}

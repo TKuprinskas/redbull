@@ -88,127 +88,131 @@ const Home = (props) => {
         return item.title === pageTitle;
     };
 
+    const handleClickAway = () => {
+        setMobileOpen(!mobileOpen);
+    };
+
     const drawer = (
-        <ClickAwayListener onClickAway={() => setMobileOpen(!mobileOpen)}>
-            <div>
-                <Toolbar>
-                    <Box
-                        component="img"
-                        sx={{
-                            height: '100%',
-                            width: '100%',
-                            maxHeight: { xs: 150, md: 170 },
-                            maxWidth: { xs: 220, md: 250 },
-                            borderRadius: 5,
-                        }}
-                        alt="redbull"
-                        src={redbull}
-                    />
-                </Toolbar>
-                <Divider />
-                {userRole === 'user' && (
-                    <>
-                        <List sx={{ p: 0 }}>
-                            {Menu.map((item, index) => (
-                                <ListItem key={index} disablePadding selected={isSelected(item)}>
-                                    <ListItemButton onClick={() => handleMenuClick(item)}>
-                                        <ListItemIcon>{menuIcons(item.id)}</ListItemIcon>
-                                        <ListItemText primary={item.title} />
-                                    </ListItemButton>
-                                </ListItem>
-                            ))}
-                        </List>
-                        <Divider />
-                    </>
-                )}
-                {userRole !== 'admin' && (
-                    <>
-                        <List sx={{ p: 0 }}>
-                            {AdminMenu.map((item, index) => (
-                                <ListItem key={index} disablePadding selected={isSelected(item)}>
-                                    <ListItemButton onClick={() => handleMenuClick(item)}>
-                                        <ListItemIcon>{menuIcons(item.id)}</ListItemIcon>
-                                        <ListItemText primary={item.title} />
-                                    </ListItemButton>
-                                </ListItem>
-                            ))}
-                        </List>
-                        <Divider />
-                    </>
-                )}
-                <Box sx={{ p: 2 }}>
-                    <Button variant="contained" sx={{ width: '100%' }} onClick={() => handleSignOut()}>
-                        <ExitToAppIcon /> &nbsp; Atsijungti
-                    </Button>
-                </Box>
-            </div>
-        </ClickAwayListener>
+        <div>
+            <Toolbar>
+                <Box
+                    component="img"
+                    sx={{
+                        height: '100%',
+                        width: '100%',
+                        maxHeight: { xs: 150, md: 170 },
+                        maxWidth: { xs: 220, md: 250 },
+                        borderRadius: 5,
+                    }}
+                    alt="redbull"
+                    src={redbull}
+                />
+            </Toolbar>
+            <Divider />
+            {userRole === 'user' && (
+                <>
+                    <List sx={{ p: 0 }}>
+                        {Menu.map((item, index) => (
+                            <ListItem key={index} disablePadding selected={isSelected(item)}>
+                                <ListItemButton onClick={() => handleMenuClick(item)}>
+                                    <ListItemIcon>{menuIcons(item.id)}</ListItemIcon>
+                                    <ListItemText primary={item.title} />
+                                </ListItemButton>
+                            </ListItem>
+                        ))}
+                    </List>
+                    <Divider />
+                </>
+            )}
+            {userRole !== 'admin' && (
+                <>
+                    <List sx={{ p: 0 }}>
+                        {AdminMenu.map((item, index) => (
+                            <ListItem key={index} disablePadding selected={isSelected(item)}>
+                                <ListItemButton onClick={() => handleMenuClick(item)}>
+                                    <ListItemIcon>{menuIcons(item.id)}</ListItemIcon>
+                                    <ListItemText primary={item.title} />
+                                </ListItemButton>
+                            </ListItem>
+                        ))}
+                    </List>
+                    <Divider />
+                </>
+            )}
+            <Box sx={{ p: 2 }}>
+                <Button variant="contained" sx={{ width: '100%' }} onClick={() => handleSignOut()}>
+                    <ExitToAppIcon /> &nbsp; Atsijungti
+                </Button>
+            </Box>
+        </div>
     );
 
     const container = window !== undefined ? () => window().document.body : undefined;
 
     return (
-        <Box sx={{ display: 'flex' }}>
-            <CssBaseline />
-            <AppBar
-                position="fixed"
-                sx={{
-                    width: { sm: `calc(100% - ${drawerWidth}px)` },
-                    ml: { sm: `${drawerWidth}px` },
-                }}
-            >
-                <Toolbar>
-                    <IconButton
-                        color="inherit"
-                        aria-label="open drawer"
-                        edge="start"
-                        onClick={handleDrawerToggle}
-                        sx={{ mr: 2, display: { sm: 'none' } }}
+        <ClickAwayListener onClickAway={handleClickAway}>
+            <Box sx={{ display: 'flex' }}>
+                <CssBaseline />
+                <AppBar
+                    position="fixed"
+                    sx={{
+                        width: { sm: `calc(100% - ${drawerWidth}px)` },
+                        ml: { sm: `${drawerWidth}px` },
+                    }}
+                >
+                    <Toolbar>
+                        <IconButton
+                            color="inherit"
+                            aria-label="open drawer"
+                            edge="start"
+                            onClick={handleDrawerToggle}
+                            sx={{ mr: 2, display: { sm: 'none' } }}
+                        >
+                            <MenuIcon />
+                        </IconButton>
+                        <Typography variant="h6" noWrap component="div">
+                            {pageTitle}
+                        </Typography>
+                    </Toolbar>
+                </AppBar>
+                <Box
+                    component="nav"
+                    sx={{ width: { sm: drawerWidth }, flexShrink: { sm: 0 } }}
+                    aria-label="mailbox folders"
+                >
+                    <Drawer
+                        container={container}
+                        variant="temporary"
+                        open={mobileOpen}
+                        onClose={handleDrawerToggle}
+                        ModalProps={{
+                            keepMounted: true,
+                        }}
+                        sx={{
+                            display: { xs: 'block', sm: 'none' },
+                            '& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerWidth },
+                        }}
                     >
-                        <MenuIcon />
-                    </IconButton>
-                    <Typography variant="h6" noWrap component="div">
-                        {pageTitle}
-                    </Typography>
-                </Toolbar>
-            </AppBar>
-            <Box
-                component="nav"
-                sx={{ width: { sm: drawerWidth }, flexShrink: { sm: 0 } }}
-                aria-label="mailbox folders"
-            >
-                <Drawer
-                    container={container}
-                    variant="temporary"
-                    open={mobileOpen}
-                    onClose={handleDrawerToggle}
-                    ModalProps={{
-                        keepMounted: true,
-                    }}
-                    sx={{
-                        display: { xs: 'block', sm: 'none' },
-                        '& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerWidth },
-                    }}
-                >
-                    {drawer}
-                </Drawer>
-                <Drawer
-                    variant="permanent"
-                    sx={{
-                        display: { xs: 'none', sm: 'block' },
-                        '& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerWidth },
-                    }}
-                    open
-                >
-                    {drawer}
-                </Drawer>
+                        {drawer}
+                    </Drawer>
+                    <Drawer
+                        variant="permanent"
+                        sx={{
+                            display: { xs: 'none', sm: 'block' },
+                            '& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerWidth },
+                        }}
+                        open
+                    >
+                        {drawer}
+                    </Drawer>
+                </Box>
+                <Box component="main" sx={{ flexGrow: 1, p: 3, width: { sm: `calc(100% - ${drawerWidth}px)` } }}>
+                    <Toolbar />
+                    {pageTitle === 'Pagrindinis' && <Pagrindinis />}
+                    {pageTitle === 'Tvarkyti vartotojus' && <Users />}
+                </Box>
             </Box>
-            <Box component="main" sx={{ flexGrow: 1, p: 3, width: { sm: `calc(100% - ${drawerWidth}px)` } }}>
-                <Toolbar />
-                {pageTitle === 'Pagrindinis' && <Pagrindinis />}
-                {pageTitle === 'Tvarkyti vartotojus' && <Users />}
-            </Box>
-        </Box>
+        </ClickAwayListener>
     );
 };
 
