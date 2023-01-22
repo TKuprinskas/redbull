@@ -1,51 +1,33 @@
-import * as React from 'react';
-import { useNavigate } from 'react-router-dom';
+import React from 'react';
 import { ToastContainer } from 'react-toastify';
-import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Checkbox from '@mui/material/Checkbox';
-import Link from '@mui/material/Link';
 import Box from '@mui/material/Box';
-import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import redbull from '../../src/assets/images/redbull.jpg';
-import { loginAsync } from '../services/API';
-
-function Copyright(props) {
-    return (
-        <Typography variant="body2" color="text.secondary" align="center" {...props}>
-            {'Copyright © '}
-            <Link color="inherit" href="https://redbull.tenisopartneris.lt/">
-                RedBull Lithuania
-            </Link>{' '}
-            {new Date().getFullYear()}
-            {'.'}
-        </Typography>
-    );
-}
+import { changeResetPassAsync } from '../../services/API';
 
 const theme = createTheme();
 
-export default function SignIn() {
-    const navigate = useNavigate();
-
+const ResetPassword = ({ setView, selectedUser }) => {
     const handleSubmit = async (event) => {
         event.preventDefault();
         const data = new FormData(event.currentTarget);
-        await loginAsync(data.get('username'), data.get('password'));
+        await changeResetPassAsync(data.get('password'), selectedUser.id);
         setTimeout(() => {
-            navigate('/home', { replace: true });
+            setView('usersList');
         }, 1500);
+    };
+
+    const changeView = () => {
+        setView('usersList');
     };
 
     return (
         <ThemeProvider theme={theme}>
-            <Container component="main" maxWidth="xs">
+            <Container maxWidth="xs" sx={{ m: { xs: 1, md: 2 } }}>
                 <ToastContainer
                     position="top-center"
                     autoClose={1500}
@@ -57,6 +39,11 @@ export default function SignIn() {
                     draggable
                     pauseOnHover
                 />
+                <Box sx={{ flexGrow: 1, width: '100%' }}>
+                    <Button variant="contained" sx={{ mb: 2 }} onClick={() => changeView()}>
+                        Grįžti atgal
+                    </Button>
+                </Box>
                 <CssBaseline />
                 <Box
                     sx={{
@@ -66,35 +53,20 @@ export default function SignIn() {
                         alignItems: 'center',
                     }}
                 >
-                    <Box
-                        component="img"
-                        sx={{
-                            height: 233,
-                            width: 350,
-                            maxHeight: { xs: 150, md: 170 },
-                            maxWidth: { xs: 220, md: 250 },
-                            mb: 2,
-                            borderRadius: 5,
-                        }}
-                        alt="redbull"
-                        src={redbull}
-                    />
-                    <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
-                        <LockOutlinedIcon />
-                    </Avatar>
                     <Typography component="h1" variant="h5">
-                        Prisijungimas
+                        Slaptažodžio keitimas
                     </Typography>
                     <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
                         <TextField
                             margin="normal"
-                            required
                             fullWidth
                             id="username"
                             label="Username"
                             name="username"
                             autoComplete="username"
                             autoFocus
+                            value={selectedUser.username}
+                            disabled
                         />
                         <TextField
                             margin="normal"
@@ -106,17 +78,14 @@ export default function SignIn() {
                             id="password"
                             autoComplete="current-password"
                         />
-                        <FormControlLabel
-                            control={<Checkbox value="remember" color="primary" />}
-                            label="Prisiminti mane"
-                        />
                         <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
-                            Prisijungti
+                            Pakeisti slaptažodį
                         </Button>
                     </Box>
                 </Box>
-                <Copyright sx={{ mt: 8, mb: 4 }} />
             </Container>
         </ThemeProvider>
     );
-}
+};
+
+export default ResetPassword;

@@ -12,7 +12,14 @@ const App = () => {
                 <div className="content-wrapper">
                     <Routes>
                         <Route path="/" element={<SignIn />} />
-                        <Route path="/home" element={<Home />} />
+                        <Route
+                            path="/home"
+                            element={
+                                <PrivateRoute>
+                                    <Home />
+                                </PrivateRoute>
+                            }
+                        />
                     </Routes>
                 </div>
             </div>

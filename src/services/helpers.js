@@ -23,6 +23,18 @@ export function getUserIdFromToken() {
     }
 }
 
+export function getUserRoleFromToken() {
+    if (window.localStorage.getItem('token')) {
+        const token = window.localStorage.getItem('token');
+        const payload = token.split('.')[1];
+        const payloadDecoded = window.atob(payload);
+        const userId = JSON.parse(payloadDecoded).role;
+        return userId;
+    } else {
+        return null;
+    }
+}
+
 export const toastSuccess = (message) => {
     toast.success(message, {
         position: 'top-center',

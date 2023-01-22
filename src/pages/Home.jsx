@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
@@ -28,6 +28,7 @@ import ProductionQuantityLimitsOutlinedIcon from '@mui/icons-material/Production
 import ManageAccountsOutlinedIcon from '@mui/icons-material/ManageAccountsOutlined';
 import ManageHistoryOutlinedIcon from '@mui/icons-material/ManageHistoryOutlined';
 import Users from './Vartotojai/Users';
+import { getUserRoleFromToken } from '../services/helpers';
 
 const drawerWidth = 240;
 
@@ -35,8 +36,16 @@ const Home = (props) => {
     const navigate = useNavigate();
     const { window } = props;
     const [mobileOpen, setMobileOpen] = useState(false);
-    const userRole = 'admin';
+    const [userRole, setUserRole] = useState('');
     const [pageTitle, setPageTitle] = useState('Pagrindinis');
+
+    useEffect(() => {
+        const getUserRole = async () => {
+            const role = await getUserRoleFromToken();
+            setUserRole(role);
+        };
+        getUserRole();
+    }, []);
 
     const handleDrawerToggle = () => {
         setMobileOpen(!mobileOpen);
@@ -48,6 +57,7 @@ const Home = (props) => {
     };
 
     const handleSignOut = () => {
+        localStorage.removeItem('token');
         navigate('/', { replace: true });
     };
 
@@ -96,7 +106,7 @@ const Home = (props) => {
                     />
                 </Toolbar>
                 <Divider />
-                {userRole === 'admin' && (
+                {userRole === 'user' && (
                     <>
                         <List sx={{ p: 0 }}>
                             {Menu.map((item, index) => (
@@ -111,7 +121,7 @@ const Home = (props) => {
                         <Divider />
                     </>
                 )}
-                {userRole === 'admin' && (
+                {userRole !== 'admin' && (
                     <>
                         <List sx={{ p: 0 }}>
                             {AdminMenu.map((item, index) => (

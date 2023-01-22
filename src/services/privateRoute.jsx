@@ -13,7 +13,7 @@ const PrivateRoute = ({ children }) => {
     }, []);
 
     const onClickHandler = () => {
-        navigate('/login');
+        navigate('/', { replace: true });
     };
 
     if (token === null) {
@@ -22,7 +22,7 @@ const PrivateRoute = ({ children }) => {
                 <Box>
                     <h1>Norėdami pasiekti šį puslapį, jūs turite būti prisijungęs (-us) prie sistemos.</h1>
                     <Box>
-                        <Button color="primary" onClick={onClickHandler}>
+                        <Button variant="contained" onClick={onClickHandler}>
                             Prisijungti
                         </Button>
                     </Box>
