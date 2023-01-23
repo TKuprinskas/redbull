@@ -15,11 +15,20 @@ const theme = createTheme();
 const EditInventory = ({ setView, getInventory, selectedItem }) => {
     const [item, setItem] = useState(selectedItem);
 
+    const quantityDifference = item.quantityAdded - selectedItem.quantityAdded;
+
     const handleSubmit = async (event) => {
         event.preventDefault();
         const data = new FormData(event.currentTarget);
         const token = getTokenFromStorage();
-        await editInventoryAsync(item.id, data.get('name'), data.get('quantity'), data.get('comment'), token);
+        await editInventoryAsync(
+            item.id,
+            quantityDifference,
+            data.get('name'),
+            data.get('quantityAdded'),
+            data.get('comment'),
+            token
+        );
         setTimeout(() => {
             setView('inventoryList');
             getInventory();
@@ -78,13 +87,13 @@ const EditInventory = ({ setView, getInventory, selectedItem }) => {
                             margin="normal"
                             required
                             fullWidth
-                            name="quantity"
+                            name="quantityAdded"
                             label="Kiekis"
                             type="number"
-                            id="quantity"
-                            autoComplete="quantity"
-                            value={item.quantity}
-                            onChange={(e) => setItem({ ...item, quantity: e.target.value })}
+                            id="quantityAdded"
+                            autoComplete="quantityAdded"
+                            value={item.quantityAdded}
+                            onChange={(e) => setItem({ ...item, quantityAdded: e.target.value })}
                         />
                         <TextField
                             margin="normal"

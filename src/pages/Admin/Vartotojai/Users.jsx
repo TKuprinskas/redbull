@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { ToastContainer } from 'react-toastify';
 import { confirmAlert } from 'react-confirm-alert';
 import 'react-confirm-alert/src/react-confirm-alert.css';
-import { Container, Box, Typography, Button } from '@mui/material';
+import { Container, Box, Typography, Button, Pagination } from '@mui/material';
 import PersonOutlineOutlinedIcon from '@mui/icons-material/PersonOutlineOutlined';
 import RememberMeOutlinedIcon from '@mui/icons-material/RememberMeOutlined';
 import LockResetOutlinedIcon from '@mui/icons-material/LockResetOutlined';
@@ -12,11 +12,17 @@ import ResetPassword from './ResetPassword';
 import CreateUsers from './CreateUsers';
 import { getTokenFromStorage } from '../../../services/helpers';
 import { deleteUserAsync, getUsersAsync } from '../../../services/API';
+import usePagination from '../../../components/Pagination';
 
 const Users = () => {
     const [users, setUsers] = useState([]);
     const [view, setView] = useState('usersList');
     const [selectedUser, setSelectedUser] = useState();
+    const isMobile = window.innerWidth < 600;
+    const [page, setPage] = useState(1);
+    const PER_PAGE = isMobile ? 5 : 10;
+    const count = Math.ceil(users.length / PER_PAGE);
+    const _DATA = usePagination(users, PER_PAGE);
 
     useEffect(() => {
         getUsers();
@@ -60,6 +66,11 @@ const Users = () => {
                 },
             ],
         });
+    };
+
+    const handlePageChange = (e, p) => {
+        setPage(p);
+        _DATA.jump(p);
     };
 
     return (
@@ -125,79 +136,89 @@ const Users = () => {
                                 <PersonRemoveAlt1OutlinedIcon sx={{ mr: 1, color: '#1976d2' }} />
                             </Typography>
                         </Box>
-                        {users.map((user) => (
-                            <Box
-                                key={user.id}
-                                sx={{
-                                    mt: 2,
-                                    display: 'flex',
-                                    flexDirection: { xs: 'column', md: 'row' },
-                                    width: '100%',
-                                    justifyContent: 'space-between',
-                                    borderBottom: '1px solid #1976d2',
-                                }}
-                            >
-                                <Box sx={{ display: 'flex', flex: { xs: 0, md: 1 }, width: { xs: 1, md: 0 } }}>
-                                    <PersonOutlineOutlinedIcon
-                                        sx={{ mr: 1, color: '#1976d2', display: { xs: 'flex', md: 'none' } }}
-                                    />
-                                    <Typography
-                                        variant="h6"
-                                        component="div"
-                                        gutterBottom
-                                        sx={{ flex: 1, width: 0, textAlign: 'center' }}
-                                    >
-                                        {user.username}
-                                    </Typography>
-                                </Box>
-                                <Box sx={{ display: 'flex', flex: { xs: 0, md: 1 }, width: { xs: 1, md: 0 } }}>
-                                    <RememberMeOutlinedIcon
-                                        sx={{ mr: 1, color: '#1976d2', display: { xs: 'flex', md: 'none' } }}
-                                    />
-                                    <Typography
-                                        variant="h6"
-                                        component="div"
-                                        gutterBottom
-                                        sx={{ flex: 1, width: 0, textAlign: 'center' }}
-                                    >
-                                        {user.role}
-                                    </Typography>
-                                </Box>
-                                <Box sx={{ display: 'flex', flex: { xs: 0, md: 1 }, width: { xs: 1, md: 0 } }}>
-                                    <LockResetOutlinedIcon
-                                        sx={{ mr: 1, color: '#1976d2', display: { xs: 'flex', md: 'none' } }}
-                                    />
-                                    <Box sx={{ flex: 1, width: 0, textAlign: 'center' }}>
-                                        <Button
-                                            variant="contained"
-                                            sx={{ mb: 2 }}
-                                            onClick={() => handleResetPassword(user)}
+                        {users.length > 0 &&
+                            _DATA.currentData().map((user) => (
+                                <Box
+                                    key={user.id}
+                                    sx={{
+                                        mt: 2,
+                                        display: 'flex',
+                                        flexDirection: { xs: 'column', md: 'row' },
+                                        width: '100%',
+                                        justifyContent: 'space-between',
+                                        borderBottom: '1px solid #1976d2',
+                                    }}
+                                >
+                                    <Box sx={{ display: 'flex', flex: { xs: 0, md: 1 }, width: { xs: 1, md: 0 } }}>
+                                        <PersonOutlineOutlinedIcon
+                                            sx={{ mr: 1, color: '#1976d2', display: { xs: 'flex', md: 'none' } }}
+                                        />
+                                        <Typography
+                                            variant="h6"
+                                            component="div"
+                                            gutterBottom
+                                            sx={{ flex: 1, width: 0, textAlign: 'center' }}
                                         >
-                                            Pakeisti slaptažodį
-                                        </Button>
+                                            {user.username}
+                                        </Typography>
+                                    </Box>
+                                    <Box sx={{ display: 'flex', flex: { xs: 0, md: 1 }, width: { xs: 1, md: 0 } }}>
+                                        <RememberMeOutlinedIcon
+                                            sx={{ mr: 1, color: '#1976d2', display: { xs: 'flex', md: 'none' } }}
+                                        />
+                                        <Typography
+                                            variant="h6"
+                                            component="div"
+                                            gutterBottom
+                                            sx={{ flex: 1, width: 0, textAlign: 'center' }}
+                                        >
+                                            {user.role}
+                                        </Typography>
+                                    </Box>
+                                    <Box sx={{ display: 'flex', flex: { xs: 0, md: 1 }, width: { xs: 1, md: 0 } }}>
+                                        <LockResetOutlinedIcon
+                                            sx={{ mr: 1, color: '#1976d2', display: { xs: 'flex', md: 'none' } }}
+                                        />
+                                        <Box sx={{ flex: 1, width: 0, textAlign: 'center' }}>
+                                            <Button
+                                                variant="contained"
+                                                sx={{ mb: 2 }}
+                                                onClick={() => handleResetPassword(user)}
+                                            >
+                                                Pakeisti slaptažodį
+                                            </Button>
+                                        </Box>
+                                    </Box>
+                                    <Box sx={{ display: 'flex', flex: { xs: 0, md: 1 }, width: { xs: 1, md: 0 } }}>
+                                        <PersonRemoveAlt1OutlinedIcon
+                                            sx={{ mr: 1, color: '#1976d2', display: { xs: 'flex', md: 'none' } }}
+                                        />
+                                        <Box sx={{ flex: 1, width: 0, textAlign: 'center' }}>
+                                            <Button
+                                                variant="contained"
+                                                sx={{ mb: 2 }}
+                                                onClick={() => confirmDelete(user.id)}
+                                            >
+                                                Ištrinti vartotoją
+                                            </Button>
+                                        </Box>
                                     </Box>
                                 </Box>
-                                <Box sx={{ display: 'flex', flex: { xs: 0, md: 1 }, width: { xs: 1, md: 0 } }}>
-                                    <PersonRemoveAlt1OutlinedIcon
-                                        sx={{ mr: 1, color: '#1976d2', display: { xs: 'flex', md: 'none' } }}
-                                    />
-                                    <Box sx={{ flex: 1, width: 0, textAlign: 'center' }}>
-                                        <Button
-                                            variant="contained"
-                                            sx={{ mb: 2 }}
-                                            onClick={() => confirmDelete(user.id)}
-                                        >
-                                            Ištrinti vartotoją
-                                        </Button>
-                                    </Box>
-                                </Box>
-                            </Box>
-                        ))}
+                            ))}
                     </Box>
                 </>
             )}
             {view === 'userCreate' && <CreateUsers setView={setView} />}
             {view === 'resetPassword' && <ResetPassword setView={setView} selectedUser={selectedUser} />}
+            <Pagination
+                count={count}
+                size="large"
+                page={page}
+                variant="outlined"
+                shape="rounded"
+                onChange={handlePageChange}
+                sx={{ mt: 2, mb: 2, display: 'flex', justifyContent: 'center' }}
+            />
         </Container>
     );
 };

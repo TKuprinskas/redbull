@@ -18,7 +18,7 @@ const MyInventory = () => {
     const [filteredInventory, setFilteredInventory] = useState([]);
     const [active, setActive] = useState('all');
     const isMobile = window.innerWidth < 600;
-    const PER_PAGE = isMobile ? 3 : 10;
+    const PER_PAGE = isMobile ? 5 : 10;
     const count = Math.ceil(filteredInventory.length / PER_PAGE);
     const _DATA = usePagination(filteredInventory, PER_PAGE);
 
@@ -182,7 +182,7 @@ const MyInventory = () => {
                         <EventRepeatOutlinedIcon sx={{ mr: 1, color: '#1976d2' }} />
                     </Typography>
                 </Box>
-                <Box p="5">
+                <Box>
                     {inventory.length > 0 &&
                         _DATA.currentData().map((item, index) => (
                             <Box

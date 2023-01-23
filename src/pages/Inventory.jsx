@@ -1,14 +1,20 @@
 import React, { useState, useEffect } from 'react';
 import { ToastContainer } from 'react-toastify';
-import { Container, Box, Typography } from '@mui/material';
+import { Container, Box, Typography, Pagination } from '@mui/material';
 import { getTokenFromStorage } from '../services/helpers';
 import { getInventoryAsync } from '../services/API';
 import StorefrontOutlinedIcon from '@mui/icons-material/StorefrontOutlined';
 import ShoppingBasketOutlinedIcon from '@mui/icons-material/ShoppingBasketOutlined';
 import ChatBubbleOutlineOutlinedIcon from '@mui/icons-material/ChatBubbleOutlineOutlined';
+import usePagination from '../components/Pagination';
 
 const UserInventory = () => {
+    const isMobile = window.innerWidth < 600;
     const [inventory, setInventory] = useState([]);
+    const [page, setPage] = useState(1);
+    const PER_PAGE = isMobile ? 5 : 10;
+    const count = Math.ceil(inventory.length / PER_PAGE);
+    const _DATA = usePagination(inventory, PER_PAGE);
 
     useEffect(() => {
         getInventory();
@@ -18,6 +24,11 @@ const UserInventory = () => {
         const token = getTokenFromStorage();
         const response = await getInventoryAsync(token);
         setInventory(response.data);
+    };
+
+    const handlePageChange = (e, p) => {
+        setPage(p);
+        _DATA.jump(p);
     };
 
     return (
@@ -69,7 +80,7 @@ const UserInventory = () => {
                     </Typography>
                 </Box>
                 {inventory.length > 0 &&
-                    inventory.map((item) => (
+                    _DATA.currentData().map((item) => (
                         <Box
                             key={item.id}
                             sx={{
@@ -104,7 +115,7 @@ const UserInventory = () => {
                                     gutterBottom
                                     sx={{ flex: 1, width: 0, textAlign: 'center' }}
                                 >
-                                    {item.quantity}
+                                    {item.quantityRemaining}
                                 </Typography>
                             </Box>
                             <Box sx={{ display: 'flex', flex: { xs: 0, md: 1 }, width: { xs: 1, md: 0 } }}>
@@ -123,6 +134,15 @@ const UserInventory = () => {
                         </Box>
                     ))}
             </Box>
+            <Pagination
+                count={count}
+                size="large"
+                page={page}
+                variant="outlined"
+                shape="rounded"
+                onChange={handlePageChange}
+                sx={{ mt: 2, mb: 2, display: 'flex', justifyContent: 'center' }}
+            />
         </Container>
     );
 };

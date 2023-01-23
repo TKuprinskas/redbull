@@ -197,7 +197,7 @@ export const deleteInventoryAsync = async (token, id) => {
     }
 };
 
-export const editInventoryAsync = async (id, name, quantity, comment, token) => {
+export const editInventoryAsync = async (id, quantityDifference, name, quantity, comment, token) => {
     try {
         const response = await fetch(`${editInventoryURL}`, {
             method: 'PUT',
@@ -207,6 +207,7 @@ export const editInventoryAsync = async (id, name, quantity, comment, token) => 
             },
             body: JSON.stringify({
                 id: id,
+                quantityDifference: quantityDifference,
                 name: name,
                 quantity: quantity,
                 comment: comment,

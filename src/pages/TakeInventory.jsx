@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { ToastContainer } from 'react-toastify';
-import { Container, Box, Typography, Button, TextField } from '@mui/material';
+import { Container, Box, Typography, Button, TextField, Pagination } from '@mui/material';
 import { getTokenFromStorage, getUserIdFromToken } from '../services/helpers';
 import { getInventoryAsync, userAddInventoryAsync } from '../services/API';
 import StorefrontOutlinedIcon from '@mui/icons-material/StorefrontOutlined';
@@ -8,9 +8,15 @@ import ShoppingBasketOutlinedIcon from '@mui/icons-material/ShoppingBasketOutlin
 import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
 import AddCircleOutlineOutlinedIcon from '@mui/icons-material/AddCircleOutlineOutlined';
 import RemoveCircleOutlineOutlinedIcon from '@mui/icons-material/RemoveCircleOutlineOutlined';
+import usePagination from '../components/Pagination';
 
 const TakeInventory = () => {
+    const isMobile = window.innerWidth < 600;
     const [inventory, setInventory] = useState([]);
+    const [page, setPage] = useState(1);
+    const PER_PAGE = isMobile ? 5 : 10;
+    const count = Math.ceil(inventory.length / PER_PAGE);
+    const _DATA = usePagination(inventory, PER_PAGE);
     const [cart, setCart] = useState([]);
     const [totalCount, setTotalCount] = useState(0);
 
@@ -47,9 +53,9 @@ const TakeInventory = () => {
     const handleIncrementDisable = (item) => {
         const cartItem = cart.find((i) => i.id === item.id);
         if (cartItem) {
-            return cartItem.count === item.quantity;
+            return cartItem.count === item.quantityRemaining;
         }
-        if (item.quantity === 0) {
+        if (item.quantityRemaining === 0) {
             return true;
         }
         return false;
@@ -70,7 +76,7 @@ const TakeInventory = () => {
         } else {
             const newCart = cart.map((i) => {
                 if (i.id === item.id) {
-                    return { ...i, count: i.count + 1 < i.quantity ? i.count + 1 : i.quantity };
+                    return { ...i, count: i.count + 1 < i.quantityRemaining ? i.count + 1 : i.quantityRemaining };
                 }
                 return i;
             });
@@ -91,6 +97,11 @@ const TakeInventory = () => {
             setCart(newCart);
         }
         setTotalCount(totalCount - 1 >= 0 ? totalCount - 1 : 0);
+    };
+
+    const handlePageChange = (e, p) => {
+        setPage(p);
+        _DATA.jump(p);
     };
 
     return (
@@ -156,7 +167,7 @@ const TakeInventory = () => {
                     </Typography>
                 </Box>
                 {inventory.length > 0 &&
-                    inventory.map((item) => (
+                    _DATA.currentData().map((item) => (
                         <Box
                             key={item.id}
                             sx={{
@@ -205,7 +216,7 @@ const TakeInventory = () => {
                                     gutterBottom
                                     sx={{ flex: 1, width: 0, textAlign: 'center' }}
                                 >
-                                    {item.quantity}
+                                    {item.quantityRemaining}
                                 </Typography>
                             </Box>
                             <Box
@@ -257,6 +268,15 @@ const TakeInventory = () => {
                         </Box>
                     ))}
             </Box>
+            <Pagination
+                count={count}
+                size="large"
+                page={page}
+                variant="outlined"
+                shape="rounded"
+                onChange={handlePageChange}
+                sx={{ mt: 2, mb: 2, display: 'flex', justifyContent: 'center' }}
+            />
         </Container>
     );
 };

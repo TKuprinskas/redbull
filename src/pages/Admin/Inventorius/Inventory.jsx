@@ -2,22 +2,30 @@ import React, { useState, useEffect } from 'react';
 import { ToastContainer } from 'react-toastify';
 import { confirmAlert } from 'react-confirm-alert';
 import 'react-confirm-alert/src/react-confirm-alert.css';
-import { Container, Box, Typography, Button } from '@mui/material';
+import { Container, Box, Typography, Button, Pagination } from '@mui/material';
 import AddInventory from './AddInventory';
 import { getTokenFromStorage } from '../../../services/helpers';
 import { deleteInventoryAsync, getInventoryAsync } from '../../../services/API';
 import StorefrontOutlinedIcon from '@mui/icons-material/StorefrontOutlined';
-import ShoppingBasketOutlinedIcon from '@mui/icons-material/ShoppingBasketOutlined';
 import ShoppingCartCheckoutOutlinedIcon from '@mui/icons-material/ShoppingCartCheckoutOutlined';
 import RemoveShoppingCartOutlinedIcon from '@mui/icons-material/RemoveShoppingCartOutlined';
 import AddShoppingCartOutlinedIcon from '@mui/icons-material/AddShoppingCartOutlined';
 import ChatBubbleOutlineOutlinedIcon from '@mui/icons-material/ChatBubbleOutlineOutlined';
+import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
+import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
+import DeleteForeverOutlinedIcon from '@mui/icons-material/DeleteForeverOutlined';
 import EditInventory from './EditInventory';
+import usePagination from '../../../components/Pagination';
 
 const AdminInventory = () => {
     const [inventory, setInventory] = useState([]);
     const [view, setView] = useState('inventoryList');
     const [selectedItem, setSelectedItem] = useState();
+    const [page, setPage] = useState(1);
+    const isMobile = window.innerWidth < 600;
+    const PER_PAGE = isMobile ? 5 : 10;
+    const count = Math.ceil(inventory.length / PER_PAGE);
+    const _DATA = usePagination(inventory, PER_PAGE);
 
     useEffect(() => {
         getInventory();
@@ -61,6 +69,11 @@ const AdminInventory = () => {
                 },
             ],
         });
+    };
+
+    const handlePageChange = (e, p) => {
+        setPage(p);
+        _DATA.jump(p);
     };
 
     return (
@@ -107,7 +120,23 @@ const AdminInventory = () => {
                                 gutterBottom
                                 sx={{ flex: 1, width: 0, textAlign: 'center' }}
                             >
-                                <ShoppingBasketOutlinedIcon sx={{ mr: 1, color: '#1976d2' }} />
+                                <ShoppingCartCheckoutOutlinedIcon sx={{ mr: 1, color: '#1976d2' }} />
+                            </Typography>
+                            <Typography
+                                variant="h6"
+                                component="div"
+                                gutterBottom
+                                sx={{ flex: 1, width: 0, textAlign: 'center' }}
+                            >
+                                <ShoppingCartOutlinedIcon sx={{ mr: 1, color: '#1976d2' }} />
+                            </Typography>
+                            <Typography
+                                variant="h6"
+                                component="div"
+                                gutterBottom
+                                sx={{ flex: 1, width: 0, textAlign: 'center' }}
+                            >
+                                <RemoveShoppingCartOutlinedIcon sx={{ mr: 1, color: '#1976d2' }} />
                             </Typography>
                             <Typography
                                 variant="h6"
@@ -123,7 +152,7 @@ const AdminInventory = () => {
                                 gutterBottom
                                 sx={{ flex: 1, width: 0, textAlign: 'center' }}
                             >
-                                <ShoppingCartCheckoutOutlinedIcon sx={{ mr: 1, color: '#1976d2' }} />
+                                <EditOutlinedIcon sx={{ mr: 1, color: '#1976d2' }} />
                             </Typography>
                             <Typography
                                 variant="h6"
@@ -131,11 +160,11 @@ const AdminInventory = () => {
                                 gutterBottom
                                 sx={{ flex: 1, width: 0, textAlign: 'center' }}
                             >
-                                <RemoveShoppingCartOutlinedIcon sx={{ mr: 1, color: '#1976d2' }} />
+                                <DeleteForeverOutlinedIcon sx={{ mr: 1, color: '#1976d2' }} />
                             </Typography>
                         </Box>
                         {inventory.length > 0 &&
-                            inventory.map((item) => (
+                            _DATA.currentData().map((item) => (
                                 <Box
                                     key={item.id}
                                     sx={{
@@ -161,7 +190,7 @@ const AdminInventory = () => {
                                         </Typography>
                                     </Box>
                                     <Box sx={{ display: 'flex', flex: { xs: 0, md: 1 }, width: { xs: 1, md: 0 } }}>
-                                        <ShoppingBasketOutlinedIcon
+                                        <ShoppingCartOutlinedIcon
                                             sx={{ mr: 1, color: '#1976d2', display: { xs: 'flex', md: 'none' } }}
                                         />
                                         <Typography
@@ -170,7 +199,33 @@ const AdminInventory = () => {
                                             gutterBottom
                                             sx={{ flex: 1, width: 0, textAlign: 'center' }}
                                         >
-                                            {item.quantity}
+                                            {item.quantityAdded}
+                                        </Typography>
+                                    </Box>
+                                    <Box sx={{ display: 'flex', flex: { xs: 0, md: 1 }, width: { xs: 1, md: 0 } }}>
+                                        <StorefrontOutlinedIcon
+                                            sx={{ mr: 1, color: '#1976d2', display: { xs: 'flex', md: 'none' } }}
+                                        />
+                                        <Typography
+                                            variant="h6"
+                                            component="div"
+                                            gutterBottom
+                                            sx={{ flex: 1, width: 0, textAlign: 'center' }}
+                                        >
+                                            {item.quantityRemaining}
+                                        </Typography>
+                                    </Box>
+                                    <Box sx={{ display: 'flex', flex: { xs: 0, md: 1 }, width: { xs: 1, md: 0 } }}>
+                                        <RemoveShoppingCartOutlinedIcon
+                                            sx={{ mr: 1, color: '#1976d2', display: { xs: 'flex', md: 'none' } }}
+                                        />
+                                        <Typography
+                                            variant="h6"
+                                            component="div"
+                                            gutterBottom
+                                            sx={{ flex: 1, width: 0, textAlign: 'center' }}
+                                        >
+                                            {item.quantityTaken}
                                         </Typography>
                                     </Box>
                                     <Box sx={{ display: 'flex', flex: { xs: 0, md: 1 }, width: { xs: 1, md: 0 } }}>
@@ -187,7 +242,7 @@ const AdminInventory = () => {
                                         </Typography>
                                     </Box>
                                     <Box sx={{ display: 'flex', flex: { xs: 0, md: 1 }, width: { xs: 1, md: 0 } }}>
-                                        <ShoppingCartCheckoutOutlinedIcon
+                                        <EditOutlinedIcon
                                             sx={{ mr: 1, color: '#1976d2', display: { xs: 'flex', md: 'none' } }}
                                         />
                                         <Box sx={{ flex: 1, width: 0, textAlign: 'center' }}>
@@ -201,7 +256,7 @@ const AdminInventory = () => {
                                         </Box>
                                     </Box>
                                     <Box sx={{ display: 'flex', flex: { xs: 0, md: 1 }, width: { xs: 1, md: 0 } }}>
-                                        <RemoveShoppingCartOutlinedIcon
+                                        <DeleteForeverOutlinedIcon
                                             sx={{ mr: 1, color: '#1976d2', display: { xs: 'flex', md: 'none' } }}
                                         />
                                         <Box sx={{ flex: 1, width: 0, textAlign: 'center' }}>
@@ -223,6 +278,15 @@ const AdminInventory = () => {
             {view === 'editInventory' && (
                 <EditInventory setView={setView} getInventory={getInventory} selectedItem={selectedItem} />
             )}
+            <Pagination
+                count={count}
+                size="large"
+                page={page}
+                variant="outlined"
+                shape="rounded"
+                onChange={handlePageChange}
+                sx={{ mt: 2, mb: 2, display: 'flex', justifyContent: 'center' }}
+            />
         </Container>
     );
 };

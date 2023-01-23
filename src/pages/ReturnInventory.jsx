@@ -127,7 +127,7 @@ const ReturnInventory = () => {
     };
 
     return (
-        <Container maxWidth="xl" sx={{ m: { xs: 1, md: 2 } }}>
+        <Container maxWidth="lg" sx={{ m: { xs: 1, md: 2 } }}>
             <ToastContainer
                 position="top-center"
                 autoClose={1500}

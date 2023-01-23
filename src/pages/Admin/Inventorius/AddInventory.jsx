@@ -17,7 +17,7 @@ const AddInventory = ({ setView, getInventory }) => {
         event.preventDefault();
         const data = new FormData(event.currentTarget);
         const token = getTokenFromStorage();
-        await addInventoryAsync(data.get('name'), data.get('quantity'), data.get('comment'), token);
+        await addInventoryAsync(data.get('name'), data.get('quantityAdded'), data.get('comment'), token);
         setTimeout(() => {
             setView('inventoryList');
             getInventory();
@@ -74,11 +74,11 @@ const AddInventory = ({ setView, getInventory }) => {
                             margin="normal"
                             required
                             fullWidth
-                            name="quantity"
+                            name="quantityAdded"
                             label="Kiekis"
                             type="number"
-                            id="quantity"
-                            autoComplete="quantity"
+                            id="quantityAdded"
+                            autoComplete="quantityAdded"
                         />
                         <TextField
                             margin="normal"
