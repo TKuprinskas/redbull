@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { ToastContainer } from 'react-toastify';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -7,22 +7,27 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { changeResetPassAsync } from '../../services/API';
+import { editInventoryAsync } from '../../../services/API';
+import { getTokenFromStorage } from '../../../services/helpers';
 
 const theme = createTheme();
 
-const ResetPassword = ({ setView, selectedUser }) => {
+const EditInventory = ({ setView, getInventory, selectedItem }) => {
+    const [item, setItem] = useState(selectedItem);
+
     const handleSubmit = async (event) => {
         event.preventDefault();
         const data = new FormData(event.currentTarget);
-        await changeResetPassAsync(data.get('password'), selectedUser.id);
+        const token = getTokenFromStorage();
+        await editInventoryAsync(item.id, data.get('name'), data.get('quantity'), data.get('comment'), token);
         setTimeout(() => {
-            setView('usersList');
+            setView('inventoryList');
+            getInventory();
         }, 1500);
     };
 
     const changeView = () => {
-        setView('usersList');
+        setView('inventoryList');
     };
 
     return (
@@ -54,32 +59,46 @@ const ResetPassword = ({ setView, selectedUser }) => {
                     }}
                 >
                     <Typography component="h1" variant="h5">
-                        Slaptažodžio keitimas
+                        Redaguoti inventorių
                     </Typography>
                     <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
                         <TextField
                             margin="normal"
+                            required
                             fullWidth
-                            id="username"
-                            label="Username"
-                            name="username"
-                            autoComplete="username"
+                            id="name"
+                            label="Pavadinimas"
+                            name="name"
+                            autoComplete="name"
                             autoFocus
-                            value={selectedUser.username}
-                            disabled
+                            value={item.name}
+                            onChange={(e) => setItem({ ...item, name: e.target.value })}
                         />
                         <TextField
                             margin="normal"
                             required
                             fullWidth
-                            name="password"
-                            label="Password"
-                            type="password"
-                            id="password"
-                            autoComplete="current-password"
+                            name="quantity"
+                            label="Kiekis"
+                            type="number"
+                            id="quantity"
+                            autoComplete="quantity"
+                            value={item.quantity}
+                            onChange={(e) => setItem({ ...item, quantity: e.target.value })}
+                        />
+                        <TextField
+                            margin="normal"
+                            fullWidth
+                            name="comment"
+                            label="Komentaras"
+                            type="text"
+                            id="comment"
+                            autoComplete="comment"
+                            value={item.comment}
+                            onChange={(e) => setItem({ ...item, comment: e.target.value })}
                         />
                         <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
-                            Pakeisti slaptažodį
+                            Išsaugoti
                         </Button>
                     </Box>
                 </Box>
@@ -88,4 +107,4 @@ const ResetPassword = ({ setView, selectedUser }) => {
     );
 };
 
-export default ResetPassword;
+export default EditInventory;

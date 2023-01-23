@@ -7,7 +7,8 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { createUserAsync } from '../../services/API';
+import { createUserAsync } from '../../../services/API';
+import { getTokenFromStorage } from '../../../services/helpers';
 
 const theme = createTheme();
 
@@ -15,7 +16,8 @@ const CreateUsers = ({ setView }) => {
     const handleSubmit = async (event) => {
         event.preventDefault();
         const data = new FormData(event.currentTarget);
-        await createUserAsync(data.get('username'), data.get('password'));
+        const token = getTokenFromStorage();
+        await createUserAsync(data.get('username'), data.get('password'), token);
         setTimeout(() => {
             setView('usersList');
         }, 1500);

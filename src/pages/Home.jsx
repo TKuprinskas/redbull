@@ -27,8 +27,13 @@ import HistoryOutlinedIcon from '@mui/icons-material/HistoryOutlined';
 import ProductionQuantityLimitsOutlinedIcon from '@mui/icons-material/ProductionQuantityLimitsOutlined';
 import ManageAccountsOutlinedIcon from '@mui/icons-material/ManageAccountsOutlined';
 import ManageHistoryOutlinedIcon from '@mui/icons-material/ManageHistoryOutlined';
-import Users from './Vartotojai/Users';
+import Users from './Admin/Vartotojai/Users';
 import { getUserRoleFromToken } from '../services/helpers';
+import AdminInventory from './Admin/Inventorius/Inventory';
+import UserInventory from './Inventory';
+import TakeInventory from './TakeInventory';
+import ReturnInventory from './ReturnInventory';
+import MyInventory from './MyHistory';
 
 const drawerWidth = 240;
 
@@ -210,6 +215,11 @@ const Home = (props) => {
                     <Toolbar />
                     {pageTitle === 'Pagrindinis' && <Pagrindinis />}
                     {pageTitle === 'Tvarkyti vartotojus' && <Users />}
+                    {pageTitle === 'Tvarkyti inventorių' && <AdminInventory />}
+                    {pageTitle === 'Inventorius' && <UserInventory />}
+                    {pageTitle === 'Paimti inventorių' && <TakeInventory />}
+                    {pageTitle === 'Grąžinti inventorių' && <ReturnInventory />}
+                    {pageTitle === 'Mano istorija' && <MyInventory />}
                 </Box>
             </Box>
         </ClickAwayListener>

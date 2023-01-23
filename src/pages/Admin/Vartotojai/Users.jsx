@@ -7,10 +7,11 @@ import PersonOutlineOutlinedIcon from '@mui/icons-material/PersonOutlineOutlined
 import RememberMeOutlinedIcon from '@mui/icons-material/RememberMeOutlined';
 import LockResetOutlinedIcon from '@mui/icons-material/LockResetOutlined';
 import PersonRemoveAlt1OutlinedIcon from '@mui/icons-material/PersonRemoveAlt1Outlined';
+import PersonAddAltOutlinedIcon from '@mui/icons-material/PersonAddAltOutlined';
 import ResetPassword from './ResetPassword';
 import CreateUsers from './CreateUsers';
-import { getTokenFromStorage } from '../../services/helpers';
-import { deleteUserAsync, getUsersAsync } from '../../services/API';
+import { getTokenFromStorage } from '../../../services/helpers';
+import { deleteUserAsync, getUsersAsync } from '../../../services/API';
 
 const Users = () => {
     const [users, setUsers] = useState([]);
@@ -78,7 +79,7 @@ const Users = () => {
                 <>
                     <Box sx={{ flexGrow: 1, width: '100%' }}>
                         <Button variant="contained" sx={{ mb: 2 }} onClick={() => changeView()}>
-                            Sukurti vartotoją
+                            <PersonAddAltOutlinedIcon /> &nbsp; Sukurti vartotoją
                         </Button>
                     </Box>
                     <Box sx={{ flexGrow: 1, width: '100%' }}>
@@ -195,7 +196,7 @@ const Users = () => {
                     </Box>
                 </>
             )}
-            {view === 'userCreate' && <CreateUsers setView={setView} getUsers={getUsers()} />}
+            {view === 'userCreate' && <CreateUsers setView={setView} />}
             {view === 'resetPassword' && <ResetPassword setView={setView} selectedUser={selectedUser} />}
         </Container>
     );
