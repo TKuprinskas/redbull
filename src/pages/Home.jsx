@@ -94,10 +94,6 @@ const Home = (props) => {
         return item.title === pageTitle;
     };
 
-    const handleClickAway = () => {
-        setMobileOpen(!mobileOpen);
-    };
-
     const drawer = (
         <div>
             <Toolbar>
@@ -156,82 +152,81 @@ const Home = (props) => {
     const container = window !== undefined ? () => window().document.body : undefined;
 
     return (
-        <ClickAwayListener onClickAway={handleClickAway}>
-            <Box sx={{ display: 'flex' }}>
-                <CssBaseline />
-                <AppBar
-                    position="fixed"
+        <Box sx={{ display: 'flex' }}>
+            <CssBaseline />
+            <AppBar
+                position="fixed"
+                sx={{
+                    width: { sm: `calc(100% - ${drawerWidth}px)` },
+                    ml: { sm: `${drawerWidth}px` },
+                }}
+            >
+                <Toolbar>
+                    <IconButton
+                        color="inherit"
+                        aria-label="open drawer"
+                        edge="start"
+                        onClick={handleDrawerToggle}
+                        sx={{ mr: 2, display: { sm: 'none' } }}
+                    >
+                        <MenuIcon />
+                    </IconButton>
+                    <Typography variant="h6" noWrap component="div">
+                        {pageTitle}
+                    </Typography>
+                </Toolbar>
+            </AppBar>
+            <Box
+                component="nav"
+                sx={{ width: { sm: drawerWidth }, flexShrink: { sm: 0 } }}
+                aria-label="mailbox folders"
+            >
+                <Drawer
+                    container={container}
+                    variant="temporary"
+                    onEscapeKeyDown={handleDrawerToggle}
+                    open={mobileOpen}
+                    onClose={handleDrawerToggle}
+                    ModalProps={{
+                        keepMounted: true,
+                    }}
                     sx={{
-                        width: { sm: `calc(100% - ${drawerWidth}px)` },
-                        ml: { sm: `${drawerWidth}px` },
+                        display: { xs: 'block', sm: 'none' },
+                        '& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerWidth },
                     }}
                 >
-                    <Toolbar>
-                        <IconButton
-                            color="inherit"
-                            aria-label="open drawer"
-                            edge="start"
-                            onClick={handleDrawerToggle}
-                            sx={{ mr: 2, display: { sm: 'none' } }}
-                        >
-                            <MenuIcon />
-                        </IconButton>
-                        <Typography variant="h6" noWrap component="div">
-                            {pageTitle}
-                        </Typography>
-                    </Toolbar>
-                </AppBar>
-                <Box
-                    component="nav"
-                    sx={{ width: { sm: drawerWidth }, flexShrink: { sm: 0 } }}
-                    aria-label="mailbox folders"
-                >
-                    <Drawer
-                        container={container}
-                        variant="temporary"
-                        open={mobileOpen}
-                        onClose={handleDrawerToggle}
-                        ModalProps={{
-                            keepMounted: true,
-                        }}
-                        sx={{
-                            display: { xs: 'block', sm: 'none' },
-                            '& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerWidth },
-                        }}
-                    >
-                        {drawer}
-                    </Drawer>
-                    <Drawer
-                        variant="permanent"
-                        sx={{
-                            display: { xs: 'none', sm: 'block' },
-                            '& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerWidth },
-                        }}
-                        open
-                    >
-                        {drawer}
-                    </Drawer>
-                </Box>
-                <Box
-                    component="main"
+                    {drawer}
+                </Drawer>
+                <Drawer
+                    variant="permanent"
                     sx={{
-                        flexGrow: 1,
-                        p: 3,
-                        width: { sm: `calc(100% - ${drawerWidth}px)` },
+                        display: { xs: 'none', sm: 'block' },
+                        '& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerWidth },
                     }}
+                    open
                 >
-                    <Toolbar />
-                    {pageTitle === 'Pagrindinis' && <Pagrindinis />}
-                    {pageTitle === 'Tvarkyti vartotojus' && <Users />}
-                    {pageTitle === 'Tvarkyti inventorių' && <AdminInventory />}
-                    {pageTitle === 'Žiūrėti istoriją' && <AdminHistory />}
-                    {pageTitle === 'Inventorius' && <UserInventory />}
-                    {pageTitle === 'Paimti inventorių' && <TakeInventory />}
-                    {pageTitle === 'Grąžinti inventorių' && <ReturnInventory />}
-                    {pageTitle === 'Mano istorija' && <MyInventory />}
-                </Box>
+                    {drawer}
+                </Drawer>
             </Box>
-        </ClickAwayListener>
+            <Box
+                component="main"
+                sx={{
+                    flexGrow: 1,
+                    p: 3,
+                    width: { sm: `calc(100% - ${drawerWidth}px)` },
+                }}
+            >
+                <Toolbar />
+                {pageTitle === 'Pagrindinis' && <Pagrindinis />}
+                {pageTitle === 'Tvarkyti vartotojus' && <Users />}
+                {pageTitle === 'Tvarkyti inventorių' && <AdminInventory />}
+                {pageTitle === 'Žiūrėti istoriją' && <AdminHistory />}
+                {pageTitle === 'Inventorius' && <UserInventory />}
+                {pageTitle === 'Paimti inventorių' && <TakeInventory />}
+                {pageTitle === 'Grąžinti inventorių' && <ReturnInventory />}
+                {pageTitle === 'Mano istorija' && <MyInventory />}
+            </Box>
+        </Box>
     );
 };
 
