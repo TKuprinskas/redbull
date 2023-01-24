@@ -20,6 +20,7 @@ const TakeInventory = () => {
     const _DATA = usePagination(inventory, PER_PAGE);
     const [cart, setCart] = useState([]);
     const [totalCount, setTotalCount] = useState(0);
+    const [loaded, setLoaded] = useState(false);
 
     const handleSubmit = async () => {
         const token = getTokenFromStorage();
@@ -49,6 +50,7 @@ const TakeInventory = () => {
         const token = getTokenFromStorage();
         const response = await getInventoryAsync(token);
         setInventory(response.data);
+        setLoaded(true);
     };
 
     const handleIncrementDisable = (item) => {
@@ -104,6 +106,10 @@ const TakeInventory = () => {
         setPage(p);
         _DATA.jump(p);
     };
+
+    if (!loaded) {
+        return <h1>Kraunami duomenys..</h1>;
+    }
 
     return (
         <Container maxWidth="lg" sx={{ m: { xs: 1, md: 2 } }}>

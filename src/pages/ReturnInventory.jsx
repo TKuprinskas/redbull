@@ -16,6 +16,7 @@ const ReturnInventory = () => {
     const [inventory, setInventory] = useState([]);
     const [cart, setCart] = useState([]);
     const [totalCount, setTotalCount] = useState(0);
+    const [loaded, setLoaded] = useState(false);
 
     const handleCommentChange = (item, comment) => {
         const cartItem = cart.find((i) => i.id === item.id);
@@ -76,6 +77,7 @@ const ReturnInventory = () => {
             return acc + item.quantityRemaining;
         }, 0);
         setTotalCount(count);
+        setLoaded(true);
     };
 
     const handleIncrementDisable = (item) => {
@@ -126,6 +128,10 @@ const ReturnInventory = () => {
         }
         setTotalCount(totalCount + 1);
     };
+
+    if (!loaded) {
+        return <h1>Kraunami duomenys..</h1>;
+    }
 
     return (
         <Container maxWidth="xl" sx={{ m: { xs: 1, md: 2 } }}>

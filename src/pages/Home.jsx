@@ -17,7 +17,7 @@ import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import Pagrindinis from './Main';
 import { AdminMenu, Menu } from '../constants/Menu';
-import { Button, ClickAwayListener } from '@mui/material';
+import { Button } from '@mui/material';
 import redbull from '../../src/assets/images/redbull.jpg';
 import HomeOutlinedIcon from '@mui/icons-material/HomeOutlined';
 import Inventory2OutlinedIcon from '@mui/icons-material/Inventory2Outlined';
@@ -184,7 +184,6 @@ const Home = (props) => {
                 <Drawer
                     container={container}
                     variant="temporary"
-                    onEscapeKeyDown={handleDrawerToggle}
                     open={mobileOpen}
                     onClose={handleDrawerToggle}
                     ModalProps={{

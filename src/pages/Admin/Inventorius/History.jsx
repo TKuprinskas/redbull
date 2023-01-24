@@ -13,7 +13,8 @@ import ImageOutlinedIcon from '@mui/icons-material/ImageOutlined';
 import PersonOutlineOutlinedIcon from '@mui/icons-material/PersonOutlineOutlined';
 import usePagination from '../../../components/Pagination';
 import moment from 'moment';
-import Select, { SelectChangeEvent } from '@mui/material/Select';
+import Select from '@mui/material/Select';
+import ExcelExport from '../../../components/ExcelExport';
 
 const AdminHistory = () => {
     const [page, setPage] = useState(1);
@@ -28,6 +29,20 @@ const AdminHistory = () => {
     const [loaded, setLoaded] = useState(false);
     const [selectedUser, setSelectedUser] = useState();
     const defaultUser = 'Visi';
+
+    const excelData = filteredInventory.map((item) => {
+        return {
+            'Inventoriaus pavadinimas': item.name,
+            'Paimtas kiekis': item.quantityTaken,
+            'Negrąžintas kiekis': item.quantityRemaining,
+            'Paėmimo Data': moment(item.takenDateTime).format('YYYY-MM-DD HH:mm:ss'),
+            'Grąžinimo Data': item.returnedDateTime
+                ? moment(item.returnedDateTime).format('YYYY-MM-DD HH:mm:ss')
+                : 'Dar negrąžinta',
+            'Komentaras grąžinant': item.comment,
+            Vartotojas: item.username,
+        };
+    });
 
     const filterTakenItems = (inventory) => {
         if (selectedUser) {
@@ -115,7 +130,7 @@ const AdminHistory = () => {
     };
 
     if (!loaded) {
-        return <h1>Loading...</h1>;
+        return <h1>Kraunami duomenys..</h1>;
     }
 
     return (
@@ -171,6 +186,9 @@ const AdminHistory = () => {
                 >
                     Negrąžinta
                 </Button>
+                <Box sx={{ width: 1 }}>
+                    <ExcelExport excelData={excelData} fileName="Inventorius" />
+                </Box>
             </Box>
             <Box sx={{ flexGrow: 1, width: '100%' }}>
                 <Box

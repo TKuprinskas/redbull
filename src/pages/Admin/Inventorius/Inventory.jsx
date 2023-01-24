@@ -27,6 +27,7 @@ const AdminInventory = () => {
     const PER_PAGE = isMobile ? 5 : 10;
     const count = Math.ceil(inventory.length / PER_PAGE);
     const _DATA = usePagination(inventory, PER_PAGE);
+    const [loaded, setLoaded] = useState(false);
 
     useEffect(() => {
         getInventory();
@@ -36,6 +37,7 @@ const AdminInventory = () => {
         const token = getTokenFromStorage();
         const response = await getInventoryAsync(token);
         setInventory(response.data);
+        setLoaded(true);
     };
 
     const handleEditInventory = (item) => {
@@ -76,6 +78,10 @@ const AdminInventory = () => {
         setPage(p);
         _DATA.jump(p);
     };
+
+    if (!loaded) {
+        return <h1>Kraunami duomenys..</h1>;
+    }
 
     return (
         <Container maxWidth="xl" sx={{ m: { xs: 1, md: 2 } }}>

@@ -22,6 +22,7 @@ const MyInventory = () => {
     const PER_PAGE = isMobile ? 5 : 10;
     const count = Math.ceil(filteredInventory.length / PER_PAGE);
     const _DATA = usePagination(filteredInventory, PER_PAGE);
+    const [loaded, setLoaded] = useState(false);
 
     const filterTakenItems = (inventory) => {
         const filteredInventory = inventory.filter((item) => item.isTaken === 1);
@@ -68,7 +69,12 @@ const MyInventory = () => {
         const response = await myInventoryHistoryAsync(userId, token);
         setInventory(response.data);
         setFilteredInventory(response.data);
+        setLoaded(true);
     };
+
+    if (!loaded) {
+        return <h1>Kraunami duomenys..</h1>;
+    }
 
     return (
         <Container maxWidth="xl" sx={{ m: { xs: 1, md: 2 } }}>

@@ -23,6 +23,7 @@ const Users = () => {
     const PER_PAGE = isMobile ? 5 : 10;
     const count = Math.ceil(users.length / PER_PAGE);
     const _DATA = usePagination(users, PER_PAGE);
+    const [loaded, setLoaded] = useState(false);
 
     useEffect(() => {
         getUsers();
@@ -32,6 +33,7 @@ const Users = () => {
         const token = getTokenFromStorage();
         const data = await getUsersAsync(token);
         setUsers(data);
+        setLoaded(true);
     };
 
     const handleResetPassword = (user) => {
@@ -72,6 +74,10 @@ const Users = () => {
         setPage(p);
         _DATA.jump(p);
     };
+
+    if (!loaded) {
+        return <h1>Kraunami duomenys..</h1>;
+    }
 
     return (
         <Container maxWidth="lg" sx={{ m: { xs: 1, md: 2 } }}>
