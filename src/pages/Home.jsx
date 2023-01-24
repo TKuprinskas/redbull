@@ -126,7 +126,7 @@ const Home = (props) => {
                     <Divider />
                 </>
             )}
-            {userRole !== 'admin' && (
+            {userRole === 'admin' && (
                 <>
                     <List sx={{ p: 0 }}>
                         {AdminMenu.map((item, index) => (
