@@ -8,21 +8,17 @@ const Home = React.lazy(() => import('./pages/Home'));
 const App = () => {
     return (
         <div className="App">
-            <div className="page-container">
-                <div className="content-wrapper">
-                    <Routes>
-                        <Route path="/" element={<SignIn />} />
-                        <Route
-                            path="/home"
-                            element={
-                                <PrivateRoute>
-                                    <Home />
-                                </PrivateRoute>
-                            }
-                        />
-                    </Routes>
-                </div>
-            </div>
+            <Routes>
+                <Route path="/" element={<SignIn />} />
+                <Route
+                    path="/home"
+                    element={
+                        <PrivateRoute>
+                            <Home />
+                        </PrivateRoute>
+                    }
+                />
+            </Routes>
         </div>
     );
 };

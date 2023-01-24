@@ -14,6 +14,7 @@ import ChatBubbleOutlineOutlinedIcon from '@mui/icons-material/ChatBubbleOutline
 import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 import DeleteForeverOutlinedIcon from '@mui/icons-material/DeleteForeverOutlined';
+import ImageOutlinedIcon from '@mui/icons-material/ImageOutlined';
 import EditInventory from './EditInventory';
 import usePagination from '../../../components/Pagination';
 
@@ -77,7 +78,7 @@ const AdminInventory = () => {
     };
 
     return (
-        <Container maxWidth="lg" sx={{ m: { xs: 1, md: 2 } }}>
+        <Container maxWidth="xl" sx={{ m: { xs: 1, md: 2 } }}>
             <ToastContainer
                 position="top-center"
                 autoClose={1500}
@@ -106,6 +107,14 @@ const AdminInventory = () => {
                                 borderBottom: '1px solid #1976d2',
                             }}
                         >
+                            <Typography
+                                variant="h6"
+                                component="div"
+                                gutterBottom
+                                sx={{ flex: 1, width: 0, textAlign: 'center' }}
+                            >
+                                <ImageOutlinedIcon sx={{ mr: 1, color: '#1976d2' }} />
+                            </Typography>
                             <Typography
                                 variant="h6"
                                 component="div"
@@ -176,7 +185,38 @@ const AdminInventory = () => {
                                         borderBottom: '1px solid #1976d2',
                                     }}
                                 >
-                                    <Box sx={{ display: 'flex', flex: { xs: 0, md: 1 }, width: { xs: 1, md: 0 } }}>
+                                    <Box
+                                        sx={{
+                                            display: 'flex',
+                                            flex: { xs: 0, md: 1 },
+                                            width: { xs: 1, md: 0 },
+                                            justifyContent: 'center',
+                                            alignItems: 'center',
+                                        }}
+                                    >
+                                        <Box
+                                            component="img"
+                                            sx={{
+                                                height: 200,
+                                                width: 200,
+                                                maxHeight: { xs: 150, md: 170 },
+                                                maxWidth: { xs: 220, md: 250 },
+                                                borderRadius: 5,
+                                                mb: 1,
+                                            }}
+                                            alt="redbull"
+                                            src={`https://backend.tenisopartneris.lt/public/redbull/${item.image}`}
+                                        />
+                                    </Box>
+                                    <Box
+                                        sx={{
+                                            display: 'flex',
+                                            flex: { xs: 0, md: 1 },
+                                            width: { xs: 1, md: 0 },
+                                            justifyContent: 'center',
+                                            alignItems: 'center',
+                                        }}
+                                    >
                                         <StorefrontOutlinedIcon
                                             sx={{ mr: 1, color: '#1976d2', display: { xs: 'flex', md: 'none' } }}
                                         />
@@ -189,7 +229,15 @@ const AdminInventory = () => {
                                             {item.name}
                                         </Typography>
                                     </Box>
-                                    <Box sx={{ display: 'flex', flex: { xs: 0, md: 1 }, width: { xs: 1, md: 0 } }}>
+                                    <Box
+                                        sx={{
+                                            display: 'flex',
+                                            flex: { xs: 0, md: 1 },
+                                            width: { xs: 1, md: 0 },
+                                            justifyContent: 'center',
+                                            alignItems: 'center',
+                                        }}
+                                    >
                                         <ShoppingCartOutlinedIcon
                                             sx={{ mr: 1, color: '#1976d2', display: { xs: 'flex', md: 'none' } }}
                                         />
@@ -202,7 +250,15 @@ const AdminInventory = () => {
                                             {item.quantityAdded}
                                         </Typography>
                                     </Box>
-                                    <Box sx={{ display: 'flex', flex: { xs: 0, md: 1 }, width: { xs: 1, md: 0 } }}>
+                                    <Box
+                                        sx={{
+                                            display: 'flex',
+                                            flex: { xs: 0, md: 1 },
+                                            width: { xs: 1, md: 0 },
+                                            justifyContent: 'center',
+                                            alignItems: 'center',
+                                        }}
+                                    >
                                         <StorefrontOutlinedIcon
                                             sx={{ mr: 1, color: '#1976d2', display: { xs: 'flex', md: 'none' } }}
                                         />
@@ -215,7 +271,15 @@ const AdminInventory = () => {
                                             {item.quantityRemaining}
                                         </Typography>
                                     </Box>
-                                    <Box sx={{ display: 'flex', flex: { xs: 0, md: 1 }, width: { xs: 1, md: 0 } }}>
+                                    <Box
+                                        sx={{
+                                            display: 'flex',
+                                            flex: { xs: 0, md: 1 },
+                                            width: { xs: 1, md: 0 },
+                                            justifyContent: 'center',
+                                            alignItems: 'center',
+                                        }}
+                                    >
                                         <RemoveShoppingCartOutlinedIcon
                                             sx={{ mr: 1, color: '#1976d2', display: { xs: 'flex', md: 'none' } }}
                                         />
@@ -228,7 +292,15 @@ const AdminInventory = () => {
                                             {item.quantityTaken}
                                         </Typography>
                                     </Box>
-                                    <Box sx={{ display: 'flex', flex: { xs: 0, md: 1 }, width: { xs: 1, md: 0 } }}>
+                                    <Box
+                                        sx={{
+                                            display: 'flex',
+                                            flex: { xs: 0, md: 1 },
+                                            width: { xs: 1, md: 0 },
+                                            justifyContent: 'center',
+                                            alignItems: 'center',
+                                        }}
+                                    >
                                         <ChatBubbleOutlineOutlinedIcon
                                             sx={{ mr: 1, color: '#1976d2', display: { xs: 'flex', md: 'none' } }}
                                         />
@@ -241,7 +313,15 @@ const AdminInventory = () => {
                                             {item.comment}
                                         </Typography>
                                     </Box>
-                                    <Box sx={{ display: 'flex', flex: { xs: 0, md: 1 }, width: { xs: 1, md: 0 } }}>
+                                    <Box
+                                        sx={{
+                                            display: 'flex',
+                                            flex: { xs: 0, md: 1 },
+                                            width: { xs: 1, md: 0 },
+                                            justifyContent: 'center',
+                                            alignItems: 'center',
+                                        }}
+                                    >
                                         <EditOutlinedIcon
                                             sx={{ mr: 1, color: '#1976d2', display: { xs: 'flex', md: 'none' } }}
                                         />
@@ -255,7 +335,15 @@ const AdminInventory = () => {
                                             </Button>
                                         </Box>
                                     </Box>
-                                    <Box sx={{ display: 'flex', flex: { xs: 0, md: 1 }, width: { xs: 1, md: 0 } }}>
+                                    <Box
+                                        sx={{
+                                            display: 'flex',
+                                            flex: { xs: 0, md: 1 },
+                                            width: { xs: 1, md: 0 },
+                                            justifyContent: 'center',
+                                            alignItems: 'center',
+                                        }}
+                                    >
                                         <DeleteForeverOutlinedIcon
                                             sx={{ mr: 1, color: '#1976d2', display: { xs: 'flex', md: 'none' } }}
                                         />

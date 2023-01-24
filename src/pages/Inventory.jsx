@@ -6,6 +6,7 @@ import { getInventoryAsync } from '../services/API';
 import StorefrontOutlinedIcon from '@mui/icons-material/StorefrontOutlined';
 import ShoppingBasketOutlinedIcon from '@mui/icons-material/ShoppingBasketOutlined';
 import ChatBubbleOutlineOutlinedIcon from '@mui/icons-material/ChatBubbleOutlineOutlined';
+import ImageOutlinedIcon from '@mui/icons-material/ImageOutlined';
 import usePagination from '../components/Pagination';
 
 const UserInventory = () => {
@@ -60,6 +61,14 @@ const UserInventory = () => {
                         gutterBottom
                         sx={{ flex: 1, width: 0, textAlign: 'center' }}
                     >
+                        <ImageOutlinedIcon sx={{ mr: 1, color: '#1976d2' }} />
+                    </Typography>
+                    <Typography
+                        variant="h6"
+                        component="div"
+                        gutterBottom
+                        sx={{ flex: 1, width: 0, textAlign: 'center' }}
+                    >
                         <StorefrontOutlinedIcon sx={{ mr: 1, color: '#1976d2' }} />
                     </Typography>
                     <Typography
@@ -92,7 +101,38 @@ const UserInventory = () => {
                                 borderBottom: '1px solid #1976d2',
                             }}
                         >
-                            <Box sx={{ display: 'flex', flex: { xs: 0, md: 1 }, width: { xs: 1, md: 0 } }}>
+                            <Box
+                                sx={{
+                                    display: 'flex',
+                                    flex: { xs: 0, md: 1 },
+                                    width: { xs: 1, md: 0 },
+                                    justifyContent: 'center',
+                                    alignItems: 'center',
+                                }}
+                            >
+                                <Box
+                                    component="img"
+                                    sx={{
+                                        height: 200,
+                                        width: 200,
+                                        maxHeight: { xs: 150, md: 170 },
+                                        maxWidth: { xs: 220, md: 250 },
+                                        borderRadius: 5,
+                                        mb: 1,
+                                    }}
+                                    alt="redbull"
+                                    src={`https://backend.tenisopartneris.lt/public/redbull/${item.image}`}
+                                />
+                            </Box>
+                            <Box
+                                sx={{
+                                    display: 'flex',
+                                    flex: { xs: 0, md: 1 },
+                                    width: { xs: 1, md: 0 },
+                                    justifyContent: 'center',
+                                    alignItems: 'center',
+                                }}
+                            >
                                 <StorefrontOutlinedIcon
                                     sx={{ mr: 1, color: '#1976d2', display: { xs: 'flex', md: 'none' } }}
                                 />
@@ -105,7 +145,15 @@ const UserInventory = () => {
                                     {item.name}
                                 </Typography>
                             </Box>
-                            <Box sx={{ display: 'flex', flex: { xs: 0, md: 1 }, width: { xs: 1, md: 0 } }}>
+                            <Box
+                                sx={{
+                                    display: 'flex',
+                                    flex: { xs: 0, md: 1 },
+                                    width: { xs: 1, md: 0 },
+                                    justifyContent: 'center',
+                                    alignItems: 'center',
+                                }}
+                            >
                                 <ShoppingBasketOutlinedIcon
                                     sx={{ mr: 1, color: '#1976d2', display: { xs: 'flex', md: 'none' } }}
                                 />
@@ -118,7 +166,15 @@ const UserInventory = () => {
                                     {item.quantityRemaining}
                                 </Typography>
                             </Box>
-                            <Box sx={{ display: 'flex', flex: { xs: 0, md: 1 }, width: { xs: 1, md: 0 } }}>
+                            <Box
+                                sx={{
+                                    display: 'flex',
+                                    flex: { xs: 0, md: 1 },
+                                    width: { xs: 1, md: 0 },
+                                    justifyContent: 'center',
+                                    alignItems: 'center',
+                                }}
+                            >
                                 <ChatBubbleOutlineOutlinedIcon
                                     sx={{ mr: 1, color: '#1976d2', display: { xs: 'flex', md: 'none' } }}
                                 />

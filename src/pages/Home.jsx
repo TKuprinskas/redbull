@@ -34,6 +34,7 @@ import UserInventory from './Inventory';
 import TakeInventory from './TakeInventory';
 import ReturnInventory from './ReturnInventory';
 import MyInventory from './MyHistory';
+import AdminHistory from './Admin/Inventorius/History';
 
 const drawerWidth = 240;
 
@@ -211,11 +212,19 @@ const Home = (props) => {
                         {drawer}
                     </Drawer>
                 </Box>
-                <Box component="main" sx={{ flexGrow: 1, p: 3, width: { sm: `calc(100% - ${drawerWidth}px)` } }}>
+                <Box
+                    component="main"
+                    sx={{
+                        flexGrow: 1,
+                        p: 3,
+                        width: { sm: `calc(100% - ${drawerWidth}px)` },
+                    }}
+                >
                     <Toolbar />
                     {pageTitle === 'Pagrindinis' && <Pagrindinis />}
                     {pageTitle === 'Tvarkyti vartotojus' && <Users />}
                     {pageTitle === 'Tvarkyti inventorių' && <AdminInventory />}
+                    {pageTitle === 'Žiūrėti istoriją' && <AdminHistory />}
                     {pageTitle === 'Inventorius' && <UserInventory />}
                     {pageTitle === 'Paimti inventorių' && <TakeInventory />}
                     {pageTitle === 'Grąžinti inventorių' && <ReturnInventory />}

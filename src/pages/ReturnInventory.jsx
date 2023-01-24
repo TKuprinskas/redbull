@@ -9,6 +9,7 @@ import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
 import AddCircleOutlineOutlinedIcon from '@mui/icons-material/AddCircleOutlineOutlined';
 import RemoveCircleOutlineOutlinedIcon from '@mui/icons-material/RemoveCircleOutlineOutlined';
 import ChatBubbleOutlineOutlinedIcon from '@mui/icons-material/ChatBubbleOutlineOutlined';
+import ImageOutlinedIcon from '@mui/icons-material/ImageOutlined';
 import moment from 'moment';
 
 const ReturnInventory = () => {
@@ -127,7 +128,7 @@ const ReturnInventory = () => {
     };
 
     return (
-        <Container maxWidth="lg" sx={{ m: { xs: 1, md: 2 } }}>
+        <Container maxWidth="xl" sx={{ m: { xs: 1, md: 2 } }}>
             <ToastContainer
                 position="top-center"
                 autoClose={1500}
@@ -163,6 +164,14 @@ const ReturnInventory = () => {
                         borderBottom: '1px solid #1976d2',
                     }}
                 >
+                    <Typography
+                        variant="h6"
+                        component="div"
+                        gutterBottom
+                        sx={{ flex: 1, width: 0, textAlign: 'center' }}
+                    >
+                        <ImageOutlinedIcon sx={{ mr: 1, color: '#1976d2' }} />
+                    </Typography>
                     <Typography
                         variant="h6"
                         component="div"
@@ -209,6 +218,29 @@ const ReturnInventory = () => {
                                 borderBottom: '1px solid #1976d2',
                             }}
                         >
+                            <Box
+                                sx={{
+                                    display: 'flex',
+                                    flex: { xs: 0, md: 1 },
+                                    width: { xs: 1, md: 0 },
+                                    justifyContent: 'center',
+                                    alignItems: 'center',
+                                }}
+                            >
+                                <Box
+                                    component="img"
+                                    sx={{
+                                        height: 200,
+                                        width: 200,
+                                        maxHeight: { xs: 150, md: 170 },
+                                        maxWidth: { xs: 220, md: 250 },
+                                        borderRadius: 5,
+                                        mb: 1,
+                                    }}
+                                    alt="redbull"
+                                    src={`https://backend.tenisopartneris.lt/public/redbull/${item.image}`}
+                                />
+                            </Box>
                             <Box
                                 sx={{
                                     display: 'flex',

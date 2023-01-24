@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { ToastContainer } from 'react-toastify';
-import { Container, Box, Typography, Pagination, Button } from '@mui/material';
-import { getTokenFromStorage, getUserIdFromToken } from '../services/helpers';
-import { myInventoryHistoryAsync } from '../services/API';
+import { Container, Box, Typography, Pagination, Button, MenuItem, InputLabel, FormControl } from '@mui/material';
+import { getTokenFromStorage } from '../../../services/helpers';
+import { allInventoryHistoryAsync, getUsersAsync } from '../../../services/API';
 import StorefrontOutlinedIcon from '@mui/icons-material/StorefrontOutlined';
 import ChatBubbleOutlineOutlinedIcon from '@mui/icons-material/ChatBubbleOutlineOutlined';
 import CalendarMonthOutlinedIcon from '@mui/icons-material/CalendarMonthOutlined';
@@ -10,10 +10,12 @@ import EventRepeatOutlinedIcon from '@mui/icons-material/EventRepeatOutlined';
 import AddShoppingCartOutlinedIcon from '@mui/icons-material/AddShoppingCartOutlined';
 import RemoveShoppingCartOutlinedIcon from '@mui/icons-material/RemoveShoppingCartOutlined';
 import ImageOutlinedIcon from '@mui/icons-material/ImageOutlined';
-import usePagination from '../components/Pagination';
+import PersonOutlineOutlinedIcon from '@mui/icons-material/PersonOutlineOutlined';
+import usePagination from '../../../components/Pagination';
 import moment from 'moment';
+import Select, { SelectChangeEvent } from '@mui/material/Select';
 
-const MyInventory = () => {
+const AdminHistory = () => {
     const [page, setPage] = useState(1);
     const [inventory, setInventory] = useState([]);
     const [filteredInventory, setFilteredInventory] = useState([]);
@@ -22,23 +24,45 @@ const MyInventory = () => {
     const PER_PAGE = isMobile ? 5 : 10;
     const count = Math.ceil(filteredInventory.length / PER_PAGE);
     const _DATA = usePagination(filteredInventory, PER_PAGE);
+    const [users, setUsers] = useState([]);
+    const [loaded, setLoaded] = useState(false);
+    const [selectedUser, setSelectedUser] = useState();
+    const defaultUser = 'Visi';
 
     const filterTakenItems = (inventory) => {
-        const filteredInventory = inventory.filter((item) => item.isTaken === 1);
-        setActive('taken');
-        setFilteredInventory(filteredInventory);
+        if (selectedUser) {
+            const filteredInventory = inventory.filter((item) => item.userId === selectedUser.id && item.isTaken === 1);
+            setActive('taken');
+            setFilteredInventory(filteredInventory);
+        } else {
+            const filteredInventory = inventory.filter((item) => item.isTaken === 1);
+            setActive('taken');
+            setFilteredInventory(filteredInventory);
+        }
     };
 
     const filterReturnedItems = (inventory) => {
-        const filteredInventory = inventory.filter((item) => item.isTaken === 0);
-        setActive('returned');
-        setFilteredInventory(filteredInventory);
+        if (selectedUser) {
+            const filteredInventory = inventory.filter((item) => item.userId === selectedUser.id && item.isTaken === 0);
+            setActive('returned');
+            setFilteredInventory(filteredInventory);
+        } else {
+            const filteredInventory = inventory.filter((item) => item.isTaken === 0);
+            setActive('returned');
+            setFilteredInventory(filteredInventory);
+        }
     };
 
     const filterAllItems = (inventory) => {
-        const filteredInventory = inventory.filter((item) => item);
-        setActive('all');
-        setFilteredInventory(filteredInventory);
+        if (selectedUser) {
+            const filteredInventory = inventory.filter((item) => item.userId === selectedUser.id);
+            setActive('all');
+            setFilteredInventory(filteredInventory);
+        } else {
+            const filteredInventory = inventory.filter((item) => item);
+            setActive('all');
+            setFilteredInventory(filteredInventory);
+        }
     };
 
     const handlePageChange = (e, p) => {
@@ -60,15 +84,39 @@ const MyInventory = () => {
 
     useEffect(() => {
         getInventory();
+        getUsers();
     }, []);
 
     const getInventory = async () => {
         const token = getTokenFromStorage();
-        const userId = getUserIdFromToken();
-        const response = await myInventoryHistoryAsync(userId, token);
+        const response = await allInventoryHistoryAsync(token);
         setInventory(response.data);
         setFilteredInventory(response.data);
+        setLoaded(true);
     };
+
+    const getUsers = async () => {
+        const token = getTokenFromStorage();
+        const data = await getUsersAsync(token);
+        setUsers(data);
+    };
+
+    const handleSelectChange = (event) => {
+        const { value } = event.target;
+        if (value === defaultUser) {
+            setFilteredInventory(inventory);
+            setSelectedUser(null);
+        } else {
+            const findUser = users.find((user) => user.id === value);
+            setSelectedUser(findUser);
+            const filteredInventory = inventory.filter((item) => item.userId === value);
+            setFilteredInventory(filteredInventory);
+        }
+    };
+
+    if (!loaded) {
+        return <h1>Loading...</h1>;
+    }
 
     return (
         <Container maxWidth="xl" sx={{ m: { xs: 1, md: 2 } }}>
@@ -128,9 +176,8 @@ const MyInventory = () => {
                 <Box
                     sx={{
                         mt: 2,
-                        display: { xs: 'none', md: 'flex' },
+                        display: 'flex',
                         width: '100%',
-                        justifyContent: 'space-between',
                         borderBottom: '1px solid #1976d2',
                     }}
                 >
@@ -138,7 +185,13 @@ const MyInventory = () => {
                         variant="h6"
                         component="div"
                         gutterBottom
-                        sx={{ flex: 1, width: 0, textAlign: 'center' }}
+                        sx={{
+                            display: { xs: 'none', md: 'flex' },
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            flex: 1,
+                            width: 0,
+                        }}
                     >
                         <ImageOutlinedIcon sx={{ mr: 1, color: '#1976d2' }} />
                     </Typography>
@@ -146,7 +199,13 @@ const MyInventory = () => {
                         variant="h6"
                         component="div"
                         gutterBottom
-                        sx={{ flex: 1, width: 0, textAlign: 'center' }}
+                        sx={{
+                            display: { xs: 'none', md: 'flex' },
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            flex: 1,
+                            width: 0,
+                        }}
                     >
                         <CalendarMonthOutlinedIcon sx={{ mr: 1, color: '#1976d2' }} />
                     </Typography>
@@ -154,7 +213,13 @@ const MyInventory = () => {
                         variant="h6"
                         component="div"
                         gutterBottom
-                        sx={{ flex: 1, width: 0, textAlign: 'center' }}
+                        sx={{
+                            display: { xs: 'none', md: 'flex' },
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            flex: 1,
+                            width: 0,
+                        }}
                     >
                         <StorefrontOutlinedIcon sx={{ mr: 1, color: '#1976d2' }} />
                     </Typography>
@@ -162,7 +227,13 @@ const MyInventory = () => {
                         variant="h6"
                         component="div"
                         gutterBottom
-                        sx={{ flex: 1, width: 0, textAlign: 'center' }}
+                        sx={{
+                            display: { xs: 'none', md: 'flex' },
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            flex: 1,
+                            width: 0,
+                        }}
                     >
                         <AddShoppingCartOutlinedIcon sx={{ mr: 1, color: '#1976d2' }} />
                     </Typography>
@@ -170,7 +241,13 @@ const MyInventory = () => {
                         variant="h6"
                         component="div"
                         gutterBottom
-                        sx={{ flex: 1, width: 0, textAlign: 'center' }}
+                        sx={{
+                            display: { xs: 'none', md: 'flex' },
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            flex: 1,
+                            width: 0,
+                        }}
                     >
                         <RemoveShoppingCartOutlinedIcon sx={{ mr: 1, color: '#1976d2' }} />
                     </Typography>
@@ -178,7 +255,13 @@ const MyInventory = () => {
                         variant="h6"
                         component="div"
                         gutterBottom
-                        sx={{ flex: 1, width: 0, textAlign: 'center' }}
+                        sx={{
+                            display: { xs: 'none', md: 'flex' },
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            flex: 1,
+                            width: 0,
+                        }}
                     >
                         <ChatBubbleOutlineOutlinedIcon sx={{ mr: 1, color: '#1976d2' }} />
                     </Typography>
@@ -186,10 +269,46 @@ const MyInventory = () => {
                         variant="h6"
                         component="div"
                         gutterBottom
-                        sx={{ flex: 1, width: 0, textAlign: 'center' }}
+                        sx={{
+                            display: { xs: 'none', md: 'flex' },
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            flex: 1,
+                            width: 0,
+                        }}
                     >
                         <EventRepeatOutlinedIcon sx={{ mr: 1, color: '#1976d2' }} />
                     </Typography>
+                    <Box
+                        sx={{
+                            display: 'flex',
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                            flex: 1,
+                            width: 0,
+                            textAlign: 'center',
+                        }}
+                    >
+                        <FormControl sx={{ m: 1, minWidth: 120 }}>
+                            <InputLabel id="demo-simple-select-label">
+                                <PersonOutlineOutlinedIcon sx={{ mr: 1, color: '#1976d2' }} />
+                            </InputLabel>
+                            <Select
+                                labelId="demo-simple-select-label"
+                                id="demo-simple-select"
+                                value={selectedUser ? selectedUser.id : defaultUser}
+                                onChange={handleSelectChange}
+                                sx={{ width: { xs: '100%', md: 'auto', textAlign: 'center' } }}
+                            >
+                                <MenuItem value={defaultUser}>Visi</MenuItem>
+                                {users.map((user, index) => (
+                                    <MenuItem key={index} value={user.id}>
+                                        {user.username}
+                                    </MenuItem>
+                                ))}
+                            </Select>
+                        </FormControl>
+                    </Box>
                 </Box>
                 <Box>
                     {inventory.length > 0 &&
@@ -355,6 +474,27 @@ const MyInventory = () => {
                                         {dateTimeHandler(item.returnedDateTime)}
                                     </Typography>
                                 </Box>
+                                <Box
+                                    sx={{
+                                        display: 'flex',
+                                        flex: { xs: 0, md: 1 },
+                                        width: { xs: 1, md: 0 },
+                                        justifyContent: 'center',
+                                        alignItems: 'center',
+                                    }}
+                                >
+                                    <PersonOutlineOutlinedIcon
+                                        sx={{ mr: 1, color: '#1976d2', display: { xs: 'flex', md: 'none' } }}
+                                    />
+                                    <Typography
+                                        variant="h6"
+                                        component="div"
+                                        gutterBottom
+                                        sx={{ flex: 1, width: 0, textAlign: 'center' }}
+                                    >
+                                        {item.username}
+                                    </Typography>
+                                </Box>
                             </Box>
                         ))}
                 </Box>
@@ -372,4 +512,4 @@ const MyInventory = () => {
     );
 };
 
-export default MyInventory;
+export default AdminHistory;

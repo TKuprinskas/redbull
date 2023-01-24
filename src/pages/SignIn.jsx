@@ -37,10 +37,15 @@ export default function SignIn() {
     const handleSubmit = async (event) => {
         event.preventDefault();
         const data = new FormData(event.currentTarget);
-        await loginAsync(data.get('username'), data.get('password'));
-        setTimeout(() => {
-            navigate('/home', { replace: true });
-        }, 1500);
+        await loginAsync(data.get('username'), data.get('password')).then((response) => {
+            if (response.status === 'SUCCESS') {
+                setTimeout(() => {
+                    navigate('/home', { replace: true });
+                }, 1500);
+            } else {
+                return;
+            }
+        });
     };
 
     return (

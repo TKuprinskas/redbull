@@ -8,6 +8,7 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { changeResetPassAsync } from '../../../services/API';
+import { getTokenFromStorage } from '../../../services/helpers';
 
 const theme = createTheme();
 
@@ -15,7 +16,8 @@ const ResetPassword = ({ setView, selectedUser }) => {
     const handleSubmit = async (event) => {
         event.preventDefault();
         const data = new FormData(event.currentTarget);
-        await changeResetPassAsync(data.get('password'), selectedUser.id);
+        const token = getTokenFromStorage();
+        await changeResetPassAsync(data.get('password'), selectedUser.id, token);
         setTimeout(() => {
             setView('usersList');
         }, 1500);

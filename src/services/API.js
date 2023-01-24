@@ -14,6 +14,7 @@ const userAddInventoryURL = `http://localhost:8000/v1/redbull/inventory/add-user
 const myInventoryURL = `http://localhost:8000/v1/redbull/inventory/my-inventory`;
 const returnInventoryURL = `http://localhost:8000/v1/redbull/inventory/return-inventory`;
 const myInventoryHistoryURL = `http://localhost:8000/v1/redbull/inventory/my-all-inventory`;
+const allInventoryHistoryURL = `http://localhost:8000/v1/redbull/inventory/all-inventory`;
 
 export const createUserAsync = async (username, password, token) => {
     try {
@@ -85,15 +86,15 @@ export const getUsersAsync = async (token) => {
     }
 };
 
-export const changeResetPassAsync = async (username, password, id) => {
+export const changeResetPassAsync = async (password, id, token) => {
     try {
         const response = await fetch(`${resetPassURL}/${id}`, {
-            method: 'POST',
+            method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
+                Authorization: `Bearer ${token}`,
             },
             body: JSON.stringify({
-                username: username,
                 password: password,
             }),
         });
@@ -298,6 +299,26 @@ export const returnInventoryAsync = async (userId, items, token) => {
 export const myInventoryHistoryAsync = async (userId, token) => {
     try {
         const response = await fetch(`${myInventoryHistoryURL}/${userId}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${token}`,
+            },
+        });
+        const data = await response.json();
+        if (data.err) {
+            toastError(data.err);
+        } else {
+            return data;
+        }
+    } catch (error) {
+        console.log(error);
+    }
+};
+
+export const allInventoryHistoryAsync = async (token) => {
+    try {
+        const response = await fetch(`${allInventoryHistoryURL}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
