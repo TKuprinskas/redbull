@@ -1,6 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import { ToastContainer } from 'react-toastify';
-import { Container, Box, Typography, Pagination, Button, MenuItem, InputLabel, FormControl } from '@mui/material';
+import {
+    Container,
+    Box,
+    Typography,
+    Pagination,
+    Button,
+    MenuItem,
+    InputLabel,
+    FormControl,
+    Tooltip,
+} from '@mui/material';
 import { getTokenFromStorage } from '../../../services/helpers';
 import { allInventoryHistoryAsync, getUsersAsync } from '../../../services/API';
 import StorefrontOutlinedIcon from '@mui/icons-material/StorefrontOutlined';
@@ -199,104 +209,118 @@ const AdminHistory = () => {
                         borderBottom: '1px solid #1976d2',
                     }}
                 >
-                    <Typography
-                        variant="h6"
-                        component="div"
-                        gutterBottom
-                        sx={{
-                            display: { xs: 'none', md: 'flex' },
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                            flex: 1,
-                            width: 0,
-                        }}
-                    >
-                        <ImageOutlinedIcon sx={{ mr: 1, color: '#1976d2' }} />
-                    </Typography>
-                    <Typography
-                        variant="h6"
-                        component="div"
-                        gutterBottom
-                        sx={{
-                            display: { xs: 'none', md: 'flex' },
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                            flex: 1,
-                            width: 0,
-                        }}
-                    >
-                        <CalendarMonthOutlinedIcon sx={{ mr: 1, color: '#1976d2' }} />
-                    </Typography>
-                    <Typography
-                        variant="h6"
-                        component="div"
-                        gutterBottom
-                        sx={{
-                            display: { xs: 'none', md: 'flex' },
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                            flex: 1,
-                            width: 0,
-                        }}
-                    >
-                        <StorefrontOutlinedIcon sx={{ mr: 1, color: '#1976d2' }} />
-                    </Typography>
-                    <Typography
-                        variant="h6"
-                        component="div"
-                        gutterBottom
-                        sx={{
-                            display: { xs: 'none', md: 'flex' },
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                            flex: 1,
-                            width: 0,
-                        }}
-                    >
-                        <AddShoppingCartOutlinedIcon sx={{ mr: 1, color: '#1976d2' }} />
-                    </Typography>
-                    <Typography
-                        variant="h6"
-                        component="div"
-                        gutterBottom
-                        sx={{
-                            display: { xs: 'none', md: 'flex' },
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                            flex: 1,
-                            width: 0,
-                        }}
-                    >
-                        <RemoveShoppingCartOutlinedIcon sx={{ mr: 1, color: '#1976d2' }} />
-                    </Typography>
-                    <Typography
-                        variant="h6"
-                        component="div"
-                        gutterBottom
-                        sx={{
-                            display: { xs: 'none', md: 'flex' },
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                            flex: 1,
-                            width: 0,
-                        }}
-                    >
-                        <ChatBubbleOutlineOutlinedIcon sx={{ mr: 1, color: '#1976d2' }} />
-                    </Typography>
-                    <Typography
-                        variant="h6"
-                        component="div"
-                        gutterBottom
-                        sx={{
-                            display: { xs: 'none', md: 'flex' },
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                            flex: 1,
-                            width: 0,
-                        }}
-                    >
-                        <EventRepeatOutlinedIcon sx={{ mr: 1, color: '#1976d2' }} />
-                    </Typography>
+                    <Tooltip title="Nuotrauka" placement="top">
+                        <Typography
+                            variant="h6"
+                            component="div"
+                            gutterBottom
+                            sx={{
+                                display: { xs: 'none', md: 'flex' },
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                flex: 1,
+                                width: 0,
+                            }}
+                        >
+                            <ImageOutlinedIcon sx={{ mr: 1, color: '#1976d2' }} />
+                        </Typography>
+                    </Tooltip>
+                    <Tooltip title="Paėmimo data" placement="top">
+                        <Typography
+                            variant="h6"
+                            component="div"
+                            gutterBottom
+                            sx={{
+                                display: { xs: 'none', md: 'flex' },
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                flex: 1,
+                                width: 0,
+                            }}
+                        >
+                            <CalendarMonthOutlinedIcon sx={{ mr: 1, color: '#1976d2' }} />
+                        </Typography>
+                    </Tooltip>
+                    <Tooltip title="Pavadinimas" placement="top">
+                        <Typography
+                            variant="h6"
+                            component="div"
+                            gutterBottom
+                            sx={{
+                                display: { xs: 'none', md: 'flex' },
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                flex: 1,
+                                width: 0,
+                            }}
+                        >
+                            <StorefrontOutlinedIcon sx={{ mr: 1, color: '#1976d2' }} />
+                        </Typography>
+                    </Tooltip>
+                    <Tooltip title="Paimtas kiekis" placement="top">
+                        <Typography
+                            variant="h6"
+                            component="div"
+                            gutterBottom
+                            sx={{
+                                display: { xs: 'none', md: 'flex' },
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                flex: 1,
+                                width: 0,
+                            }}
+                        >
+                            <AddShoppingCartOutlinedIcon sx={{ mr: 1, color: '#1976d2' }} />
+                        </Typography>
+                    </Tooltip>
+                    <Tooltip title="Negrąžintas kiekis" placement="top">
+                        <Typography
+                            variant="h6"
+                            component="div"
+                            gutterBottom
+                            sx={{
+                                display: { xs: 'none', md: 'flex' },
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                flex: 1,
+                                width: 0,
+                            }}
+                        >
+                            <RemoveShoppingCartOutlinedIcon sx={{ mr: 1, color: '#1976d2' }} />
+                        </Typography>
+                    </Tooltip>
+                    <Tooltip title="Komentaras" placement="top">
+                        <Typography
+                            variant="h6"
+                            component="div"
+                            gutterBottom
+                            sx={{
+                                display: { xs: 'none', md: 'flex' },
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                flex: 1,
+                                width: 0,
+                            }}
+                        >
+                            <ChatBubbleOutlineOutlinedIcon sx={{ mr: 1, color: '#1976d2' }} />
+                        </Typography>
+                    </Tooltip>
+                    <Tooltip title="Grąžinimo data" placement="top">
+                        <Typography
+                            variant="h6"
+                            component="div"
+                            gutterBottom
+                            sx={{
+                                display: { xs: 'none', md: 'flex' },
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                flex: 1,
+                                width: 0,
+                            }}
+                        >
+                            <EventRepeatOutlinedIcon sx={{ mr: 1, color: '#1976d2' }} />
+                        </Typography>
+                    </Tooltip>
                     <Box
                         sx={{
                             display: 'flex',
@@ -307,25 +331,27 @@ const AdminHistory = () => {
                             textAlign: 'center',
                         }}
                     >
-                        <FormControl sx={{ m: 1, minWidth: 120 }}>
-                            <InputLabel id="demo-simple-select-label">
-                                <PersonOutlineOutlinedIcon sx={{ mr: 1, color: '#1976d2' }} />
-                            </InputLabel>
-                            <Select
-                                labelId="demo-simple-select-label"
-                                id="demo-simple-select"
-                                value={selectedUser ? selectedUser.id : defaultUser}
-                                onChange={handleSelectChange}
-                                sx={{ width: { xs: '100%', md: 'auto', textAlign: 'center' } }}
-                            >
-                                <MenuItem value={defaultUser}>Visi</MenuItem>
-                                {users.map((user, index) => (
-                                    <MenuItem key={index} value={user.id}>
-                                        {user.username}
-                                    </MenuItem>
-                                ))}
-                            </Select>
-                        </FormControl>
+                        <Tooltip title="Filtruoti pagal vartotoją" placement="top">
+                            <FormControl sx={{ m: 1, minWidth: 120 }}>
+                                <InputLabel id="demo-simple-select-label">
+                                    <PersonOutlineOutlinedIcon sx={{ mr: 1, color: '#1976d2' }} />
+                                </InputLabel>
+                                <Select
+                                    labelId="demo-simple-select-label"
+                                    id="demo-simple-select"
+                                    value={selectedUser ? selectedUser.id : defaultUser}
+                                    onChange={handleSelectChange}
+                                    sx={{ width: { xs: '100%', md: 'auto', textAlign: 'center' } }}
+                                >
+                                    <MenuItem value={defaultUser}>Visi</MenuItem>
+                                    {users.map((user, index) => (
+                                        <MenuItem key={index} value={user.id}>
+                                            {user.username}
+                                        </MenuItem>
+                                    ))}
+                                </Select>
+                            </FormControl>
+                        </Tooltip>
                     </Box>
                 </Box>
                 <Box>

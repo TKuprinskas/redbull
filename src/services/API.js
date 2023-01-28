@@ -1,20 +1,20 @@
 import { toastSuccess, toastInfo, toastError } from './helpers';
 import 'react-toastify/dist/ReactToastify.css';
 
-const createUserURL = `http://localhost:8000/v1/redbull/auth/create-user`;
-const loginURL = `http://localhost:8000/v1/redbull/auth/login`;
-const getUsersURL = `http://localhost:8000/v1/redbull/auth/get-user-data`;
-const resetPassURL = `http://localhost:8000/v1/redbull/auth/edit-user-data`;
-const deleteUserURL = `http://localhost:8000/v1/redbull/auth/delete-user`;
-const getInventoryURL = `http://localhost:8000/v1/redbull/inventory/inventory`;
-const addInventoryURL = `http://localhost:8000/v1/redbull/inventory/add-inventory`;
-const deleteInventoryURL = `http://localhost:8000/v1/redbull/inventory/delete-inventory`;
-const editInventoryURL = `http://localhost:8000/v1/redbull/inventory/update-inventory`;
-const userAddInventoryURL = `http://localhost:8000/v1/redbull/inventory/add-user-inventory`;
-const myInventoryURL = `http://localhost:8000/v1/redbull/inventory/my-inventory`;
-const returnInventoryURL = `http://localhost:8000/v1/redbull/inventory/return-inventory`;
-const myInventoryHistoryURL = `http://localhost:8000/v1/redbull/inventory/my-all-inventory`;
-const allInventoryHistoryURL = `http://localhost:8000/v1/redbull/inventory/all-inventory`;
+const createUserURL = `${process.env.REACT_APP_API_URL}/redbull/auth/create-user`;
+const loginURL = `${process.env.REACT_APP_API_URL}/redbull/auth/login`;
+const getUsersURL = `${process.env.REACT_APP_API_URL}/redbull/auth/get-user-data`;
+const resetPassURL = `${process.env.REACT_APP_API_URL}/redbull/auth/edit-user-data`;
+const deleteUserURL = `${process.env.REACT_APP_API_URL}/redbull/auth/delete-user`;
+const getInventoryURL = `${process.env.REACT_APP_API_URL}/redbull/inventory/inventory`;
+const addInventoryURL = `${process.env.REACT_APP_API_URL}/redbull/inventory/add-inventory`;
+const deleteInventoryURL = `${process.env.REACT_APP_API_URL}/redbull/inventory/delete-inventory`;
+const editInventoryURL = `${process.env.REACT_APP_API_URL}/redbull/inventory/update-inventory`;
+const userAddInventoryURL = `${process.env.REACT_APP_API_URL}/redbull/inventory/add-user-inventory`;
+const myInventoryURL = `${process.env.REACT_APP_API_URL}/redbull/inventory/my-inventory`;
+const returnInventoryURL = `${process.env.REACT_APP_API_URL}/redbull/inventory/return-inventory`;
+const myInventoryHistoryURL = `${process.env.REACT_APP_API_URL}/redbull/inventory/my-all-inventory`;
+const allInventoryHistoryURL = `${process.env.REACT_APP_API_URL}/redbull/inventory/all-inventory`;
 
 export const createUserAsync = async (username, password, token) => {
     try {

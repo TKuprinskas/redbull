@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { ToastContainer } from 'react-toastify';
-import { Container, Box, Typography, Button, TextField, Pagination } from '@mui/material';
+import { Container, Box, Typography, Button, TextField, Pagination, Tooltip } from '@mui/material';
 import { getTokenFromStorage, getUserIdFromToken } from '../services/helpers';
 import { getInventoryAsync, userAddInventoryAsync } from '../services/API';
 import StorefrontOutlinedIcon from '@mui/icons-material/StorefrontOutlined';
@@ -148,38 +148,46 @@ const TakeInventory = () => {
                         borderBottom: '1px solid #1976d2',
                     }}
                 >
-                    <Typography
-                        variant="h6"
-                        component="div"
-                        gutterBottom
-                        sx={{ flex: 1, width: 0, textAlign: 'center' }}
-                    >
-                        <ImageOutlinedIcon sx={{ mr: 1, color: '#1976d2' }} />
-                    </Typography>
-                    <Typography
-                        variant="h6"
-                        component="div"
-                        gutterBottom
-                        sx={{ flex: 1, width: 0, textAlign: 'center' }}
-                    >
-                        <StorefrontOutlinedIcon sx={{ mr: 1, color: '#1976d2' }} />
-                    </Typography>
-                    <Typography
-                        variant="h6"
-                        component="div"
-                        gutterBottom
-                        sx={{ flex: 1, width: 0, textAlign: 'center' }}
-                    >
-                        <ShoppingBasketOutlinedIcon sx={{ mr: 1, color: '#1976d2' }} />
-                    </Typography>
-                    <Typography
-                        variant="h6"
-                        component="div"
-                        gutterBottom
-                        sx={{ flex: 1, width: 0, textAlign: 'center' }}
-                    >
-                        <ShoppingCartOutlinedIcon sx={{ mr: 1, color: '#1976d2' }} />
-                    </Typography>
+                    <Tooltip title="Nuotrauka" placement="top">
+                        <Typography
+                            variant="h6"
+                            component="div"
+                            gutterBottom
+                            sx={{ flex: 1, width: 0, textAlign: 'center' }}
+                        >
+                            <ImageOutlinedIcon sx={{ mr: 1, color: '#1976d2' }} />
+                        </Typography>
+                    </Tooltip>
+                    <Tooltip title="Pavadinimas" placement="top">
+                        <Typography
+                            variant="h6"
+                            component="div"
+                            gutterBottom
+                            sx={{ flex: 1, width: 0, textAlign: 'center' }}
+                        >
+                            <StorefrontOutlinedIcon sx={{ mr: 1, color: '#1976d2' }} />
+                        </Typography>
+                    </Tooltip>
+                    <Tooltip title="Esamas likutis" placement="top">
+                        <Typography
+                            variant="h6"
+                            component="div"
+                            gutterBottom
+                            sx={{ flex: 1, width: 0, textAlign: 'center' }}
+                        >
+                            <ShoppingBasketOutlinedIcon sx={{ mr: 1, color: '#1976d2' }} />
+                        </Typography>
+                    </Tooltip>
+                    <Tooltip title="Imamas kiekis" placement="top">
+                        <Typography
+                            variant="h6"
+                            component="div"
+                            gutterBottom
+                            sx={{ flex: 1, width: 0, textAlign: 'center' }}
+                        >
+                            <ShoppingCartOutlinedIcon sx={{ mr: 1, color: '#1976d2' }} />
+                        </Typography>
+                    </Tooltip>
                 </Box>
                 {inventory.length > 0 &&
                     _DATA.currentData().map((item) => (

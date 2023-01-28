@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { ToastContainer } from 'react-toastify';
 import { confirmAlert } from 'react-confirm-alert';
 import 'react-confirm-alert/src/react-confirm-alert.css';
-import { Container, Box, Typography, Button, Pagination } from '@mui/material';
+import { Container, Box, Typography, Button, Pagination, Tooltip } from '@mui/material';
 import AddInventory from './AddInventory';
 import { getTokenFromStorage } from '../../../services/helpers';
 import { deleteInventoryAsync, getInventoryAsync } from '../../../services/API';
@@ -113,70 +113,86 @@ const AdminInventory = () => {
                                 borderBottom: '1px solid #1976d2',
                             }}
                         >
-                            <Typography
-                                variant="h6"
-                                component="div"
-                                gutterBottom
-                                sx={{ flex: 1, width: 0, textAlign: 'center' }}
-                            >
-                                <ImageOutlinedIcon sx={{ mr: 1, color: '#1976d2' }} />
-                            </Typography>
-                            <Typography
-                                variant="h6"
-                                component="div"
-                                gutterBottom
-                                sx={{ flex: 1, width: 0, textAlign: 'center' }}
-                            >
-                                <StorefrontOutlinedIcon sx={{ mr: 1, color: '#1976d2' }} />
-                            </Typography>
-                            <Typography
-                                variant="h6"
-                                component="div"
-                                gutterBottom
-                                sx={{ flex: 1, width: 0, textAlign: 'center' }}
-                            >
-                                <ShoppingCartCheckoutOutlinedIcon sx={{ mr: 1, color: '#1976d2' }} />
-                            </Typography>
-                            <Typography
-                                variant="h6"
-                                component="div"
-                                gutterBottom
-                                sx={{ flex: 1, width: 0, textAlign: 'center' }}
-                            >
-                                <ShoppingCartOutlinedIcon sx={{ mr: 1, color: '#1976d2' }} />
-                            </Typography>
-                            <Typography
-                                variant="h6"
-                                component="div"
-                                gutterBottom
-                                sx={{ flex: 1, width: 0, textAlign: 'center' }}
-                            >
-                                <RemoveShoppingCartOutlinedIcon sx={{ mr: 1, color: '#1976d2' }} />
-                            </Typography>
-                            <Typography
-                                variant="h6"
-                                component="div"
-                                gutterBottom
-                                sx={{ flex: 1, width: 0, textAlign: 'center' }}
-                            >
-                                <ChatBubbleOutlineOutlinedIcon sx={{ mr: 1, color: '#1976d2' }} />
-                            </Typography>
-                            <Typography
-                                variant="h6"
-                                component="div"
-                                gutterBottom
-                                sx={{ flex: 1, width: 0, textAlign: 'center' }}
-                            >
-                                <EditOutlinedIcon sx={{ mr: 1, color: '#1976d2' }} />
-                            </Typography>
-                            <Typography
-                                variant="h6"
-                                component="div"
-                                gutterBottom
-                                sx={{ flex: 1, width: 0, textAlign: 'center' }}
-                            >
-                                <DeleteForeverOutlinedIcon sx={{ mr: 1, color: '#1976d2' }} />
-                            </Typography>
+                            <Tooltip title="Nuotrauka" placement="top">
+                                <Typography
+                                    variant="h6"
+                                    component="div"
+                                    gutterBottom
+                                    sx={{ flex: 1, width: 0, textAlign: 'center' }}
+                                >
+                                    <ImageOutlinedIcon sx={{ mr: 1, color: '#1976d2' }} />
+                                </Typography>
+                            </Tooltip>
+                            <Tooltip title="Pavadinimas" placement="top">
+                                <Typography
+                                    variant="h6"
+                                    component="div"
+                                    gutterBottom
+                                    sx={{ flex: 1, width: 0, textAlign: 'center' }}
+                                >
+                                    <StorefrontOutlinedIcon sx={{ mr: 1, color: '#1976d2' }} />
+                                </Typography>
+                            </Tooltip>
+                            <Tooltip title="Pradinis likutis" placement="top">
+                                <Typography
+                                    variant="h6"
+                                    component="div"
+                                    gutterBottom
+                                    sx={{ flex: 1, width: 0, textAlign: 'center' }}
+                                >
+                                    <ShoppingCartCheckoutOutlinedIcon sx={{ mr: 1, color: '#1976d2' }} />
+                                </Typography>
+                            </Tooltip>
+                            <Tooltip title="Esamas likutis" placement="top">
+                                <Typography
+                                    variant="h6"
+                                    component="div"
+                                    gutterBottom
+                                    sx={{ flex: 1, width: 0, textAlign: 'center' }}
+                                >
+                                    <ShoppingCartOutlinedIcon sx={{ mr: 1, color: '#1976d2' }} />
+                                </Typography>
+                            </Tooltip>
+                            <Tooltip title="Negrąžintas kiekis" placement="top">
+                                <Typography
+                                    variant="h6"
+                                    component="div"
+                                    gutterBottom
+                                    sx={{ flex: 1, width: 0, textAlign: 'center' }}
+                                >
+                                    <RemoveShoppingCartOutlinedIcon sx={{ mr: 1, color: '#1976d2' }} />
+                                </Typography>
+                            </Tooltip>
+                            <Tooltip title="Komentaras" placement="top">
+                                <Typography
+                                    variant="h6"
+                                    component="div"
+                                    gutterBottom
+                                    sx={{ flex: 1, width: 0, textAlign: 'center' }}
+                                >
+                                    <ChatBubbleOutlineOutlinedIcon sx={{ mr: 1, color: '#1976d2' }} />
+                                </Typography>
+                            </Tooltip>
+                            <Tooltip title="Redaguoti" placement="top">
+                                <Typography
+                                    variant="h6"
+                                    component="div"
+                                    gutterBottom
+                                    sx={{ flex: 1, width: 0, textAlign: 'center' }}
+                                >
+                                    <EditOutlinedIcon sx={{ mr: 1, color: '#1976d2' }} />
+                                </Typography>
+                            </Tooltip>
+                            <Tooltip title="Ištrinti" placement="top">
+                                <Typography
+                                    variant="h6"
+                                    component="div"
+                                    gutterBottom
+                                    sx={{ flex: 1, width: 0, textAlign: 'center' }}
+                                >
+                                    <DeleteForeverOutlinedIcon sx={{ mr: 1, color: '#1976d2' }} />
+                                </Typography>
+                            </Tooltip>
                         </Box>
                         {inventory.length > 0 &&
                             _DATA.currentData().map((item) => (

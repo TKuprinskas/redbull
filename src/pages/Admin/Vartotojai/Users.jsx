@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { ToastContainer } from 'react-toastify';
 import { confirmAlert } from 'react-confirm-alert';
 import 'react-confirm-alert/src/react-confirm-alert.css';
-import { Container, Box, Typography, Button, Pagination } from '@mui/material';
+import { Container, Box, Typography, Button, Pagination, Tooltip } from '@mui/material';
 import PersonOutlineOutlinedIcon from '@mui/icons-material/PersonOutlineOutlined';
 import RememberMeOutlinedIcon from '@mui/icons-material/RememberMeOutlined';
 import LockResetOutlinedIcon from '@mui/icons-material/LockResetOutlined';
@@ -109,38 +109,46 @@ const Users = () => {
                                 borderBottom: '1px solid #1976d2',
                             }}
                         >
-                            <Typography
-                                variant="h6"
-                                component="div"
-                                gutterBottom
-                                sx={{ flex: 1, width: 0, textAlign: 'center' }}
-                            >
-                                <PersonOutlineOutlinedIcon sx={{ mr: 1, color: '#1976d2' }} />
-                            </Typography>
-                            <Typography
-                                variant="h6"
-                                component="div"
-                                gutterBottom
-                                sx={{ flex: 1, width: 0, textAlign: 'center' }}
-                            >
-                                <RememberMeOutlinedIcon sx={{ mr: 1, color: '#1976d2' }} />
-                            </Typography>
-                            <Typography
-                                variant="h6"
-                                component="div"
-                                gutterBottom
-                                sx={{ flex: 1, width: 0, textAlign: 'center' }}
-                            >
-                                <LockResetOutlinedIcon sx={{ mr: 1, color: '#1976d2' }} />
-                            </Typography>
-                            <Typography
-                                variant="h6"
-                                component="div"
-                                gutterBottom
-                                sx={{ flex: 1, width: 0, textAlign: 'center' }}
-                            >
-                                <PersonRemoveAlt1OutlinedIcon sx={{ mr: 1, color: '#1976d2' }} />
-                            </Typography>
+                            <Tooltip title="Vartotojo vardas" placement="top">
+                                <Typography
+                                    variant="h6"
+                                    component="div"
+                                    gutterBottom
+                                    sx={{ flex: 1, width: 0, textAlign: 'center' }}
+                                >
+                                    <PersonOutlineOutlinedIcon sx={{ mr: 1, color: '#1976d2' }} />
+                                </Typography>
+                            </Tooltip>
+                            <Tooltip title="Rolė" placement="top">
+                                <Typography
+                                    variant="h6"
+                                    component="div"
+                                    gutterBottom
+                                    sx={{ flex: 1, width: 0, textAlign: 'center' }}
+                                >
+                                    <RememberMeOutlinedIcon sx={{ mr: 1, color: '#1976d2' }} />
+                                </Typography>
+                            </Tooltip>
+                            <Tooltip title="Slaptažodžio atstatymas" placement="top">
+                                <Typography
+                                    variant="h6"
+                                    component="div"
+                                    gutterBottom
+                                    sx={{ flex: 1, width: 0, textAlign: 'center' }}
+                                >
+                                    <LockResetOutlinedIcon sx={{ mr: 1, color: '#1976d2' }} />
+                                </Typography>
+                            </Tooltip>
+                            <Tooltip title="Vartotojo ištrynimas" placement="top">
+                                <Typography
+                                    variant="h6"
+                                    component="div"
+                                    gutterBottom
+                                    sx={{ flex: 1, width: 0, textAlign: 'center' }}
+                                >
+                                    <PersonRemoveAlt1OutlinedIcon sx={{ mr: 1, color: '#1976d2' }} />
+                                </Typography>
+                            </Tooltip>
                         </Box>
                         {users.length > 0 &&
                             _DATA.currentData().map((user) => (

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { ToastContainer } from 'react-toastify';
-import { Container, Box, Typography, Pagination, Button } from '@mui/material';
+import { Container, Box, Typography, Pagination, Button, Tooltip } from '@mui/material';
 import { getTokenFromStorage, getUserIdFromToken } from '../services/helpers';
 import { myInventoryHistoryAsync } from '../services/API';
 import StorefrontOutlinedIcon from '@mui/icons-material/StorefrontOutlined';
@@ -140,62 +140,76 @@ const MyInventory = () => {
                         borderBottom: '1px solid #1976d2',
                     }}
                 >
-                    <Typography
-                        variant="h6"
-                        component="div"
-                        gutterBottom
-                        sx={{ flex: 1, width: 0, textAlign: 'center' }}
-                    >
-                        <ImageOutlinedIcon sx={{ mr: 1, color: '#1976d2' }} />
-                    </Typography>
-                    <Typography
-                        variant="h6"
-                        component="div"
-                        gutterBottom
-                        sx={{ flex: 1, width: 0, textAlign: 'center' }}
-                    >
-                        <CalendarMonthOutlinedIcon sx={{ mr: 1, color: '#1976d2' }} />
-                    </Typography>
-                    <Typography
-                        variant="h6"
-                        component="div"
-                        gutterBottom
-                        sx={{ flex: 1, width: 0, textAlign: 'center' }}
-                    >
-                        <StorefrontOutlinedIcon sx={{ mr: 1, color: '#1976d2' }} />
-                    </Typography>
-                    <Typography
-                        variant="h6"
-                        component="div"
-                        gutterBottom
-                        sx={{ flex: 1, width: 0, textAlign: 'center' }}
-                    >
-                        <AddShoppingCartOutlinedIcon sx={{ mr: 1, color: '#1976d2' }} />
-                    </Typography>
-                    <Typography
-                        variant="h6"
-                        component="div"
-                        gutterBottom
-                        sx={{ flex: 1, width: 0, textAlign: 'center' }}
-                    >
-                        <RemoveShoppingCartOutlinedIcon sx={{ mr: 1, color: '#1976d2' }} />
-                    </Typography>
-                    <Typography
-                        variant="h6"
-                        component="div"
-                        gutterBottom
-                        sx={{ flex: 1, width: 0, textAlign: 'center' }}
-                    >
-                        <ChatBubbleOutlineOutlinedIcon sx={{ mr: 1, color: '#1976d2' }} />
-                    </Typography>
-                    <Typography
-                        variant="h6"
-                        component="div"
-                        gutterBottom
-                        sx={{ flex: 1, width: 0, textAlign: 'center' }}
-                    >
-                        <EventRepeatOutlinedIcon sx={{ mr: 1, color: '#1976d2' }} />
-                    </Typography>
+                    <Tooltip title="Nuotrauka" placement="top">
+                        <Typography
+                            variant="h6"
+                            component="div"
+                            gutterBottom
+                            sx={{ flex: 1, width: 0, textAlign: 'center' }}
+                        >
+                            <ImageOutlinedIcon sx={{ mr: 1, color: '#1976d2' }} />
+                        </Typography>
+                    </Tooltip>
+                    <Tooltip title="Paėmimo data" placement="top">
+                        <Typography
+                            variant="h6"
+                            component="div"
+                            gutterBottom
+                            sx={{ flex: 1, width: 0, textAlign: 'center' }}
+                        >
+                            <CalendarMonthOutlinedIcon sx={{ mr: 1, color: '#1976d2' }} />
+                        </Typography>
+                    </Tooltip>
+                    <Tooltip title="Produktas" placement="top">
+                        <Typography
+                            variant="h6"
+                            component="div"
+                            gutterBottom
+                            sx={{ flex: 1, width: 0, textAlign: 'center' }}
+                        >
+                            <StorefrontOutlinedIcon sx={{ mr: 1, color: '#1976d2' }} />
+                        </Typography>
+                    </Tooltip>
+                    <Tooltip title="Paimtas kiekis" placement="top">
+                        <Typography
+                            variant="h6"
+                            component="div"
+                            gutterBottom
+                            sx={{ flex: 1, width: 0, textAlign: 'center' }}
+                        >
+                            <AddShoppingCartOutlinedIcon sx={{ mr: 1, color: '#1976d2' }} />
+                        </Typography>
+                    </Tooltip>
+                    <Tooltip title="Negrąžintas kiekis" placement="top">
+                        <Typography
+                            variant="h6"
+                            component="div"
+                            gutterBottom
+                            sx={{ flex: 1, width: 0, textAlign: 'center' }}
+                        >
+                            <RemoveShoppingCartOutlinedIcon sx={{ mr: 1, color: '#1976d2' }} />
+                        </Typography>
+                    </Tooltip>
+                    <Tooltip title="Komentaras" placement="top">
+                        <Typography
+                            variant="h6"
+                            component="div"
+                            gutterBottom
+                            sx={{ flex: 1, width: 0, textAlign: 'center' }}
+                        >
+                            <ChatBubbleOutlineOutlinedIcon sx={{ mr: 1, color: '#1976d2' }} />
+                        </Typography>
+                    </Tooltip>
+                    <Tooltip title="Grąžinimo data" placement="top">
+                        <Typography
+                            variant="h6"
+                            component="div"
+                            gutterBottom
+                            sx={{ flex: 1, width: 0, textAlign: 'center' }}
+                        >
+                            <EventRepeatOutlinedIcon sx={{ mr: 1, color: '#1976d2' }} />
+                        </Typography>
+                    </Tooltip>
                 </Box>
                 <Box>
                     {inventory.length > 0 &&

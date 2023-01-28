@@ -16,7 +16,7 @@ const ExcelExport = ({ excelData, fileName }) => {
     };
 
     return (
-        <Tooltip title="Eksportuoti į Excel">
+        <Tooltip title="Parsisiųsti visą matomą informaciją excel formatu">
             <Button variant="contained" onClick={() => exportToExcel()} sx={{ width: { xs: '100%', md: 'auto' } }}>
                 Eksportuoti į Excel
             </Button>
