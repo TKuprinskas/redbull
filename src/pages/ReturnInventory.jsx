@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { ToastContainer } from 'react-toastify';
-import { Container, Box, Typography, Button, TextField, Tooltip } from '@mui/material';
+import { Container, Box, Typography, Button, TextField, Tooltip, Select, MenuItem } from '@mui/material';
 import { getTokenFromStorage, getUserIdFromToken } from '../services/helpers';
 import { myInventoryAsync, returnInventoryAsync } from '../services/API';
 import StorefrontOutlinedIcon from '@mui/icons-material/StorefrontOutlined';
@@ -10,6 +10,7 @@ import AddCircleOutlineOutlinedIcon from '@mui/icons-material/AddCircleOutlineOu
 import RemoveCircleOutlineOutlinedIcon from '@mui/icons-material/RemoveCircleOutlineOutlined';
 import ChatBubbleOutlineOutlinedIcon from '@mui/icons-material/ChatBubbleOutlineOutlined';
 import ImageOutlinedIcon from '@mui/icons-material/ImageOutlined';
+import AssignmentLateOutlinedIcon from '@mui/icons-material/AssignmentLateOutlined';
 import moment from 'moment';
 
 const ReturnInventory = () => {
@@ -47,6 +48,7 @@ const ReturnInventory = () => {
                 id: i.id,
                 inventoryId: i.inventoryId,
                 count: i.count,
+                status: i.status ? i.status : '',
                 comment: i.comment ? i.comment : '',
                 takenDateTime: takenDateTime,
             };
@@ -129,6 +131,67 @@ const ReturnInventory = () => {
         setTotalCount(totalCount + 1);
     };
 
+    const handleSelectChange = (e, item) => {
+        const cartItem = cart.find((i) => i.id === item.id);
+        if (cartItem) {
+            cartItem.status = e.target.value;
+            setCart([...cart]);
+        } else {
+            const newItem = { ...item, count: 1, status: e.target.value };
+            setCart([...cart, newItem]);
+        }
+    };
+
+    const getValue = (item) => {
+        const cartItem = cart.find((i) => i.id === item.id);
+        if (cartItem) {
+            return cartItem.status;
+        }
+        return '';
+    };
+
+    const checkIfCommentIsNeeded = (item) => {
+        const cartItem = cart.find((i) => i.id === item.id);
+        if (cartItem) {
+            return cartItem.status !== 'OK' && cartItem.status !== '';
+        }
+        return false;
+    };
+
+    const message = [
+        {
+            value: 'OK',
+            label: 'OK',
+        },
+        {
+            value: 'Nešvarus',
+            label: 'Nešvarus',
+        },
+        {
+            value: 'Sudaužytas',
+            label: 'Sudaužytas',
+        },
+        {
+            value: 'Įlenktas',
+            label: 'Įlenktas',
+        },
+        {
+            value: 'Kita',
+            label: 'Kita',
+        },
+    ];
+
+    const checkDisabled = () => {
+        const cartItem = cart.find((i) => i.status !== 'OK' && i.status !== '');
+        if (cartItem && !cartItem.comment && countCartItems() > 0) {
+            return true;
+        } else if (countCartItems() === 0) {
+            return true;
+        } else {
+            return false;
+        }
+    };
+
     if (!loaded) {
         return <h1>Kraunami duomenys..</h1>;
     }
@@ -155,7 +218,7 @@ const ReturnInventory = () => {
                         variant="contained"
                         color="primary"
                         sx={{ ml: 2 }}
-                        disabled={countCartItems() === 0}
+                        disabled={checkDisabled() === true}
                         onClick={handleSubmit}
                     >
                         Grąžinti inventorių
@@ -208,6 +271,16 @@ const ReturnInventory = () => {
                             sx={{ flex: 1, width: 0, textAlign: 'center' }}
                         >
                             <ShoppingCartOutlinedIcon sx={{ mr: 1, color: '#1976d2' }} />
+                        </Typography>
+                    </Tooltip>
+                    <Tooltip title="Grąžinta būklė" placement="top">
+                        <Typography
+                            variant="h6"
+                            component="div"
+                            gutterBottom
+                            sx={{ flex: 1, width: 0, textAlign: 'center' }}
+                        >
+                            <AssignmentLateOutlinedIcon sx={{ mr: 1, color: '#1976d2' }} />
                         </Typography>
                     </Tooltip>
                     <Tooltip title="Komentaras" placement="top">
@@ -353,20 +426,49 @@ const ReturnInventory = () => {
                                     mb: 1,
                                 }}
                             >
+                                <AssignmentLateOutlinedIcon
+                                    sx={{ mr: 1, color: '#1976d2', display: { xs: 'flex', md: 'none' } }}
+                                />
+                                <Select
+                                    labelId="status"
+                                    id="status"
+                                    value={getValue(item)}
+                                    onChange={(e) => handleSelectChange(e, item)}
+                                    sx={{ width: { xs: '100%', md: 'auto', textAlign: 'center' } }}
+                                >
+                                    {message.map((item) => (
+                                        <MenuItem key={item.value} value={item.value}>
+                                            {item.label}
+                                        </MenuItem>
+                                    ))}
+                                </Select>
+                            </Box>
+                            <Box
+                                sx={{
+                                    display: 'flex',
+                                    flex: { xs: 0, md: 1 },
+                                    width: { xs: 1, md: 0 },
+                                    justifyContent: 'center',
+                                    alignItems: 'center',
+                                    mb: 1,
+                                }}
+                            >
                                 <ChatBubbleOutlineOutlinedIcon
                                     sx={{ mr: 1, color: '#1976d2', display: { xs: 'flex', md: 'none' } }}
                                 />
-                                <TextField
-                                    margin="normal"
-                                    fullWidth
-                                    name="comment"
-                                    label="Komentaras"
-                                    type="text"
-                                    id="comment"
-                                    autoComplete="comment"
-                                    onChange={(e) => handleCommentChange(item, e.target.value)}
-                                    sx={{ mb: 1 }}
-                                />
+                                {checkIfCommentIsNeeded(item) && (
+                                    <TextField
+                                        margin="normal"
+                                        fullWidth
+                                        name="comment"
+                                        label="Komentaras"
+                                        type="text"
+                                        id="comment"
+                                        autoComplete="comment"
+                                        onChange={(e) => handleCommentChange(item, e.target.value)}
+                                        sx={{ mb: 2 }}
+                                    />
+                                )}
                             </Box>
                         </Box>
                     ))}

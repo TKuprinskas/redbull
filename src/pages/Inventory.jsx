@@ -17,6 +17,7 @@ const UserInventory = () => {
     const count = Math.ceil(inventory.length / PER_PAGE);
     const _DATA = usePagination(inventory, PER_PAGE);
     const [loaded, setLoaded] = useState(false);
+    console.log(inventory);
 
     useEffect(() => {
         getInventory();
@@ -103,9 +104,9 @@ const UserInventory = () => {
                     </Tooltip>
                 </Box>
                 {inventory.length > 0 &&
-                    _DATA.currentData().map((item) => (
+                    _DATA.currentData().map((item, index) => (
                         <Box
-                            key={item.id}
+                            key={index}
                             sx={{
                                 mt: 2,
                                 display: 'flex',

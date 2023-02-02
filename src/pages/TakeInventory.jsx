@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { ToastContainer } from 'react-toastify';
+import Calendar from 'react-calendar';
 import { Container, Box, Typography, Button, TextField, Pagination, Tooltip } from '@mui/material';
 import { getTokenFromStorage, getUserIdFromToken } from '../services/helpers';
 import { getInventoryAsync, userAddInventoryAsync } from '../services/API';
@@ -9,7 +10,10 @@ import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
 import AddCircleOutlineOutlinedIcon from '@mui/icons-material/AddCircleOutlineOutlined';
 import RemoveCircleOutlineOutlinedIcon from '@mui/icons-material/RemoveCircleOutlineOutlined';
 import ImageOutlinedIcon from '@mui/icons-material/ImageOutlined';
+import CalendarMonthOutlinedIcon from '@mui/icons-material/CalendarMonthOutlined';
 import usePagination from '../components/Pagination';
+import 'react-calendar/dist/Calendar.css';
+import moment from 'moment/moment';
 
 const TakeInventory = () => {
     const isMobile = window.innerWidth < 600;
@@ -22,11 +26,49 @@ const TakeInventory = () => {
     const [totalCount, setTotalCount] = useState(0);
     const [loaded, setLoaded] = useState(false);
 
+    const handleDateChange = (date, item) => {
+        const cartItem = cart.find((i) => i.id === item.id);
+        if (cartItem) {
+            const newCart = cart.map((i) => {
+                if (i.id === item.id) {
+                    return {
+                        ...i,
+                        reservedFrom: moment(date[0]).format('YYYY-MM-DD'),
+                        reservedUntil: moment(date[1]).format('YYYY-MM-DD'),
+                    };
+                }
+                return i;
+            });
+            setCart(newCart);
+        } else {
+            setCart([
+                ...cart,
+                {
+                    ...item,
+                    reservedFrom: moment(date[0]).format('YYYY-MM-DD'),
+                    reservedUntil: moment(date[1]).format('YYYY-MM-DD'),
+                },
+            ]);
+        }
+        return;
+    };
+
+    const getReservedDate = (item) => {
+        const cartItem = cart.find((i) => i.id === item.id);
+        if (cartItem) {
+            const reservedFrom = cartItem.reservedFrom ? new Date(cartItem.reservedFrom) : new Date();
+            const reservedUntil = cartItem.reservedUntil ? new Date(cartItem.reservedUntil) : new Date();
+            return [reservedFrom, reservedUntil];
+        } else {
+            return [new Date(), new Date()];
+        }
+    };
+
     const handleSubmit = async () => {
         const token = getTokenFromStorage();
         const userId = getUserIdFromToken(token);
         const items = cart.map((i) => {
-            return { id: i.id, count: i.count };
+            return { id: i.id, count: i.count, reservedFrom: i.reservedFrom, reservedUntil: i.reservedUntil };
         });
         await userAddInventoryAsync(userId, items, token);
         setCart([]);
@@ -107,12 +149,27 @@ const TakeInventory = () => {
         _DATA.jump(p);
     };
 
+    const checkDisabled = () => {
+        const cartItem = cart.find((i) => {
+            const reservedFrom = i.reservedFrom ? i.reservedFrom : '';
+            const reservedUntil = i.reservedUntil ? i.reservedUntil : '';
+            return reservedFrom === '' || reservedUntil === '';
+        });
+        if (cartItem) {
+            return true;
+        } else if (totalCount === 0) {
+            return true;
+        } else {
+            return false;
+        }
+    };
+
     if (!loaded) {
         return <h1>Kraunami duomenys..</h1>;
     }
 
     return (
-        <Container maxWidth="lg" sx={{ m: { xs: 1, md: 2 } }}>
+        <Container maxWidth="xl" sx={{ m: { xs: 1, md: 2 } }}>
             <ToastContainer
                 position="top-center"
                 autoClose={1500}
@@ -133,7 +190,7 @@ const TakeInventory = () => {
                         variant="contained"
                         color="primary"
                         sx={{ ml: 2 }}
-                        disabled={totalCount === 0}
+                        disabled={checkDisabled() === true}
                         onClick={handleSubmit}
                     >
                         Paimti inventorių
@@ -186,6 +243,16 @@ const TakeInventory = () => {
                             sx={{ flex: 1, width: 0, textAlign: 'center' }}
                         >
                             <ShoppingCartOutlinedIcon sx={{ mr: 1, color: '#1976d2' }} />
+                        </Typography>
+                    </Tooltip>
+                    <Tooltip title="Rezervuojama nuo-iki" placement="top">
+                        <Typography
+                            variant="h6"
+                            component="div"
+                            gutterBottom
+                            sx={{ flex: 1, width: 0, textAlign: 'center' }}
+                        >
+                            <CalendarMonthOutlinedIcon sx={{ mr: 1, color: '#1976d2' }} />
                         </Typography>
                     </Tooltip>
                 </Box>
@@ -309,6 +376,30 @@ const TakeInventory = () => {
                                     >
                                         <AddCircleOutlineOutlinedIcon />
                                     </Button>
+                                </Box>
+                            </Box>
+                            <Box
+                                sx={{
+                                    display: 'flex',
+                                    flex: { xs: 0, md: 1 },
+                                    width: { xs: 1, md: 0 },
+                                    alignItems: 'center',
+                                    mb: 2,
+                                }}
+                            >
+                                <CalendarMonthOutlinedIcon
+                                    sx={{ mr: 1, color: '#1976d2', display: { xs: 'flex', md: 'none' } }}
+                                />
+                                <Box sx={{ flex: 1, width: 0, textAlign: 'center' }}>
+                                    <Calendar
+                                        onChange={(date) => handleDateChange(date, item)}
+                                        value={getReservedDate(item)}
+                                        selectRange={true}
+                                        minDate={new Date()}
+                                        maxDate={new Date(new Date().setMonth(new Date().getMonth() + 6))}
+                                        locale="lt"
+                                        format="yyyy-MM-dd"
+                                    />
                                 </Box>
                             </Box>
                         </Box>

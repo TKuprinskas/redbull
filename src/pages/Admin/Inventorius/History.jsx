@@ -10,6 +10,7 @@ import {
     InputLabel,
     FormControl,
     Tooltip,
+    Select,
 } from '@mui/material';
 import { getTokenFromStorage } from '../../../services/helpers';
 import { allInventoryHistoryAsync, getUsersAsync } from '../../../services/API';
@@ -23,7 +24,6 @@ import ImageOutlinedIcon from '@mui/icons-material/ImageOutlined';
 import PersonOutlineOutlinedIcon from '@mui/icons-material/PersonOutlineOutlined';
 import usePagination from '../../../components/Pagination';
 import moment from 'moment';
-import Select from '@mui/material/Select';
 import ExcelExport from '../../../components/ExcelExport';
 
 const AdminHistory = () => {
