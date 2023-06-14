@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { ToastContainer } from 'react-toastify';
+import { useDispatch } from 'react-redux';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
@@ -9,16 +10,21 @@ import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { createUserAsync } from '../../../services/API';
 import { getTokenFromStorage } from '../../../services/helpers';
+import { fetchAllUsers } from '../../../state/thunks';
 
 const theme = createTheme();
 
 const CreateUsers = ({ setView }) => {
+    const dispatch = useDispatch();
+    const [password, setPassword] = useState('');
+
     const handleSubmit = async (event) => {
         event.preventDefault();
         const data = new FormData(event.currentTarget);
         const token = getTokenFromStorage();
         await createUserAsync(data.get('username'), data.get('password'), token);
         setTimeout(() => {
+            dispatch(fetchAllUsers(token));
             setView('usersList');
         }, 1500);
     };
@@ -78,8 +84,17 @@ const CreateUsers = ({ setView }) => {
                             type="password"
                             id="password"
                             autoComplete="current-password"
+                            error={password.length < 5}
+                            onChange={(e) => setPassword(e.target.value)}
+                            helperText={password.length < 5 ? 'Slaptažodis turi būti bent 5 simbolių ilgio' : ''}
                         />
-                        <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
+                        <Button
+                            type="submit"
+                            fullWidth
+                            variant="contained"
+                            sx={{ mt: 3, mb: 2 }}
+                            disabled={password.length < 5}
+                        >
                             Sukurti vartotoją
                         </Button>
                     </Box>

@@ -1,5 +1,6 @@
 import React from 'react';
 import { ToastContainer } from 'react-toastify';
+import { useDispatch } from 'react-redux';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
@@ -9,18 +10,20 @@ import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { addInventoryAsync } from '../../../services/API';
 import { getTokenFromStorage } from '../../../services/helpers';
+import { fetchInventory } from '../../../state/thunks';
 
 const theme = createTheme();
 
-const AddInventory = ({ setView, getInventory }) => {
+const AddInventory = ({ setView }) => {
+    const dispatch = useDispatch();
     const handleSubmit = async (event) => {
         event.preventDefault();
         const data = new FormData(event.currentTarget);
         const token = getTokenFromStorage();
         await addInventoryAsync(data.get('name'), data.get('quantityAdded'), data.get('comment'), token);
         setTimeout(() => {
+            dispatch(fetchInventory());
             setView('inventoryList');
-            getInventory();
         }, 1500);
     };
 

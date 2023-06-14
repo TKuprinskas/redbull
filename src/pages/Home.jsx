@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -35,10 +36,12 @@ import TakeInventory from './TakeInventory';
 import ReturnInventory from './ReturnInventory';
 import MyInventory from './MyHistory';
 import AdminHistory from './Admin/Inventorius/History';
+import { persistor } from '../state/store';
 
 const drawerWidth = 240;
 
 const Home = (props) => {
+    const dispatch = useDispatch();
     const navigate = useNavigate();
     const { window } = props;
     const [mobileOpen, setMobileOpen] = useState(false);
@@ -64,6 +67,7 @@ const Home = (props) => {
 
     const handleSignOut = () => {
         localStorage.removeItem('token');
+        persistor.purge();
         navigate('/', { replace: true });
     };
 

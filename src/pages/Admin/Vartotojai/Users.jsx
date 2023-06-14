@@ -3,6 +3,8 @@ import { ToastContainer } from 'react-toastify';
 import { confirmAlert } from 'react-confirm-alert';
 import 'react-confirm-alert/src/react-confirm-alert.css';
 import { Container, Box, Typography, Button, Pagination, Tooltip } from '@mui/material';
+import { useDispatch, useSelector } from 'react-redux';
+import { allUsers } from '../../../state/selectors';
 import PersonOutlineOutlinedIcon from '@mui/icons-material/PersonOutlineOutlined';
 import RememberMeOutlinedIcon from '@mui/icons-material/RememberMeOutlined';
 import LockResetOutlinedIcon from '@mui/icons-material/LockResetOutlined';
@@ -11,30 +13,30 @@ import PersonAddAltOutlinedIcon from '@mui/icons-material/PersonAddAltOutlined';
 import ResetPassword from './ResetPassword';
 import CreateUsers from './CreateUsers';
 import { getTokenFromStorage } from '../../../services/helpers';
-import { deleteUserAsync, getUsersAsync } from '../../../services/API';
+import { deleteUserAsync } from '../../../services/API';
 import usePagination from '../../../components/Pagination';
+import { fetchAllUsers } from '../../../state/thunks';
 
 const Users = () => {
-    const [users, setUsers] = useState([]);
+    const dispatch = useDispatch();
+    const users = useSelector(allUsers);
     const [view, setView] = useState('usersList');
     const [selectedUser, setSelectedUser] = useState();
     const isMobile = window.innerWidth < 600;
     const [page, setPage] = useState(1);
     const PER_PAGE = isMobile ? 5 : 10;
-    const count = Math.ceil(users.length / PER_PAGE);
+    const count = Math.ceil(users?.length / PER_PAGE);
     const _DATA = usePagination(users, PER_PAGE);
     const [loaded, setLoaded] = useState(false);
 
     useEffect(() => {
-        getUsers();
-    }, []);
-
-    const getUsers = async () => {
         const token = getTokenFromStorage();
-        const data = await getUsersAsync(token);
-        setUsers(data);
-        setLoaded(true);
-    };
+        if (users?.length > 0) {
+            setLoaded(true);
+        } else {
+            dispatch(fetchAllUsers(token));
+        }
+    }, [dispatch, users]);
 
     const handleResetPassword = (user) => {
         setView('resetPassword');
@@ -45,7 +47,7 @@ const Users = () => {
         const token = getTokenFromStorage();
         await deleteUserAsync(token, id);
         setTimeout(() => {
-            getUsers();
+            dispatch(fetchAllUsers(token));
             setView('usersList');
         }, 1500);
     };
@@ -150,7 +152,7 @@ const Users = () => {
                                 </Typography>
                             </Tooltip>
                         </Box>
-                        {users.length > 0 &&
+                        {users?.length > 0 &&
                             _DATA.currentData().map((user) => (
                                 <Box
                                     key={user.id}
