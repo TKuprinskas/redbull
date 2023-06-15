@@ -45,7 +45,7 @@ const ReturnInventory = () => {
   const [totalCount, setTotalCount] = useState(0);
   const [loaded, setLoaded] = useState(false);
   const [page, setPage] = useState(1);
-  const PER_PAGE = isMobile ? 5 : 10;
+  const PER_PAGE = isMobile ? 10 : 20;
   const count = Math.ceil(inventory.length / PER_PAGE);
   const _DATA = usePagination(inventory, PER_PAGE);
 
@@ -347,10 +347,12 @@ const ReturnInventory = () => {
                     sx={{
                       height: 200,
                       width: 200,
-                      maxHeight: { xs: 150, md: 170 },
-                      maxWidth: { xs: 220, md: 250 },
+                      maxHeight: { xs: 120, md: 150, xxl: 200 },
+                      maxWidth: { xs: 120, md: 150, xxl: 200 },
                       borderRadius: 5,
                       mb: 1,
+                      objectFit: 'contain',
+                      objectPosition: 'center',
                     }}
                     alt='redbull'
                     src={`https://redbullback.tenisopartneris.lt/public/images/${item.image}`}
@@ -375,7 +377,14 @@ const ReturnInventory = () => {
                     variant='h6'
                     component='div'
                     gutterBottom
-                    sx={{ flex: 1, width: 0, textAlign: 'center' }}>
+                    sx={{
+                      flex: 1,
+                      width: 0,
+                      textAlign: 'center',
+                      fontSize: { xs: 14, md: 16 },
+                      marginBottom: 0,
+                      padding: { xs: 0, md: 2 },
+                    }}>
                     {dateTimeHandler(item.takenDateTime, item)}
                   </Typography>
                 </Box>
@@ -402,6 +411,9 @@ const ReturnInventory = () => {
                       flex: 1,
                       width: 0,
                       textAlign: 'center',
+                      fontSize: { xs: 14, md: 16 },
+                      marginBottom: 0,
+                      padding: { xs: 0, md: 2 },
                     }}>
                     {handleReservedFromUntil(
                       item.reservedFrom,
@@ -427,7 +439,13 @@ const ReturnInventory = () => {
                     variant='h6'
                     component='div'
                     gutterBottom
-                    sx={{ flex: 1, width: 0, textAlign: 'center' }}>
+                    sx={{
+                      flex: 1,
+                      width: 0,
+                      textAlign: 'center',
+                      fontSize: { xs: 14, md: 16 },
+                      marginBottom: 0,
+                    }}>
                     {item.name}
                   </Typography>
                 </Box>
@@ -449,7 +467,13 @@ const ReturnInventory = () => {
                     variant='h6'
                     component='div'
                     gutterBottom
-                    sx={{ flex: 1, width: 0, textAlign: 'center' }}>
+                    sx={{
+                      flex: 1,
+                      width: 0,
+                      textAlign: 'center',
+                      fontSize: { xs: 14, md: 16 },
+                      marginBottom: 0,
+                    }}>
                     {item.quantityRemaining}
                   </Typography>
                 </Box>
@@ -471,8 +495,7 @@ const ReturnInventory = () => {
                   <Box
                     sx={{
                       display: 'flex',
-                      flex: 1,
-                      width: 0,
+                      width: { xs: 1, md: 170 },
                       justifyContent: 'center',
                       alignItems: 'center',
                       mb: 1,
@@ -485,7 +508,11 @@ const ReturnInventory = () => {
                     <TextField
                       id='outlined-number'
                       value={getTakenCount(item)}
-                      sx={{ width: 50, textAlign: 'center' }}
+                      sx={{
+                        minWidth: 40,
+                        maxWidth: { xs: 40, md: 60 },
+                        textAlign: 'center',
+                      }}
                       disabled
                       InputLabelProps={{
                         shrink: true,

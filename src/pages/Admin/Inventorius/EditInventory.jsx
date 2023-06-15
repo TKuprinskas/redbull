@@ -34,7 +34,7 @@ const EditInventory = ({ setView, selectedItem }) => {
       token
     );
     setTimeout(() => {
-      dispatch(fetchInventory());
+      dispatch(fetchInventory(token));
       setView('inventoryList');
     }, 1500);
   };

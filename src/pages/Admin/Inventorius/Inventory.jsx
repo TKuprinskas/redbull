@@ -27,7 +27,6 @@ import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 import DeleteForeverOutlinedIcon from '@mui/icons-material/DeleteForeverOutlined';
 import ImageOutlinedIcon from '@mui/icons-material/ImageOutlined';
-import QrCodeIcon from '@mui/icons-material/QrCode';
 import EditInventory from './EditInventory';
 import usePagination from '../../../components/Pagination';
 import {
@@ -44,7 +43,7 @@ const AdminInventory = () => {
   const [selectedItem, setSelectedItem] = useState();
   const [page, setPage] = useState(1);
   const isMobile = window.innerWidth < 600;
-  const PER_PAGE = isMobile ? 5 : 10;
+  const PER_PAGE = isMobile ? 10 : 20;
   const count = Math.ceil(inventory?.length / PER_PAGE);
   const _DATA = usePagination(inventory, PER_PAGE);
   const [loaded, setLoaded] = useState(false);
@@ -56,6 +55,7 @@ const AdminInventory = () => {
     } else {
       dispatch(fetchInventory(token));
       dispatch(fetchInventoryBalanceForToday(token));
+      setLoaded(true);
     }
   }, [dispatch, inventory]);
 
@@ -265,8 +265,8 @@ const AdminInventory = () => {
                       sx={{
                         height: 200,
                         width: 200,
-                        maxHeight: { xs: 150, md: 170 },
-                        maxWidth: { xs: 220, md: 250 },
+                        maxHeight: { xs: 120, md: 150, xxl: 200 },
+                        maxWidth: { xs: 120, md: 150, xxl: 200 },
                         borderRadius: 5,
                         mb: 1,
                         objectFit: 'contain',
@@ -295,7 +295,13 @@ const AdminInventory = () => {
                       variant='h6'
                       component='div'
                       gutterBottom
-                      sx={{ flex: 1, width: 0, textAlign: 'center' }}>
+                      sx={{
+                        flex: 1,
+                        width: 0,
+                        textAlign: 'center',
+                        fontSize: { xs: 16, md: 18 },
+                        marginBottom: 0,
+                      }}>
                       {item.name}
                     </Typography>
                   </Box>
@@ -318,7 +324,13 @@ const AdminInventory = () => {
                       variant='h6'
                       component='div'
                       gutterBottom
-                      sx={{ flex: 1, width: 0, textAlign: 'center' }}>
+                      sx={{
+                        flex: 1,
+                        width: 0,
+                        textAlign: 'center',
+                        fontSize: { xs: 16, md: 18 },
+                        marginBottom: 0,
+                      }}>
                       {item.quantityAdded}
                     </Typography>
                   </Box>
@@ -341,7 +353,13 @@ const AdminInventory = () => {
                       variant='h6'
                       component='div'
                       gutterBottom
-                      sx={{ flex: 1, width: 0, textAlign: 'center' }}>
+                      sx={{
+                        flex: 1,
+                        width: 0,
+                        textAlign: 'center',
+                        fontSize: { xs: 16, md: 18 },
+                        marginBottom: 0,
+                      }}>
                       {updatedRemainingBalanceForToday(item)}
                     </Typography>
                   </Box>
@@ -364,7 +382,13 @@ const AdminInventory = () => {
                       variant='h6'
                       component='div'
                       gutterBottom
-                      sx={{ flex: 1, width: 0, textAlign: 'center' }}>
+                      sx={{
+                        flex: 1,
+                        width: 0,
+                        textAlign: 'center',
+                        fontSize: { xs: 16, md: 18 },
+                        marginBottom: 0,
+                      }}>
                       {updatedTakenBalanceForToday(item)}
                     </Typography>
                   </Box>
@@ -387,7 +411,13 @@ const AdminInventory = () => {
                       variant='h6'
                       component='div'
                       gutterBottom
-                      sx={{ flex: 1, width: 0, textAlign: 'center' }}>
+                      sx={{
+                        flex: 1,
+                        width: 0,
+                        textAlign: 'center',
+                        fontSize: { xs: 16, md: 18 },
+                        marginBottom: 0,
+                      }}>
                       {item.comment}
                     </Typography>
                   </Box>

@@ -51,7 +51,7 @@ const TakeInventory = () => {
   const checkingDates = useSelector(checkedDates);
   const reservedItems = useSelector(reservedItemsFromUntil);
   const [page, setPage] = useState(1);
-  const PER_PAGE = isMobile ? 5 : 10;
+  const PER_PAGE = isMobile ? 10 : 20;
   const count = Math.ceil(inventory?.length / PER_PAGE);
   const _DATA = usePagination(inventory, PER_PAGE);
   const [totalCount, setTotalCount] = useState(0);
@@ -331,10 +331,12 @@ const TakeInventory = () => {
                   sx={{
                     height: 200,
                     width: 200,
-                    maxHeight: { xs: 150, md: 170 },
-                    maxWidth: { xs: 220, md: 250 },
+                    maxHeight: { xs: 120, md: 150, xxl: 200 },
+                    maxWidth: { xs: 120, md: 150, xxl: 200 },
                     borderRadius: 5,
                     mb: 1,
+                    objectFit: 'contain',
+                    objectPosition: 'center',
                   }}
                   alt='redbull'
                   src={`https://redbullback.tenisopartneris.lt/public/images/${item.image}`}
@@ -358,7 +360,13 @@ const TakeInventory = () => {
                   variant='h6'
                   component='div'
                   gutterBottom
-                  sx={{ flex: 1, width: 0, textAlign: 'center' }}>
+                  sx={{
+                    flex: 1,
+                    width: 0,
+                    textAlign: 'center',
+                    fontSize: { xs: 16, md: 18 },
+                    marginBottom: 0,
+                  }}>
                   {item.name}
                 </Typography>
               </Box>
@@ -380,7 +388,13 @@ const TakeInventory = () => {
                   variant='h6'
                   component='div'
                   gutterBottom
-                  sx={{ flex: 1, width: 0, textAlign: 'center' }}>
+                  sx={{
+                    flex: 1,
+                    width: 0,
+                    textAlign: 'center',
+                    fontSize: { xs: 16, md: 18 },
+                    marginBottom: 0,
+                  }}>
                   {countReservedItems(item)}
                 </Typography>
               </Box>
@@ -402,8 +416,7 @@ const TakeInventory = () => {
                 <Box
                   sx={{
                     display: 'flex',
-                    flex: 1,
-                    width: 0,
+                    width: { xs: 1, md: 170 },
                     justifyContent: 'center',
                     alignItems: 'center',
                     mb: 1,
@@ -416,7 +429,11 @@ const TakeInventory = () => {
                   <TextField
                     id='outlined-number'
                     value={getTakenCount(item)}
-                    sx={{ width: 50, textAlign: 'center' }}
+                    sx={{
+                      minWidth: 40,
+                      maxWidth: { xs: 40, md: 60 },
+                      textAlign: 'center',
+                    }}
                     disabled
                     InputLabelProps={{
                       shrink: true,

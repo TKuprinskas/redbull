@@ -137,8 +137,8 @@ const UserInventory = () => {
                   sx={{
                     height: 200,
                     width: 200,
-                    maxHeight: { xs: 150, md: 170 },
-                    maxWidth: { xs: 220, md: 250 },
+                    maxHeight: { xs: 120, md: 150, xxl: 200 },
+                    maxWidth: { xs: 120, md: 150, xxl: 200 },
                     borderRadius: 5,
                     mb: 1,
                     objectFit: 'contain',
@@ -167,7 +167,13 @@ const UserInventory = () => {
                   variant='h6'
                   component='div'
                   gutterBottom
-                  sx={{ flex: 1, width: 0, textAlign: 'center' }}>
+                  sx={{
+                    flex: 1,
+                    width: 0,
+                    textAlign: 'center',
+                    fontSize: { xs: 16, md: 18 },
+                    marginBottom: 0,
+                  }}>
                   {item.name}
                 </Typography>
               </Box>
@@ -190,7 +196,13 @@ const UserInventory = () => {
                   variant='h6'
                   component='div'
                   gutterBottom
-                  sx={{ flex: 1, width: 0, textAlign: 'center' }}>
+                  sx={{
+                    flex: 1,
+                    width: 0,
+                    textAlign: 'center',
+                    fontSize: { xs: 16, md: 18 },
+                    marginBottom: 0,
+                  }}>
                   {updatedBalanceForToday(item)}
                 </Typography>
               </Box>
@@ -213,7 +225,13 @@ const UserInventory = () => {
                   variant='h6'
                   component='div'
                   gutterBottom
-                  sx={{ flex: 1, width: 0, textAlign: 'center' }}>
+                  sx={{
+                    flex: 1,
+                    width: 0,
+                    textAlign: 'center',
+                    fontSize: { xs: 16, md: 18 },
+                    marginBottom: 0,
+                  }}>
                   {item.comment}
                 </Typography>
               </Box>

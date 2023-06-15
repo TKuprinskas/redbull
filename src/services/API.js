@@ -217,15 +217,6 @@ export const editInventoryAsync = async (
   comment,
   token
 ) => {
-  console.log(
-    id,
-    quantityDifference,
-    productId,
-    name,
-    quantity,
-    comment,
-    token
-  );
   try {
     const response = await fetch(`${editInventoryURL}`, {
       mode: 'cors',
