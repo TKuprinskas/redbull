@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
+import { useLocation } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
 import { confirmAlert } from 'react-confirm-alert';
 import 'react-confirm-alert/src/react-confirm-alert.css';
@@ -47,6 +48,14 @@ const AdminInventory = () => {
   const count = Math.ceil(inventory?.length / PER_PAGE);
   const _DATA = usePagination(inventory, PER_PAGE);
   const [loaded, setLoaded] = useState(false);
+  const location = useLocation();
+  const topRef = useRef(null);
+
+  useEffect(() => {
+    if (topRef.current) {
+      topRef.current.scrollIntoView({ behavior: 'smooth' });
+    }
+  }, [location]);
 
   useEffect(() => {
     const token = getTokenFromStorage();
@@ -123,6 +132,9 @@ const AdminInventory = () => {
   const handlePageChange = (e, p) => {
     setPage(p);
     _DATA.jump(p);
+    if (topRef.current) {
+      topRef.current.scrollIntoView({ behavior: 'smooth' });
+    }
   };
 
   if (!loaded) {
@@ -130,7 +142,7 @@ const AdminInventory = () => {
   }
 
   return (
-    <Container maxWidth='xxl' sx={{ m: { xs: 1, md: 2 } }}>
+    <Container maxWidth='xxl' sx={{ m: { xs: 1, md: 2 } }} ref={topRef}>
       <ToastContainer
         position='top-center'
         autoClose={1500}

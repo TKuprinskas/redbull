@@ -11,14 +11,27 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { editInventoryAsync } from '../../../services/API';
 import { getTokenFromStorage } from '../../../services/helpers';
 import { fetchInventory } from '../../../state/thunks';
+import { useEffect } from 'react';
 
 const theme = createTheme();
 
 const EditInventory = ({ setView, selectedItem }) => {
   const dispatch = useDispatch();
   const [item, setItem] = useState(selectedItem);
+  const [quantityRemaining, setQuantityRemaining] = useState(
+    selectedItem.quantityRemaining
+  );
+  const [quantityDifference, setQuantityDifference] = useState(0);
 
-  const quantityDifference = item.quantityAdded - selectedItem.quantityAdded;
+  useEffect(() => {
+    const difference = item.quantityAdded - selectedItem.quantityAdded;
+    setQuantityDifference(difference);
+    setQuantityRemaining(selectedItem.quantityRemaining + difference);
+  }, [item, selectedItem]);
+
+  const handleQuantityChange = (item, e) => {
+    setItem({ ...item, quantityAdded: e.target.value });
+  };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -110,14 +123,23 @@ const EditInventory = ({ setView, selectedItem }) => {
               required
               fullWidth
               name='quantityAdded'
-              label='Kiekis'
+              label='Pradinis kiekis'
               type='number'
               id='quantityAdded'
               autoComplete='quantityAdded'
               value={item.quantityAdded}
-              onChange={(e) =>
-                setItem({ ...item, quantityAdded: e.target.value })
-              }
+              onChange={(e) => handleQuantityChange(item, e)}
+            />
+            <TextField
+              margin='normal'
+              fullWidth
+              name='quantityRemaining'
+              label='Esamas kiekis'
+              type='number'
+              id='quantityRemaining'
+              autoComplete='quantityRemaining'
+              value={quantityRemaining}
+              disabled
             />
             <TextField
               margin='normal'

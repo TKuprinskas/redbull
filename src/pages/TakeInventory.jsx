@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { ToastContainer } from 'react-toastify';
 import Calendar from 'react-calendar';
+import { useLocation } from 'react-router-dom';
 import {
   Container,
   Box,
@@ -9,6 +10,8 @@ import {
   TextField,
   Pagination,
   Tooltip,
+  Select,
+  MenuItem,
 } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
 import {
@@ -40,8 +43,21 @@ import {
   checkDates,
   updateCartItemCount,
   clearStates,
+  addItemPurpose,
+  addItemPurposeComment,
 } from '../state/slice';
 import { getTokenFromStorage, getUserIdFromToken } from '../services/helpers';
+
+const message = [
+  {
+    value: 'Rėmimas',
+    label: 'Rėmimas',
+  },
+  {
+    value: 'Skolinimas',
+    label: 'Skolinimas',
+  },
+];
 
 const TakeInventory = () => {
   const isMobile = window.innerWidth < 600;
@@ -56,6 +72,49 @@ const TakeInventory = () => {
   const _DATA = usePagination(inventory, PER_PAGE);
   const [totalCount, setTotalCount] = useState(0);
   const [loaded, setLoaded] = useState(false);
+  const location = useLocation();
+  const topRef = useRef(null);
+  const [isRedbullInCart, setIsRedbullInCart] = useState(false);
+  const redbullProductsIds = [37, 38];
+
+  const handleSelectChange = (e, item) => {
+    dispatch(addItemPurpose({ id: item.id, purpose: e.target.value }));
+  };
+
+  const handleCommentChange = (item, comment) => {
+    dispatch(addItemPurposeComment({ id: item.id, purposeComment: comment }));
+  };
+
+  const getValue = (item) => {
+    const cartItem = cart.find((i) => i.id === item.id);
+    if (cartItem) {
+      return cartItem.purpose;
+    }
+    return '';
+  };
+
+  useEffect(() => {
+    const redbullProducts = [
+      {
+        id: 37,
+        name: 'Red Bull',
+      },
+      {
+        id: 38,
+        name: 'Red Bull Sugarfree',
+      },
+    ];
+    const isRedbullInCart = cart.some((item) =>
+      redbullProducts.some((product) => product.id === item.id)
+    );
+    setIsRedbullInCart(isRedbullInCart);
+  }, [cart]);
+
+  useEffect(() => {
+    if (topRef.current) {
+      topRef.current.scrollIntoView({ behavior: 'smooth' });
+    }
+  }, [location]);
 
   const countReservedItems = (item) => {
     const checkAvailability = reservedItems?.find((i) => i.id === item.id);
@@ -138,7 +197,18 @@ const TakeInventory = () => {
   const handleSubmit = async () => {
     const token = getTokenFromStorage();
     const userId = getUserIdFromToken();
-    const data = { userId, cart, token };
+    const updatedCart = cart.map((item) => {
+      if (redbullProductsIds.includes(item.id)) {
+        if (item.purpose === 'Rėmimas') {
+          return { ...item, isSponsored: 1, isLended: 0 };
+        } else if (item.purpose === 'Skolinimas') {
+          return { ...item, isLended: 1, isSponsored: 0 };
+        }
+      }
+      return item;
+    });
+
+    const data = { userId, cart: updatedCart, token };
     dispatch(postUserTakeInventory(data));
     setTimeout(() => {
       dispatch(resetTakeCartItems());
@@ -196,15 +266,31 @@ const TakeInventory = () => {
   const handlePageChange = (e, p) => {
     setPage(p);
     _DATA.jump(p);
+    if (topRef.current) {
+      topRef.current.scrollIntoView({ behavior: 'smooth' });
+    }
   };
 
   const checkDisabled = () => {
     const cartItem = cart.find((i) => {
       const reservedFrom = i.reservedFrom ? i.reservedFrom : '';
       const reservedUntil = i.reservedUntil ? i.reservedUntil : '';
-      return reservedFrom === '' || reservedUntil === '';
+      return (
+        !redbullProductsIds.includes(i.id) &&
+        (reservedFrom === '' || reservedUntil === '')
+      );
     });
-    if (cartItem) {
+
+    const redbullItem = cart.find((i) => {
+      const purpose = i.purpose ? i.purpose : '';
+      const purposeComment = i.purposeComment ? i.purposeComment : '';
+      return (
+        redbullProductsIds.includes(i.id) &&
+        (purpose === '' || purposeComment === '')
+      );
+    });
+
+    if (cartItem || redbullItem) {
       return true;
     } else if (totalCount === 0) {
       return true;
@@ -218,30 +304,41 @@ const TakeInventory = () => {
   }
 
   return (
-    <Container maxWidth='xxl' sx={{ m: { xs: 1, md: 2 } }}>
-      <ToastContainer
-        position='top-center'
-        autoClose={1500}
-        hideProgressBar={false}
-        newestOnTop={false}
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-      />
-      <Box sx={{ flexGrow: 1, width: '100%' }}>
+    <>
+      <Container maxWidth='xxl' sx={{ m: { xs: 1, md: 2 } }} ref={topRef}>
+        <ToastContainer
+          position='top-center'
+          autoClose={1500}
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+        />
         <Box
           sx={{
+            backgroundColor: '#fff',
+            position: 'fixed',
+            top: { xs: '56px', md: '64px' },
+            left: { xs: '16px', md: '300px' },
+            right: { xs: '16px', md: '30px' },
             display: 'flex',
             justifyContent: 'space-between',
             alignItems: 'center',
+            height: { xs: '82px', md: '64px' },
+            zIndex: 1,
           }}>
           <Typography
             sx={{ typography: { xs: 'h6', md: 'h4' } }}
             component='div'
             gutterBottom>
-            Jūsų krepšelyje yra {totalCount} prekės(-ių)
+            Jūsų krepšelyje yra{' '}
+            <Box as='span' sx={{ fontWeight: 'bold' }}>
+              {totalCount}
+            </Box>{' '}
+            prekės(-ių)
           </Typography>
           <Button
             variant='contained'
@@ -252,243 +349,288 @@ const TakeInventory = () => {
             Paimti inventorių
           </Button>
         </Box>
-        <Box
-          sx={{
-            mt: 2,
-            display: { xs: 'none', md: 'flex' },
-            width: '100%',
-            justifyContent: 'space-between',
-            borderBottom: '1px solid #1976d2',
-          }}>
-          <Tooltip title='Nuotrauka' placement='top'>
-            <Typography
-              variant='h6'
-              component='div'
-              gutterBottom
-              sx={{ flex: 1, width: 0, textAlign: 'center' }}>
-              <ImageOutlinedIcon sx={{ mr: 1, color: '#1976d2' }} />
-            </Typography>
-          </Tooltip>
-          <Tooltip title='Pavadinimas' placement='top'>
-            <Typography
-              variant='h6'
-              component='div'
-              gutterBottom
-              sx={{ flex: 1, width: 0, textAlign: 'center' }}>
-              <StorefrontOutlinedIcon sx={{ mr: 1, color: '#1976d2' }} />
-            </Typography>
-          </Tooltip>
-          <Tooltip title='Galimas likutis' placement='top'>
-            <Typography
-              variant='h6'
-              component='div'
-              gutterBottom
-              sx={{ flex: 1, width: 0, textAlign: 'center' }}>
-              <ShoppingBasketOutlinedIcon sx={{ mr: 1, color: '#1976d2' }} />
-            </Typography>
-          </Tooltip>
-          <Tooltip title='Imamas kiekis' placement='top'>
-            <Typography
-              variant='h6'
-              component='div'
-              gutterBottom
-              sx={{ flex: 1, width: 0, textAlign: 'center' }}>
-              <ShoppingCartOutlinedIcon sx={{ mr: 1, color: '#1976d2' }} />
-            </Typography>
-          </Tooltip>
-          <Tooltip title='Rezervuojama nuo-iki' placement='top'>
-            <Typography
-              variant='h6'
-              component='div'
-              gutterBottom
-              sx={{ flex: 1, width: 0, textAlign: 'center' }}>
-              <CalendarMonthOutlinedIcon sx={{ mr: 1, color: '#1976d2' }} />
-            </Typography>
-          </Tooltip>
-        </Box>
-        {inventory?.length > 0 &&
-          _DATA.currentData().map((item) => (
-            <Box
-              key={item.id}
-              sx={{
-                mt: 2,
-                display: 'flex',
-                flexDirection: { xs: 'column', md: 'row' },
-                width: '100%',
-                justifyContent: 'space-between',
-                borderBottom: '1px solid #1976d2',
-              }}>
+        <Box sx={{ flexGrow: 1, width: '100%', marginTop: '64px' }}>
+          <Box
+            sx={{
+              mt: 2,
+              display: { xs: 'none', md: 'flex' },
+              width: '100%',
+              justifyContent: 'space-between',
+              borderBottom: '1px solid #1976d2',
+            }}>
+            <Tooltip title='Nuotrauka' placement='top'>
+              <Typography
+                variant='h6'
+                component='div'
+                gutterBottom
+                sx={{ flex: 1, width: 0, textAlign: 'center' }}>
+                <ImageOutlinedIcon sx={{ mr: 1, color: '#1976d2' }} />
+              </Typography>
+            </Tooltip>
+            <Tooltip title='Pavadinimas' placement='top'>
+              <Typography
+                variant='h6'
+                component='div'
+                gutterBottom
+                sx={{ flex: 1, width: 0, textAlign: 'center' }}>
+                <StorefrontOutlinedIcon sx={{ mr: 1, color: '#1976d2' }} />
+              </Typography>
+            </Tooltip>
+            <Tooltip title='Galimas likutis' placement='top'>
+              <Typography
+                variant='h6'
+                component='div'
+                gutterBottom
+                sx={{ flex: 1, width: 0, textAlign: 'center' }}>
+                <ShoppingBasketOutlinedIcon sx={{ mr: 1, color: '#1976d2' }} />
+              </Typography>
+            </Tooltip>
+            <Tooltip title='Imamas kiekis' placement='top'>
+              <Typography
+                variant='h6'
+                component='div'
+                gutterBottom
+                sx={{ flex: 1, width: 0, textAlign: 'center' }}>
+                <ShoppingCartOutlinedIcon sx={{ mr: 1, color: '#1976d2' }} />
+              </Typography>
+            </Tooltip>
+            <Tooltip title='Rezervuojama nuo-iki' placement='top'>
+              <Typography
+                variant='h6'
+                component='div'
+                gutterBottom
+                sx={{ flex: 1, width: 0, textAlign: 'center' }}>
+                <CalendarMonthOutlinedIcon sx={{ mr: 1, color: '#1976d2' }} />
+              </Typography>
+            </Tooltip>
+          </Box>
+          {inventory?.length > 0 &&
+            _DATA.currentData().map((item) => (
               <Box
+                key={item.id}
                 sx={{
+                  mt: 2,
                   display: 'flex',
-                  flex: { xs: 0, md: 1 },
-                  width: { xs: 1, md: 0 },
-                  justifyContent: 'center',
-                  alignItems: 'center',
+                  flexDirection: { xs: 'column', md: 'row' },
+                  width: '100%',
+                  justifyContent: 'space-between',
+                  borderBottom: '1px solid #1976d2',
                 }}>
-                <Box
-                  component='img'
-                  sx={{
-                    height: 200,
-                    width: 200,
-                    maxHeight: { xs: 120, md: 150, xxl: 200 },
-                    maxWidth: { xs: 120, md: 150, xxl: 200 },
-                    borderRadius: 5,
-                    mb: 1,
-                    objectFit: 'contain',
-                    objectPosition: 'center',
-                  }}
-                  alt='redbull'
-                  src={`https://redbullback.tenisopartneris.lt/public/images/${item.image}`}
-                />
-              </Box>
-              <Box
-                sx={{
-                  display: 'flex',
-                  flex: { xs: 0, md: 1 },
-                  width: { xs: 1, md: 0 },
-                  alignItems: 'center',
-                }}>
-                <StorefrontOutlinedIcon
-                  sx={{
-                    mr: 1,
-                    color: '#1976d2',
-                    display: { xs: 'flex', md: 'none' },
-                  }}
-                />
-                <Typography
-                  variant='h6'
-                  component='div'
-                  gutterBottom
-                  sx={{
-                    flex: 1,
-                    width: 0,
-                    textAlign: 'center',
-                    fontSize: { xs: 16, md: 18 },
-                    marginBottom: 0,
-                  }}>
-                  {item.name}
-                </Typography>
-              </Box>
-              <Box
-                sx={{
-                  display: 'flex',
-                  flex: { xs: 0, md: 1 },
-                  width: { xs: 1, md: 0 },
-                  alignItems: 'center',
-                }}>
-                <ShoppingBasketOutlinedIcon
-                  sx={{
-                    mr: 1,
-                    color: '#1976d2',
-                    display: { xs: 'flex', md: 'none' },
-                  }}
-                />
-                <Typography
-                  variant='h6'
-                  component='div'
-                  gutterBottom
-                  sx={{
-                    flex: 1,
-                    width: 0,
-                    textAlign: 'center',
-                    fontSize: { xs: 16, md: 18 },
-                    marginBottom: 0,
-                  }}>
-                  {countReservedItems(item)}
-                </Typography>
-              </Box>
-              <Box
-                sx={{
-                  display: 'flex',
-                  flex: { xs: 0, md: 1 },
-                  width: { xs: 1, md: 0 },
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                }}>
-                <ShoppingCartOutlinedIcon
-                  sx={{
-                    mr: 1,
-                    color: '#1976d2',
-                    display: { xs: 'flex', md: 'none' },
-                  }}
-                />
                 <Box
                   sx={{
                     display: 'flex',
-                    width: { xs: 1, md: 170 },
+                    flex: { xs: 0, md: 1 },
+                    width: { xs: 1, md: 0 },
                     justifyContent: 'center',
                     alignItems: 'center',
-                    mb: 1,
                   }}>
-                  <Button
-                    onClick={() => handleDecrement(item)}
-                    disabled={handleDecrementDisable(item)}>
-                    <RemoveCircleOutlineOutlinedIcon />
-                  </Button>
-                  <TextField
-                    id='outlined-number'
-                    value={getTakenCount(item)}
+                  <Box
+                    component='img'
                     sx={{
-                      minWidth: 40,
-                      maxWidth: { xs: 40, md: 60 },
-                      textAlign: 'center',
+                      height: 200,
+                      width: 200,
+                      maxHeight: { xs: 120, md: 150, xxl: 200 },
+                      maxWidth: { xs: 120, md: 150, xxl: 200 },
+                      borderRadius: 5,
+                      mb: 1,
+                      objectFit: 'contain',
+                      objectPosition: 'center',
                     }}
-                    disabled
-                    InputLabelProps={{
-                      shrink: true,
-                    }}
-                    variant='outlined'
+                    alt='redbull'
+                    src={`https://redbullback.tenisopartneris.lt/public/images/${item.image}`}
                   />
-                  <Button
-                    onClick={() => handleIncrement(item)}
-                    disabled={handleIncrementDisable(item)}>
-                    <AddCircleOutlineOutlinedIcon />
-                  </Button>
                 </Box>
-              </Box>
-              <Box
-                sx={{
-                  display: 'flex',
-                  flex: { xs: 0, md: 1 },
-                  width: { xs: 1, md: 0 },
-                  alignItems: 'center',
-                  mb: 2,
-                }}>
-                <CalendarMonthOutlinedIcon
+                <Box
                   sx={{
-                    mr: 1,
-                    color: '#1976d2',
-                    display: { xs: 'flex', md: 'none' },
-                  }}
-                />
-                <Box sx={{ flex: 1, width: 0, textAlign: 'center' }}>
-                  <Calendar
-                    onChange={(date) => handleDateChange(date, item)}
-                    value={getReservedDate(item)}
-                    selectRange={true}
-                    minDate={new Date()}
-                    maxDate={
-                      new Date(new Date().setMonth(new Date().getMonth() + 6))
-                    }
-                    locale='lt'
-                    format='yyyy-MM-dd'
+                    display: 'flex',
+                    flex: { xs: 0, md: 1 },
+                    width: { xs: 1, md: 0 },
+                    alignItems: 'center',
+                  }}>
+                  <StorefrontOutlinedIcon
+                    sx={{
+                      mr: 1,
+                      color: '#1976d2',
+                      display: { xs: 'flex', md: 'none' },
+                    }}
                   />
+                  <Typography
+                    variant='h6'
+                    component='div'
+                    gutterBottom
+                    sx={{
+                      flex: 1,
+                      width: 0,
+                      textAlign: 'center',
+                      fontSize: { xs: 16, md: 18 },
+                      marginBottom: 0,
+                    }}>
+                    {item.name}
+                  </Typography>
+                </Box>
+                <Box
+                  sx={{
+                    display: 'flex',
+                    flex: { xs: 0, md: 1 },
+                    width: { xs: 1, md: 0 },
+                    alignItems: 'center',
+                  }}>
+                  <ShoppingBasketOutlinedIcon
+                    sx={{
+                      mr: 1,
+                      color: '#1976d2',
+                      display: { xs: 'flex', md: 'none' },
+                    }}
+                  />
+                  <Typography
+                    variant='h6'
+                    component='div'
+                    gutterBottom
+                    sx={{
+                      flex: 1,
+                      width: 0,
+                      textAlign: 'center',
+                      fontSize: { xs: 16, md: 18 },
+                      marginBottom: 0,
+                    }}>
+                    {countReservedItems(item)}
+                  </Typography>
+                </Box>
+                <Box
+                  sx={{
+                    display: 'flex',
+                    flex: { xs: 0, md: 1 },
+                    width: { xs: 1, md: 0 },
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                  }}>
+                  <ShoppingCartOutlinedIcon
+                    sx={{
+                      mr: 1,
+                      color: '#1976d2',
+                      display: { xs: 'flex', md: 'none' },
+                    }}
+                  />
+                  <Box
+                    sx={{
+                      display: 'flex',
+                      width: { xs: 1, md: 170 },
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                      mb: 1,
+                    }}>
+                    <Button
+                      onClick={() => handleDecrement(item)}
+                      disabled={handleDecrementDisable(item)}>
+                      <RemoveCircleOutlineOutlinedIcon />
+                    </Button>
+                    <TextField
+                      id='outlined-number'
+                      value={getTakenCount(item)}
+                      sx={{
+                        minWidth: 40,
+                        maxWidth: { xs: 40, md: 60 },
+                        textAlign: 'center',
+                      }}
+                      disabled
+                      InputLabelProps={{
+                        shrink: true,
+                      }}
+                      variant='outlined'
+                    />
+                    <Button
+                      onClick={() => handleIncrement(item)}
+                      disabled={handleIncrementDisable(item)}>
+                      <AddCircleOutlineOutlinedIcon />
+                    </Button>
+                  </Box>
+                </Box>
+                <Box
+                  sx={{
+                    display: 'flex',
+                    flex: { xs: 0, md: 1 },
+                    width: { xs: 1, md: 0 },
+                    alignItems: 'center',
+                    mb: 2,
+                  }}>
+                  <CalendarMonthOutlinedIcon
+                    sx={{
+                      mr: 1,
+                      color: '#1976d2',
+                      display: { xs: 'flex', md: 'none' },
+                    }}
+                  />
+                  <Box sx={{ flex: 1, width: 0, textAlign: 'center' }}>
+                    {redbullProductsIds.includes(item.id) ? (
+                      <Box
+                        sx={{
+                          display: 'flex',
+                          flexDirection: 'column',
+                          alignItems: 'center',
+                        }}>
+                        <Typography variant='h6'>Paskirtis</Typography>
+                        <TextField
+                          placeholder='Pvz.: Lietuvos Bėgimo Taurė'
+                          margin='normal'
+                          fullWidth
+                          name='purposeComment'
+                          label='Paskirtis'
+                          type='text'
+                          id='purposeComment'
+                          autoComplete='purposeComment'
+                          onChange={(e) =>
+                            handleCommentChange(item, e.target.value)
+                          }
+                          sx={{ mb: 2 }}
+                        />
+                        <Select
+                          labelId='purpose'
+                          id='purpose'
+                          value={getValue(item) || ''}
+                          onChange={(e) => handleSelectChange(e, item)}
+                          fullWidth
+                          sx={{
+                            marginTop: '10px',
+                            textAlign: 'center',
+                          }}>
+                          {message.map((item) => (
+                            <MenuItem key={item.value} value={item.value}>
+                              {item.label}
+                            </MenuItem>
+                          ))}
+                        </Select>
+                      </Box>
+                    ) : (
+                      <Calendar
+                        onChange={(date) => handleDateChange(date, item)}
+                        value={getReservedDate(item)}
+                        selectRange={true}
+                        minDate={new Date()}
+                        maxDate={
+                          new Date(
+                            new Date().setMonth(new Date().getMonth() + 6)
+                          )
+                        }
+                        locale='lt'
+                        format='yyyy-MM-dd'
+                      />
+                    )}
+                  </Box>
                 </Box>
               </Box>
-            </Box>
-          ))}
-      </Box>
-      <Pagination
-        count={count}
-        size='large'
-        page={page}
-        variant='outlined'
-        shape='rounded'
-        onChange={handlePageChange}
-        sx={{ mt: 2, mb: 2, display: 'flex', justifyContent: 'center' }}
-      />
-    </Container>
+            ))}
+        </Box>
+        <Pagination
+          count={count}
+          size='large'
+          page={page}
+          variant='outlined'
+          shape='rounded'
+          onChange={handlePageChange}
+          sx={{ mt: 2, mb: 2, display: 'flex', justifyContent: 'center' }}
+        />
+      </Container>
+    </>
   );
 };
 

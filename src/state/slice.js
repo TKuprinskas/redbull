@@ -77,6 +77,22 @@ const inventorySlice = createSlice({
         }
       }
     },
+    addItemPurpose: (state, action) => {
+      const item = state.takeCartItems.find(
+        (item) => item.id === action.payload.id
+      );
+      if (item) {
+        item.purpose = action.payload.purpose;
+      }
+    },
+    addItemPurposeComment: (state, action) => {
+      const item = state.takeCartItems.find(
+        (item) => item.id === action.payload.id
+      );
+      if (item) {
+        item.purposeComment = action.payload.purposeComment || '';
+      }
+    },
     setTakeCartItemDateFromTo: (state, action) => {
       const item = state.takeCartItems.find(
         (item) => item.id === action.payload.id
@@ -257,6 +273,8 @@ export const {
   deleteInventoryItem,
   incrementTakeItemCount,
   decrementTakeItemCount,
+  addItemPurpose,
+  addItemPurposeComment,
   resetTakeCartItems,
   incrementReturnItemCount,
   decrementReturnItemCount,

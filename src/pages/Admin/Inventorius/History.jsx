@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
+import { useLocation } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
 import {
   Container,
@@ -43,17 +44,29 @@ const AdminHistory = () => {
   const [loaded, setLoaded] = useState(false);
   const [selectedUser, setSelectedUser] = useState();
   const defaultUser = 'Visi';
+  const location = useLocation();
+  const topRef = useRef(null);
+
+  useEffect(() => {
+    if (topRef.current) {
+      topRef.current.scrollIntoView({ behavior: 'smooth' });
+    }
+  }, [location]);
 
   const excelData = filteredInventory.map((item) => {
     return {
       'Inventoriaus pavadinimas': item.name,
       'Paimtas kiekis': item.quantityTaken,
-      'Negrąžintas kiekis': item.quantityRemaining,
+      'Negrąžintas kiekis': item.isSponsored ? 0 : item.quantityRemaining,
+      Paskirtis: item.purpose ? item.purpose : '',
+      'Kam skirta': item.purposeComment ? item.purposeComment : '',
       'Paėmimo Data': moment(item.takenDateTime).format('YYYY-MM-DD HH:mm:ss'),
       'Rezervuota nuo': item.reservedFrom ? item.reservedFrom : '',
       'Rezervuota iki': item.reservedUntil ? item.reservedUntil : '',
       'Grąžinimo Data': item.returnedDateTime
         ? moment(item.returnedDateTime).format('YYYY-MM-DD HH:mm:ss')
+        : item.isSponsored
+        ? ''
         : 'Dar negrąžinta',
       'Komentaras grąžinant': item.comment,
       Vartotojas: item.username,
@@ -61,7 +74,7 @@ const AdminHistory = () => {
   });
 
   const handleReservedFromUntil = (from, until) => {
-    if (!from && !until) return 'Negrąžinta';
+    if (!from && !until) return 'Nėra rezervacijos';
     const fromDate = moment(from).format('YYYY-MM-DD');
     const untilDate = moment(until).format('YYYY-MM-DD');
     return `${fromDate} - ${untilDate}`;
@@ -72,13 +85,14 @@ const AdminHistory = () => {
       const filteredInventory = inventory.filter(
         (item) =>
           item.userId === selectedUser.id &&
-          (item.isTaken === 1 || item.isReserved === 1)
+          (item.isTaken === 1 || item.isReserved === 1 || item.isLended === 1)
       );
       setActive('taken');
       setFilteredInventory(filteredInventory);
     } else {
       const filteredInventory = inventory.filter(
-        (item) => item.isTaken === 1 || item.isReserved === 1
+        (item) =>
+          item.isTaken === 1 || item.isReserved === 1 || item.isLended === 1
       );
       setActive('taken');
       setFilteredInventory(filteredInventory);
@@ -121,6 +135,9 @@ const AdminHistory = () => {
   const handlePageChange = (e, p) => {
     setPage(p);
     _DATA.jump(p);
+    if (topRef.current) {
+      topRef.current.scrollIntoView({ behavior: 'smooth' });
+    }
   };
 
   const handleComment = (comment) => {
@@ -167,7 +184,7 @@ const AdminHistory = () => {
   }
 
   return (
-    <Container maxWidth='xxl' sx={{ m: { xs: 1, md: 2 } }}>
+    <Container maxWidth='xxl' sx={{ m: { xs: 1, md: 2 } }} ref={topRef}>
       <ToastContainer
         position='top-center'
         autoClose={1500}
@@ -263,7 +280,13 @@ const AdminHistory = () => {
               variant='h6'
               component='div'
               gutterBottom
-              sx={{ flex: 1, width: 0, textAlign: 'center' }}>
+              sx={{
+                display: { xs: 'none', md: 'flex' },
+                alignItems: 'center',
+                justifyContent: 'center',
+                flex: 1,
+                width: 0,
+              }}>
               <DateRangeOutlinedIcon sx={{ mr: 1, color: '#1976d2' }} />
             </Typography>
           </Tooltip>
@@ -562,7 +585,7 @@ const AdminHistory = () => {
                       fontSize: { xs: 14, md: 16 },
                       marginBottom: 0,
                     }}>
-                    {item.quantityRemaining}
+                    {item.isSponsored ? 0 : item.quantityRemaining}
                   </Typography>
                 </Box>
                 <Box
@@ -620,7 +643,9 @@ const AdminHistory = () => {
                       fontSize: { xs: 14, md: 16 },
                       marginBottom: 0,
                     }}>
-                    {dateTimeHandler(item.returnedDateTime)}
+                    {item.isSponsored
+                      ? item.purpose
+                      : dateTimeHandler(item.returnedDateTime)}
                   </Typography>
                 </Box>
                 <Box

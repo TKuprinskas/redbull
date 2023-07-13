@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
+import { useLocation } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
 import {
   Container,
@@ -38,10 +39,19 @@ const MyInventory = () => {
   const token = getTokenFromStorage();
   const userId = getUserIdFromToken();
   const userToken = { userId, token };
+  const location = useLocation();
+  const topRef = useRef(null);
+
+  useEffect(() => {
+    if (topRef.current) {
+      topRef.current.scrollIntoView({ behavior: 'smooth' });
+    }
+  }, [location]);
 
   const filterTakenItems = (inv) => {
     const filteredInventory = inv.filter(
-      (item) => item.isTaken === 1 || item.isReserved === 1
+      (item) =>
+        item.isTaken === 1 || item.isReserved === 1 || item.isLended === 1
     );
     setActive('taken');
     setFilteredInventory(filteredInventory);
@@ -49,7 +59,11 @@ const MyInventory = () => {
 
   const filterReturnedItems = (inv) => {
     const filteredInventory = inv.filter(
-      (item) => item.isTaken === 0 && item.isReserved === 0
+      (item) =>
+        item.isTaken === 0 &&
+        item.isReserved === 0 &&
+        item.isLended === 0 &&
+        !item.isSponsored
     );
     setActive('returned');
     setFilteredInventory(filteredInventory);
@@ -64,6 +78,9 @@ const MyInventory = () => {
   const handlePageChange = (e, p) => {
     setPage(p);
     _DATA.jump(p);
+    if (topRef.current) {
+      topRef.current.scrollIntoView({ behavior: 'smooth' });
+    }
   };
 
   const handleComment = (comment) => {
@@ -71,7 +88,7 @@ const MyInventory = () => {
     return comment;
   };
 
-  const dateTimeHandler = (dateTime) => {
+  const dateTimeHandler = (dateTime, item) => {
     if (!dateTime) return 'Negrąžinta';
     const date = moment(dateTime).format('YYYY-MM-DD');
     const time = moment(dateTime).format('HH:mm');
@@ -79,7 +96,7 @@ const MyInventory = () => {
   };
 
   const handleReservedFromUntil = (from, until) => {
-    if (!from && !until) return 'Negrąžinta';
+    if (!from && !until) return 'Nėra rezervacijos';
     const fromDate = moment(from).format('YYYY-MM-DD');
     const untilDate = moment(until).format('YYYY-MM-DD');
     return `${fromDate} - ${untilDate}`;
@@ -101,7 +118,7 @@ const MyInventory = () => {
   }
 
   return (
-    <Container maxWidth='xxl' sx={{ m: { xs: 1, md: 2 } }}>
+    <Container maxWidth='xxl' sx={{ m: { xs: 1, md: 2 } }} ref={topRef}>
       <ToastContainer
         position='top-center'
         autoClose={1500}
@@ -422,7 +439,7 @@ const MyInventory = () => {
                         fontSize: { xs: 14, md: 16 },
                         marginBottom: 0,
                       }}>
-                      {item.quantityRemaining}
+                      {item.isSponsored ? 0 : item.quantityRemaining}
                     </Typography>
                   </Box>
                   <Box
@@ -480,7 +497,9 @@ const MyInventory = () => {
                         fontSize: { xs: 14, md: 16 },
                         marginBottom: 0,
                       }}>
-                      {dateTimeHandler(item.returnedDateTime)}
+                      {item.isSponsored
+                        ? item.purpose
+                        : dateTimeHandler(item.returnedDateTime, item)}
                     </Typography>
                   </Box>
                 </Box>

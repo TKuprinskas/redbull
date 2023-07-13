@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
+import { useLocation } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
 import {
   Container,
@@ -48,6 +49,14 @@ const ReturnInventory = () => {
   const PER_PAGE = isMobile ? 10 : 20;
   const count = Math.ceil(inventory.length / PER_PAGE);
   const _DATA = usePagination(inventory, PER_PAGE);
+  const location = useLocation();
+  const topRef = useRef(null);
+
+  useEffect(() => {
+    if (topRef.current) {
+      topRef.current.scrollIntoView({ behavior: 'smooth' });
+    }
+  }, [location]);
 
   const dateTimeHandler = (dateTime) => {
     if (!dateTime) return 'Negrąžinta';
@@ -57,7 +66,7 @@ const ReturnInventory = () => {
   };
 
   const handleReservedFromUntil = (from, until) => {
-    if (!from && !until) return 'Negrąžinta';
+    if (!from && !until) return 'Nėra rezervacijos';
     const fromDate = moment(from).format('YYYY-MM-DD');
     const untilDate = moment(until).format('YYYY-MM-DD');
     return `${fromDate} - ${untilDate}`;
@@ -197,6 +206,9 @@ const ReturnInventory = () => {
   const handlePageChange = (e, p) => {
     setPage(p);
     _DATA.jump(p);
+    if (topRef.current) {
+      topRef.current.scrollIntoView({ behavior: 'smooth' });
+    }
   };
 
   if (!loaded) {
@@ -204,7 +216,7 @@ const ReturnInventory = () => {
   }
 
   return (
-    <Container maxWidth='xxl' sx={{ m: { xs: 1, md: 2 } }}>
+    <Container maxWidth='xxl' sx={{ m: { xs: 1, md: 2 } }} ref={topRef}>
       <ToastContainer
         position='top-center'
         autoClose={1500}
@@ -545,7 +557,7 @@ const ReturnInventory = () => {
                   <Select
                     labelId='status'
                     id='status'
-                    value={getValue(item)}
+                    value={getValue(item) || ''}
                     onChange={(e) => handleSelectChange(e, item)}
                     sx={{
                       width: { xs: '100%', md: 'auto', textAlign: 'center' },

@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { ToastContainer } from 'react-toastify';
 import { Container, Box, Typography, Pagination, Tooltip } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
+import { useLocation } from 'react-router-dom';
 import { inventoryItems, inventoryBalanceForToday } from '../state/selectors';
 import StorefrontOutlinedIcon from '@mui/icons-material/StorefrontOutlined';
 import ShoppingBasketOutlinedIcon from '@mui/icons-material/ShoppingBasketOutlined';
@@ -21,6 +22,14 @@ const UserInventory = () => {
   const count = Math.ceil(inventory?.length / PER_PAGE);
   const _DATA = usePagination(inventory, PER_PAGE);
   const [loaded, setLoaded] = useState(false);
+  const location = useLocation();
+  const topRef = useRef(null);
+
+  useEffect(() => {
+    if (topRef.current) {
+      topRef.current.scrollIntoView({ behavior: 'smooth' });
+    }
+  }, [location]);
 
   useEffect(() => {
     const token = getTokenFromStorage();
@@ -47,6 +56,9 @@ const UserInventory = () => {
   const handlePageChange = (e, p) => {
     setPage(p);
     _DATA.jump(p);
+    if (topRef.current) {
+      topRef.current.scrollIntoView({ behavior: 'smooth' });
+    }
   };
 
   if (!loaded) {
@@ -54,7 +66,7 @@ const UserInventory = () => {
   }
 
   return (
-    <Container maxWidth='lg' sx={{ m: { xs: 1, md: 2 } }}>
+    <Container maxWidth='lg' sx={{ m: { xs: 1, md: 2 } }} ref={topRef}>
       <ToastContainer
         position='top-center'
         autoClose={1500}
