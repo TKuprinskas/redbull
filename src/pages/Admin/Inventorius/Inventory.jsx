@@ -104,7 +104,7 @@ const AdminInventory = () => {
     await deleteInventoryAsync(token, id);
     dispatch(deleteInventoryItem(id));
     setTimeout(() => {
-      dispatch(fetchInventory());
+      dispatch(fetchInventory(token));
       setView('inventoryList');
     }, 1500);
   };
@@ -490,15 +490,17 @@ const AdminInventory = () => {
       {view === 'editInventory' && (
         <EditInventory setView={setView} selectedItem={selectedItem} />
       )}
-      <Pagination
-        count={count}
-        size='large'
-        page={page}
-        variant='outlined'
-        shape='rounded'
-        onChange={handlePageChange}
-        sx={{ mt: 2, mb: 2, display: 'flex', justifyContent: 'center' }}
-      />
+      {view !== 'addInventory' && view !== 'editInventory' && (
+        <Pagination
+          count={count}
+          size='large'
+          page={page}
+          variant='outlined'
+          shape='rounded'
+          onChange={handlePageChange}
+          sx={{ mt: 2, mb: 2, display: 'flex', justifyContent: 'center' }}
+        />
+      )}
     </Container>
   );
 };

@@ -76,6 +76,15 @@ const TakeInventory = () => {
   const topRef = useRef(null);
   const [isRedbullInCart, setIsRedbullInCart] = useState(false);
   const redbullProductsIds = [37, 38];
+  const [searchTerm, setSearchTerm] = useState('');
+
+  const handleSearchChange = (e) => {
+    setSearchTerm(e.target.value);
+  };
+
+  const filteredInventory = inventory.filter((item) => {
+    return item.name.toLowerCase().includes(searchTerm.toLowerCase());
+  });
 
   const handleSelectChange = (e, item) => {
     dispatch(addItemPurpose({ id: item.id, purpose: e.target.value }));
@@ -303,6 +312,9 @@ const TakeInventory = () => {
     return <h1>Kraunami duomenys..</h1>;
   }
 
+  const dataToRender =
+    searchTerm === '' ? _DATA.currentData() : filteredInventory;
+
   return (
     <>
       <Container maxWidth='xxl' sx={{ m: { xs: 1, md: 2 } }} ref={topRef}>
@@ -349,7 +361,28 @@ const TakeInventory = () => {
             Paimti inventorių
           </Button>
         </Box>
-        <Box sx={{ flexGrow: 1, width: '100%', marginTop: '64px' }}>
+        <Box
+          sx={{
+            backgroundColor: '#fff',
+            position: 'fixed',
+            top: { xs: '128px', md: '128px' },
+            left: { xs: '16px', md: '300px' },
+            right: { xs: '16px', md: '0' },
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            height: { xs: '82px', md: '64px' },
+            zIndex: 1,
+          }}>
+          <TextField
+            id='search'
+            label='Paieška'
+            variant='outlined'
+            onChange={handleSearchChange}
+            sx={{ width: { xs: '100%', md: '20%' } }}
+          />
+        </Box>
+        <Box sx={{ flexGrow: 1, width: '100%', marginTop: '128px' }}>
           <Box
             sx={{
               mt: 2,
@@ -405,7 +438,7 @@ const TakeInventory = () => {
             </Tooltip>
           </Box>
           {inventory?.length > 0 &&
-            _DATA.currentData().map((item) => (
+            dataToRender.map((item) => (
               <Box
                 key={item.id}
                 sx={{
@@ -423,6 +456,8 @@ const TakeInventory = () => {
                     width: { xs: 1, md: 0 },
                     justifyContent: 'center',
                     alignItems: 'center',
+                    ml: { xs: '18px', md: '0px' },
+                    mb: { xs: '8px', md: '0px' },
                   }}>
                   <Box
                     component='img'
@@ -432,7 +467,6 @@ const TakeInventory = () => {
                       maxHeight: { xs: 120, md: 150, xxl: 200 },
                       maxWidth: { xs: 120, md: 150, xxl: 200 },
                       borderRadius: 5,
-                      mb: 1,
                       objectFit: 'contain',
                       objectPosition: 'center',
                     }}
@@ -620,15 +654,17 @@ const TakeInventory = () => {
               </Box>
             ))}
         </Box>
-        <Pagination
-          count={count}
-          size='large'
-          page={page}
-          variant='outlined'
-          shape='rounded'
-          onChange={handlePageChange}
-          sx={{ mt: 2, mb: 2, display: 'flex', justifyContent: 'center' }}
-        />
+        {searchTerm === '' && (
+          <Pagination
+            count={count}
+            size='large'
+            page={page}
+            variant='outlined'
+            shape='rounded'
+            onChange={handlePageChange}
+            sx={{ mt: 2, mb: 2, display: 'flex', justifyContent: 'center' }}
+          />
+        )}
       </Container>
     </>
   );

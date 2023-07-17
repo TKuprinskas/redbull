@@ -8,6 +8,7 @@ const resetPassURL = `${process.env.REACT_APP_API_URL}/auth/edit-user-data`;
 const deleteUserURL = `${process.env.REACT_APP_API_URL}/auth/delete-user`;
 const getInventoryURL = `${process.env.REACT_APP_API_URL}/inventory/inventory`;
 const addInventoryURL = `${process.env.REACT_APP_API_URL}/inventory/add-inventory`;
+const addInventoryImageURL = `${process.env.REACT_APP_API_URL}/inventory/add-inventory-image`;
 const deleteInventoryURL = `${process.env.REACT_APP_API_URL}/inventory/delete-inventory`;
 const editInventoryURL = `${process.env.REACT_APP_API_URL}/inventory/update-inventory`;
 const userAddInventoryURL = `${process.env.REACT_APP_API_URL}/inventory/add-user-inventory`;
@@ -159,7 +160,13 @@ export const getInventoryAsync = async (token) => {
   }
 };
 
-export const addInventoryAsync = async (name, quantity, comment, token) => {
+export const addInventoryAsync = async (
+  name,
+  productId,
+  quantityAdded,
+  comment,
+  token
+) => {
   try {
     const response = await fetch(addInventoryURL, {
       mode: 'cors',
@@ -170,7 +177,8 @@ export const addInventoryAsync = async (name, quantity, comment, token) => {
       },
       body: JSON.stringify({
         name: name,
-        quantity: quantity,
+        productId: productId,
+        quantityAdded: quantityAdded,
         comment: comment,
       }),
     });
@@ -181,6 +189,24 @@ export const addInventoryAsync = async (name, quantity, comment, token) => {
     } else {
       toastError(data.err);
     }
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+export const addInventoryItemImageAsync = async (
+  token,
+  formData,
+  productItemId
+) => {
+  try {
+    await fetch(`${addInventoryImageURL}/${productItemId}`, {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+      body: formData,
+    });
   } catch (err) {
     console.log(err);
   }

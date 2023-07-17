@@ -235,28 +235,37 @@ const Users = () => {
                       </Button>
                     </Box>
                   </Box>
-                  <Box
-                    sx={{
-                      display: 'flex',
-                      flex: { xs: 0, md: 1 },
-                      width: { xs: 1, md: 0 },
-                    }}>
-                    <PersonRemoveAlt1OutlinedIcon
+                  {user.role !== 'admin' ? (
+                    <Box
                       sx={{
-                        mr: 1,
-                        color: '#1976d2',
-                        display: { xs: 'flex', md: 'none' },
-                      }}
-                    />
-                    <Box sx={{ flex: 1, width: 0, textAlign: 'center' }}>
-                      <Button
-                        variant='contained'
-                        sx={{ mb: 2 }}
-                        onClick={() => confirmDelete(user.id)}>
-                        Ištrinti vartotoją
-                      </Button>
+                        display: 'flex',
+                        flex: { xs: 0, md: 1 },
+                        width: { xs: 1, md: 0 },
+                      }}>
+                      <PersonRemoveAlt1OutlinedIcon
+                        sx={{
+                          mr: 1,
+                          color: '#1976d2',
+                          display: { xs: 'flex', md: 'none' },
+                        }}
+                      />
+                      <Box sx={{ flex: 1, width: 0, textAlign: 'center' }}>
+                        <Button
+                          variant='contained'
+                          sx={{ mb: 2 }}
+                          onClick={() => confirmDelete(user.id)}>
+                          Ištrinti vartotoją
+                        </Button>
+                      </Box>
                     </Box>
-                  </Box>
+                  ) : (
+                    <Box
+                      sx={{
+                        display: 'flex',
+                        flex: { xs: 0, md: 1 },
+                        width: { xs: 1, md: 0 },
+                      }}></Box>
+                  )}
                 </Box>
               ))}
           </Box>
