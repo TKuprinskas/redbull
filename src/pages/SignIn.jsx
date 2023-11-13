@@ -18,18 +18,18 @@ import { loginAsync } from '../services/API';
 
 function Copyright(props) {
   return (
-    <Typography
-      variant='body2'
-      color='text.secondary'
-      align='center'
-      {...props}>
-      {'Copyright © '}
-      <Link color='inherit' href='https://redbull.tenisopartneris.lt/'>
-        MV Group Distribution LT
-      </Link>{' '}
-      {new Date().getFullYear()}
-      {'.'}
-    </Typography>
+    <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }} component='footer'>
+      <Typography variant='body2' color='text.secondary' align='center' {...props}>
+        {'Copyright © MV Group Distribution LT '}
+        {new Date().getFullYear()}
+      </Typography>
+      <Typography variant='body2' color='text.secondary' align='center'>
+        {'All rights reserved' + ' | '}{' '}
+        <Link color='inherit' href='https://tkuprinskas.lt/' target='_blank' rel='noopener'>
+          tkuprinskas.lt
+        </Link>
+      </Typography>
+    </Box>
   );
 }
 
@@ -41,17 +41,15 @@ export default function SignIn() {
   const handleSubmit = async (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    await loginAsync(data.get('username'), data.get('password')).then(
-      (response) => {
-        if (response.status === 'SUCCESS') {
-          setTimeout(() => {
-            navigate('/home', { replace: true });
-          }, 1500);
-        } else {
-          return;
-        }
+    await loginAsync(data.get('username'), data.get('password')).then((response) => {
+      if (response.status === 'SUCCESS') {
+        setTimeout(() => {
+          navigate('/home', { replace: true });
+        }, 1500);
+      } else {
+        return;
       }
-    );
+    });
   };
 
   return (
@@ -75,7 +73,8 @@ export default function SignIn() {
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
-          }}>
+          }}
+        >
           <Box
             component='img'
             sx={{
@@ -95,40 +94,11 @@ export default function SignIn() {
           <Typography component='h1' variant='h5'>
             Prisijungimas
           </Typography>
-          <Box
-            component='form'
-            onSubmit={handleSubmit}
-            noValidate
-            sx={{ mt: 1 }}>
-            <TextField
-              margin='normal'
-              required
-              fullWidth
-              id='username'
-              label='Username'
-              name='username'
-              autoComplete='username'
-              autoFocus
-            />
-            <TextField
-              margin='normal'
-              required
-              fullWidth
-              name='password'
-              label='Password'
-              type='password'
-              id='password'
-              autoComplete='current-password'
-            />
-            <FormControlLabel
-              control={<Checkbox value='remember' color='primary' />}
-              label='Prisiminti mane'
-            />
-            <Button
-              type='submit'
-              fullWidth
-              variant='contained'
-              sx={{ mt: 3, mb: 2 }}>
+          <Box component='form' onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
+            <TextField margin='normal' required fullWidth id='username' label='Username' name='username' autoComplete='username' autoFocus />
+            <TextField margin='normal' required fullWidth name='password' label='Password' type='password' id='password' autoComplete='current-password' />
+            <FormControlLabel control={<Checkbox value='remember' color='primary' />} label='Prisiminti mane' />
+            <Button type='submit' fullWidth variant='contained' sx={{ mt: 3, mb: 2 }}>
               Prisijungti
             </Button>
           </Box>
