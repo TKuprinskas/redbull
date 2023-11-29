@@ -1,18 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useLocation } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
-import {
-  Container,
-  Box,
-  Typography,
-  Pagination,
-  Button,
-  MenuItem,
-  InputLabel,
-  FormControl,
-  Tooltip,
-  Select,
-} from '@mui/material';
+import { Container, Box, Typography, Pagination, Button, MenuItem, InputLabel, FormControl, Tooltip, Select } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
 import { allHistory, allUsers } from '../../../state/selectors';
 import StorefrontOutlinedIcon from '@mui/icons-material/StorefrontOutlined';
@@ -63,11 +52,7 @@ const AdminHistory = () => {
       'Paėmimo Data': moment(item.takenDateTime).format('YYYY-MM-DD HH:mm:ss'),
       'Rezervuota nuo': item.reservedFrom ? item.reservedFrom : '',
       'Rezervuota iki': item.reservedUntil ? item.reservedUntil : '',
-      'Grąžinimo Data': item.returnedDateTime
-        ? moment(item.returnedDateTime).format('YYYY-MM-DD HH:mm:ss')
-        : item.isSponsored
-        ? ''
-        : 'Dar negrąžinta',
+      'Grąžinimo Data': item.returnedDateTime ? moment(item.returnedDateTime).format('YYYY-MM-DD HH:mm:ss') : item.isSponsored ? '' : 'Dar negrąžinta',
       'Komentaras grąžinant': item.comment,
       Vartotojas: item.username,
     };
@@ -83,17 +68,12 @@ const AdminHistory = () => {
   const filterTakenItems = (inventory) => {
     if (selectedUser) {
       const filteredInventory = inventory.filter(
-        (item) =>
-          item.userId === selectedUser.id &&
-          (item.isTaken === 1 || item.isReserved === 1 || item.isLended === 1)
+        (item) => item.userId === selectedUser.id && (item.isTaken === 1 || item.isReserved === 1 || item.isLended === 1)
       );
       setActive('taken');
       setFilteredInventory(filteredInventory);
     } else {
-      const filteredInventory = inventory.filter(
-        (item) =>
-          item.isTaken === 1 || item.isReserved === 1 || item.isLended === 1
-      );
+      const filteredInventory = inventory.filter((item) => item.isTaken === 1 || item.isReserved === 1 || item.isLended === 1);
       setActive('taken');
       setFilteredInventory(filteredInventory);
     }
@@ -101,18 +81,11 @@ const AdminHistory = () => {
 
   const filterReturnedItems = (inventory) => {
     if (selectedUser) {
-      const filteredInventory = inventory.filter(
-        (item) =>
-          item.userId === selectedUser.id &&
-          item.isTaken === 0 &&
-          item.isReserved === 0
-      );
+      const filteredInventory = inventory.filter((item) => item.userId === selectedUser.id && item.isTaken === 0 && item.isReserved === 0);
       setActive('returned');
       setFilteredInventory(filteredInventory);
     } else {
-      const filteredInventory = inventory.filter(
-        (item) => item.isTaken === 0 && item.isReserved === 0
-      );
+      const filteredInventory = inventory.filter((item) => item.isTaken === 0 && item.isReserved === 0);
       setActive('returned');
       setFilteredInventory(filteredInventory);
     }
@@ -120,9 +93,7 @@ const AdminHistory = () => {
 
   const filterAllItems = (inventory) => {
     if (selectedUser) {
-      const filteredInventory = inventory.filter(
-        (item) => item.userId === selectedUser.id
-      );
+      const filteredInventory = inventory.filter((item) => item.userId === selectedUser.id);
       setActive('all');
       setFilteredInventory(filteredInventory);
     } else {
@@ -172,9 +143,7 @@ const AdminHistory = () => {
     } else {
       const findUser = users.find((user) => user.id === value);
       setSelectedUser(findUser);
-      const filteredInventory = inventory.filter(
-        (item) => item.userId === value
-      );
+      const filteredInventory = inventory.filter((item) => item.userId === value);
       setFilteredInventory(filteredInventory);
     }
   };
@@ -206,7 +175,8 @@ const AdminHistory = () => {
             backgroundColor: active === 'all' ? '#1976d2' : '#fff',
             color: active === 'all' ? '#fff' : '#1976d2',
             width: { xs: '20%', md: 'auto' },
-          }}>
+          }}
+        >
           Visi
         </Button>
         <Button
@@ -218,7 +188,8 @@ const AdminHistory = () => {
             backgroundColor: active === 'returned' ? '#1976d2' : '#fff',
             color: active === 'returned' ? '#fff' : '#1976d2',
             width: { xs: '30%', md: 'auto' },
-          }}>
+          }}
+        >
           Grąžinta
         </Button>
         <Button
@@ -230,7 +201,8 @@ const AdminHistory = () => {
             backgroundColor: active === 'taken' ? '#1976d2' : '#fff',
             color: active === 'taken' ? '#fff' : '#1976d2',
             width: { xs: '40%', md: 'auto' },
-          }}>
+          }}
+        >
           Negrąžinta
         </Button>
         <Box sx={{ width: 1 }}>
@@ -244,7 +216,8 @@ const AdminHistory = () => {
             display: 'flex',
             width: '100%',
             borderBottom: '1px solid #1976d2',
-          }}>
+          }}
+        >
           <Tooltip title='Nuotrauka' placement='top'>
             <Typography
               variant='h6'
@@ -256,7 +229,8 @@ const AdminHistory = () => {
                 justifyContent: 'center',
                 flex: 1,
                 width: 0,
-              }}>
+              }}
+            >
               <ImageOutlinedIcon sx={{ mr: 1, color: '#1976d2' }} />
             </Typography>
           </Tooltip>
@@ -271,7 +245,8 @@ const AdminHistory = () => {
                 justifyContent: 'center',
                 flex: 1,
                 width: 0,
-              }}>
+              }}
+            >
               <CalendarMonthOutlinedIcon sx={{ mr: 1, color: '#1976d2' }} />
             </Typography>
           </Tooltip>
@@ -286,7 +261,8 @@ const AdminHistory = () => {
                 justifyContent: 'center',
                 flex: 1,
                 width: 0,
-              }}>
+              }}
+            >
               <DateRangeOutlinedIcon sx={{ mr: 1, color: '#1976d2' }} />
             </Typography>
           </Tooltip>
@@ -301,7 +277,8 @@ const AdminHistory = () => {
                 justifyContent: 'center',
                 flex: 1,
                 width: 0,
-              }}>
+              }}
+            >
               <StorefrontOutlinedIcon sx={{ mr: 1, color: '#1976d2' }} />
             </Typography>
           </Tooltip>
@@ -316,7 +293,8 @@ const AdminHistory = () => {
                 justifyContent: 'center',
                 flex: 1,
                 width: 0,
-              }}>
+              }}
+            >
               <AddShoppingCartOutlinedIcon sx={{ mr: 1, color: '#1976d2' }} />
             </Typography>
           </Tooltip>
@@ -331,10 +309,9 @@ const AdminHistory = () => {
                 justifyContent: 'center',
                 flex: 1,
                 width: 0,
-              }}>
-              <RemoveShoppingCartOutlinedIcon
-                sx={{ mr: 1, color: '#1976d2' }}
-              />
+              }}
+            >
+              <RemoveShoppingCartOutlinedIcon sx={{ mr: 1, color: '#1976d2' }} />
             </Typography>
           </Tooltip>
           <Tooltip title='Komentaras' placement='top'>
@@ -348,7 +325,8 @@ const AdminHistory = () => {
                 justifyContent: 'center',
                 flex: 1,
                 width: 0,
-              }}>
+              }}
+            >
               <ChatBubbleOutlineOutlinedIcon sx={{ mr: 1, color: '#1976d2' }} />
             </Typography>
           </Tooltip>
@@ -363,7 +341,8 @@ const AdminHistory = () => {
                 justifyContent: 'center',
                 flex: 1,
                 width: 0,
-              }}>
+              }}
+            >
               <EventRepeatOutlinedIcon sx={{ mr: 1, color: '#1976d2' }} />
             </Typography>
           </Tooltip>
@@ -375,7 +354,8 @@ const AdminHistory = () => {
               flex: 1,
               width: 0,
               textAlign: 'center',
-            }}>
+            }}
+          >
             <Tooltip title='Filtruoti pagal vartotoją' placement='top'>
               <FormControl sx={{ m: 1, minWidth: 120 }}>
                 <InputLabel id='demo-simple-select-label'>
@@ -388,7 +368,8 @@ const AdminHistory = () => {
                   onChange={handleSelectChange}
                   sx={{
                     width: { xs: '100%', md: 'auto', textAlign: 'center' },
-                  }}>
+                  }}
+                >
                   <MenuItem value={defaultUser}>Visi</MenuItem>
                   {users.map((user, index) => (
                     <MenuItem key={index} value={user.id}>
@@ -412,7 +393,8 @@ const AdminHistory = () => {
                   width: '100%',
                   justifyContent: 'space-between',
                   borderBottom: '1px solid #1976d2',
-                }}>
+                }}
+              >
                 {' '}
                 <Box
                   sx={{
@@ -421,7 +403,8 @@ const AdminHistory = () => {
                     width: { xs: 1, md: 0 },
                     justifyContent: 'center',
                     alignItems: 'center',
-                  }}>
+                  }}
+                >
                   <Box
                     component='img'
                     sx={{
@@ -435,7 +418,7 @@ const AdminHistory = () => {
                       objectPosition: 'center',
                     }}
                     alt='redbull'
-                    src={`https://redbullback.tenisopartneris.lt/public/images/${item.image}`}
+                    src={`https://backend.rbinv.lt/public/${item.image}`}
                   />
                 </Box>
                 <Box
@@ -445,7 +428,8 @@ const AdminHistory = () => {
                     width: { xs: 1, md: 0 },
                     justifyContent: 'center',
                     alignItems: 'center',
-                  }}>
+                  }}
+                >
                   <CalendarMonthOutlinedIcon
                     sx={{
                       mr: 1,
@@ -464,7 +448,8 @@ const AdminHistory = () => {
                       fontSize: { xs: 14, md: 16 },
                       marginBottom: 0,
                       padding: { xs: 0, md: 2 },
-                    }}>
+                    }}
+                  >
                     {dateTimeHandler(item.takenDateTime, item)}
                   </Typography>
                 </Box>
@@ -475,7 +460,8 @@ const AdminHistory = () => {
                     width: { xs: 1, md: 0 },
                     justifyContent: 'center',
                     alignItems: 'center',
-                  }}>
+                  }}
+                >
                   <DateRangeOutlinedIcon
                     sx={{
                       mr: 1,
@@ -494,11 +480,9 @@ const AdminHistory = () => {
                       fontSize: { xs: 14, md: 16 },
                       marginBottom: 0,
                       padding: { xs: 0, md: 2 },
-                    }}>
-                    {handleReservedFromUntil(
-                      item.reservedFrom,
-                      item.reservedUntil
-                    )}
+                    }}
+                  >
+                    {handleReservedFromUntil(item.reservedFrom, item.reservedUntil)}
                   </Typography>
                 </Box>
                 <Box
@@ -508,7 +492,8 @@ const AdminHistory = () => {
                     width: { xs: 1, md: 0 },
                     justifyContent: 'center',
                     alignItems: 'center',
-                  }}>
+                  }}
+                >
                   <StorefrontOutlinedIcon
                     sx={{
                       mr: 1,
@@ -526,7 +511,8 @@ const AdminHistory = () => {
                       textAlign: 'center',
                       fontSize: { xs: 14, md: 16 },
                       marginBottom: 0,
-                    }}>
+                    }}
+                  >
                     {item.name}
                   </Typography>
                 </Box>
@@ -537,7 +523,8 @@ const AdminHistory = () => {
                     width: { xs: 1, md: 0 },
                     justifyContent: 'center',
                     alignItems: 'center',
-                  }}>
+                  }}
+                >
                   <AddShoppingCartOutlinedIcon
                     sx={{
                       mr: 1,
@@ -555,7 +542,8 @@ const AdminHistory = () => {
                       textAlign: 'center',
                       fontSize: { xs: 14, md: 16 },
                       marginBottom: 0,
-                    }}>
+                    }}
+                  >
                     {item.quantityTaken}
                   </Typography>
                 </Box>
@@ -566,7 +554,8 @@ const AdminHistory = () => {
                     width: { xs: 1, md: 0 },
                     justifyContent: 'center',
                     alignItems: 'center',
-                  }}>
+                  }}
+                >
                   <RemoveShoppingCartOutlinedIcon
                     sx={{
                       mr: 1,
@@ -584,7 +573,8 @@ const AdminHistory = () => {
                       textAlign: 'center',
                       fontSize: { xs: 14, md: 16 },
                       marginBottom: 0,
-                    }}>
+                    }}
+                  >
                     {item.isSponsored ? 0 : item.quantityRemaining}
                   </Typography>
                 </Box>
@@ -595,7 +585,8 @@ const AdminHistory = () => {
                     width: { xs: 1, md: 0 },
                     justifyContent: 'center',
                     alignItems: 'center',
-                  }}>
+                  }}
+                >
                   <ChatBubbleOutlineOutlinedIcon
                     sx={{
                       mr: 1,
@@ -613,7 +604,8 @@ const AdminHistory = () => {
                       textAlign: 'center',
                       fontSize: { xs: 14, md: 16 },
                       marginBottom: 0,
-                    }}>
+                    }}
+                  >
                     {handleComment(item.comment)}
                   </Typography>
                 </Box>
@@ -624,7 +616,8 @@ const AdminHistory = () => {
                     width: { xs: 1, md: 0 },
                     justifyContent: 'center',
                     alignItems: 'center',
-                  }}>
+                  }}
+                >
                   <EventRepeatOutlinedIcon
                     sx={{
                       mr: 1,
@@ -642,10 +635,9 @@ const AdminHistory = () => {
                       textAlign: 'center',
                       fontSize: { xs: 14, md: 16 },
                       marginBottom: 0,
-                    }}>
-                    {item.isSponsored
-                      ? item.purpose
-                      : dateTimeHandler(item.returnedDateTime)}
+                    }}
+                  >
+                    {item.isSponsored ? item.purpose : dateTimeHandler(item.returnedDateTime)}
                   </Typography>
                 </Box>
                 <Box
@@ -655,7 +647,8 @@ const AdminHistory = () => {
                     width: { xs: 1, md: 0 },
                     justifyContent: 'center',
                     alignItems: 'center',
-                  }}>
+                  }}
+                >
                   <PersonOutlineOutlinedIcon
                     sx={{
                       mr: 1,
@@ -673,7 +666,8 @@ const AdminHistory = () => {
                       textAlign: 'center',
                       fontSize: { xs: 14, md: 16 },
                       marginBottom: 0,
-                    }}>
+                    }}
+                  >
                     {item.username}
                   </Typography>
                 </Box>

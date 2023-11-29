@@ -2,24 +2,9 @@ import React, { useState, useEffect, useRef } from 'react';
 import { ToastContainer } from 'react-toastify';
 import Calendar from 'react-calendar';
 import { useLocation } from 'react-router-dom';
-import {
-  Container,
-  Box,
-  Typography,
-  Button,
-  TextField,
-  Pagination,
-  Tooltip,
-  Select,
-  MenuItem,
-} from '@mui/material';
+import { Container, Box, Typography, Button, TextField, Pagination, Tooltip, Select, MenuItem } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
-import {
-  takeCartItems,
-  inventoryItems,
-  checkedDates,
-  reservedItemsFromUntil,
-} from '../state/selectors';
+import { takeCartItems, inventoryItems, checkedDates, reservedItemsFromUntil } from '../state/selectors';
 import StorefrontOutlinedIcon from '@mui/icons-material/StorefrontOutlined';
 import ShoppingBasketOutlinedIcon from '@mui/icons-material/ShoppingBasketOutlined';
 import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
@@ -30,11 +15,7 @@ import CalendarMonthOutlinedIcon from '@mui/icons-material/CalendarMonthOutlined
 import usePagination from '../components/Pagination';
 import 'react-calendar/dist/Calendar.css';
 import moment from 'moment/moment';
-import {
-  fetchInventory,
-  postUserTakeInventory,
-  fetchCheckDates,
-} from '../state/thunks';
+import { fetchInventory, postUserTakeInventory, fetchCheckDates } from '../state/thunks';
 import {
   incrementTakeItemCount,
   decrementTakeItemCount,
@@ -113,9 +94,7 @@ const TakeInventory = () => {
         name: 'Red Bull Sugarfree',
       },
     ];
-    const isRedbullInCart = cart.some((item) =>
-      redbullProducts.some((product) => product.id === item.id)
-    );
+    const isRedbullInCart = cart.some((item) => redbullProducts.some((product) => product.id === item.id));
     setIsRedbullInCart(isRedbullInCart);
   }, [cart]);
 
@@ -183,20 +162,12 @@ const TakeInventory = () => {
     const cartItem = cart.find((i) => i.id === item.id);
     const checkDate = checkingDates.find((i) => i.id === item.id);
     if (cartItem) {
-      const reservedFrom = cartItem.reservedFrom
-        ? new Date(cartItem.reservedFrom)
-        : new Date();
-      const reservedUntil = cartItem.reservedUntil
-        ? new Date(cartItem.reservedUntil)
-        : new Date();
+      const reservedFrom = cartItem.reservedFrom ? new Date(cartItem.reservedFrom) : new Date();
+      const reservedUntil = cartItem.reservedUntil ? new Date(cartItem.reservedUntil) : new Date();
       return [reservedFrom, reservedUntil];
     } else if (checkDate) {
-      const reservedFrom = checkDate.reservedFrom
-        ? new Date(checkDate.reservedFrom)
-        : new Date();
-      const reservedUntil = checkDate.reservedUntil
-        ? new Date(checkDate.reservedUntil)
-        : new Date();
+      const reservedFrom = checkDate.reservedFrom ? new Date(checkDate.reservedFrom) : new Date();
+      const reservedUntil = checkDate.reservedUntil ? new Date(checkDate.reservedUntil) : new Date();
       return [reservedFrom, reservedUntil];
     } else {
       return [new Date(), new Date()];
@@ -284,19 +255,13 @@ const TakeInventory = () => {
     const cartItem = cart.find((i) => {
       const reservedFrom = i.reservedFrom ? i.reservedFrom : '';
       const reservedUntil = i.reservedUntil ? i.reservedUntil : '';
-      return (
-        !redbullProductsIds.includes(i.id) &&
-        (reservedFrom === '' || reservedUntil === '')
-      );
+      return !redbullProductsIds.includes(i.id) && (reservedFrom === '' || reservedUntil === '');
     });
 
     const redbullItem = cart.find((i) => {
       const purpose = i.purpose ? i.purpose : '';
       const purposeComment = i.purposeComment ? i.purposeComment : '';
-      return (
-        redbullProductsIds.includes(i.id) &&
-        (purpose === '' || purposeComment === '')
-      );
+      return redbullProductsIds.includes(i.id) && (purpose === '' || purposeComment === '');
     });
 
     if (cartItem || redbullItem) {
@@ -312,8 +277,7 @@ const TakeInventory = () => {
     return <h1>Kraunami duomenys..</h1>;
   }
 
-  const dataToRender =
-    searchTerm === '' ? _DATA.currentData() : filteredInventory;
+  const dataToRender = searchTerm === '' ? _DATA.currentData() : filteredInventory;
 
   return (
     <>
@@ -341,23 +305,16 @@ const TakeInventory = () => {
             alignItems: 'center',
             height: { xs: '82px', md: '64px' },
             zIndex: 1,
-          }}>
-          <Typography
-            sx={{ typography: { xs: 'h6', md: 'h4' } }}
-            component='div'
-            gutterBottom>
+          }}
+        >
+          <Typography sx={{ typography: { xs: 'h6', md: 'h4' } }} component='div' gutterBottom>
             Jūsų krepšelyje yra{' '}
             <Box as='span' sx={{ fontWeight: 'bold' }}>
               {totalCount}
             </Box>{' '}
             prekės(-ių)
           </Typography>
-          <Button
-            variant='contained'
-            color='primary'
-            sx={{ ml: 2 }}
-            disabled={checkDisabled() === true}
-            onClick={handleSubmit}>
+          <Button variant='contained' color='primary' sx={{ ml: 2 }} disabled={checkDisabled() === true} onClick={handleSubmit}>
             Paimti inventorių
           </Button>
         </Box>
@@ -373,14 +330,9 @@ const TakeInventory = () => {
             alignItems: 'center',
             height: { xs: '82px', md: '64px' },
             zIndex: 1,
-          }}>
-          <TextField
-            id='search'
-            label='Paieška'
-            variant='outlined'
-            onChange={handleSearchChange}
-            sx={{ width: { xs: '100%', md: '20%' } }}
-          />
+          }}
+        >
+          <TextField id='search' label='Paieška' variant='outlined' onChange={handleSearchChange} sx={{ width: { xs: '100%', md: '20%' } }} />
         </Box>
         <Box sx={{ flexGrow: 1, width: '100%', marginTop: '128px' }}>
           <Box
@@ -390,49 +342,30 @@ const TakeInventory = () => {
               width: '100%',
               justifyContent: 'space-between',
               borderBottom: '1px solid #1976d2',
-            }}>
+            }}
+          >
             <Tooltip title='Nuotrauka' placement='top'>
-              <Typography
-                variant='h6'
-                component='div'
-                gutterBottom
-                sx={{ flex: 1, width: 0, textAlign: 'center' }}>
+              <Typography variant='h6' component='div' gutterBottom sx={{ flex: 1, width: 0, textAlign: 'center' }}>
                 <ImageOutlinedIcon sx={{ mr: 1, color: '#1976d2' }} />
               </Typography>
             </Tooltip>
             <Tooltip title='Pavadinimas' placement='top'>
-              <Typography
-                variant='h6'
-                component='div'
-                gutterBottom
-                sx={{ flex: 1, width: 0, textAlign: 'center' }}>
+              <Typography variant='h6' component='div' gutterBottom sx={{ flex: 1, width: 0, textAlign: 'center' }}>
                 <StorefrontOutlinedIcon sx={{ mr: 1, color: '#1976d2' }} />
               </Typography>
             </Tooltip>
             <Tooltip title='Galimas likutis' placement='top'>
-              <Typography
-                variant='h6'
-                component='div'
-                gutterBottom
-                sx={{ flex: 1, width: 0, textAlign: 'center' }}>
+              <Typography variant='h6' component='div' gutterBottom sx={{ flex: 1, width: 0, textAlign: 'center' }}>
                 <ShoppingBasketOutlinedIcon sx={{ mr: 1, color: '#1976d2' }} />
               </Typography>
             </Tooltip>
             <Tooltip title='Imamas kiekis' placement='top'>
-              <Typography
-                variant='h6'
-                component='div'
-                gutterBottom
-                sx={{ flex: 1, width: 0, textAlign: 'center' }}>
+              <Typography variant='h6' component='div' gutterBottom sx={{ flex: 1, width: 0, textAlign: 'center' }}>
                 <ShoppingCartOutlinedIcon sx={{ mr: 1, color: '#1976d2' }} />
               </Typography>
             </Tooltip>
             <Tooltip title='Rezervuojama nuo-iki' placement='top'>
-              <Typography
-                variant='h6'
-                component='div'
-                gutterBottom
-                sx={{ flex: 1, width: 0, textAlign: 'center' }}>
+              <Typography variant='h6' component='div' gutterBottom sx={{ flex: 1, width: 0, textAlign: 'center' }}>
                 <CalendarMonthOutlinedIcon sx={{ mr: 1, color: '#1976d2' }} />
               </Typography>
             </Tooltip>
@@ -448,7 +381,8 @@ const TakeInventory = () => {
                   width: '100%',
                   justifyContent: 'space-between',
                   borderBottom: '1px solid #1976d2',
-                }}>
+                }}
+              >
                 <Box
                   sx={{
                     display: 'flex',
@@ -458,7 +392,8 @@ const TakeInventory = () => {
                     alignItems: 'center',
                     ml: { xs: '18px', md: '0px' },
                     mb: { xs: '8px', md: '0px' },
-                  }}>
+                  }}
+                >
                   <Box
                     component='img'
                     sx={{
@@ -471,7 +406,7 @@ const TakeInventory = () => {
                       objectPosition: 'center',
                     }}
                     alt='redbull'
-                    src={`https://redbullback.tenisopartneris.lt/public/images/${item.image}`}
+                    src={`https://backend.rbinv.lt/public/${item.image}`}
                   />
                 </Box>
                 <Box
@@ -480,7 +415,8 @@ const TakeInventory = () => {
                     flex: { xs: 0, md: 1 },
                     width: { xs: 1, md: 0 },
                     alignItems: 'center',
-                  }}>
+                  }}
+                >
                   <StorefrontOutlinedIcon
                     sx={{
                       mr: 1,
@@ -498,7 +434,8 @@ const TakeInventory = () => {
                       textAlign: 'center',
                       fontSize: { xs: 16, md: 18 },
                       marginBottom: 0,
-                    }}>
+                    }}
+                  >
                     {item.name}
                   </Typography>
                 </Box>
@@ -508,7 +445,8 @@ const TakeInventory = () => {
                     flex: { xs: 0, md: 1 },
                     width: { xs: 1, md: 0 },
                     alignItems: 'center',
-                  }}>
+                  }}
+                >
                   <ShoppingBasketOutlinedIcon
                     sx={{
                       mr: 1,
@@ -526,7 +464,8 @@ const TakeInventory = () => {
                       textAlign: 'center',
                       fontSize: { xs: 16, md: 18 },
                       marginBottom: 0,
-                    }}>
+                    }}
+                  >
                     {countReservedItems(item)}
                   </Typography>
                 </Box>
@@ -537,7 +476,8 @@ const TakeInventory = () => {
                     width: { xs: 1, md: 0 },
                     justifyContent: 'center',
                     alignItems: 'center',
-                  }}>
+                  }}
+                >
                   <ShoppingCartOutlinedIcon
                     sx={{
                       mr: 1,
@@ -552,10 +492,9 @@ const TakeInventory = () => {
                       justifyContent: 'center',
                       alignItems: 'center',
                       mb: 1,
-                    }}>
-                    <Button
-                      onClick={() => handleDecrement(item)}
-                      disabled={handleDecrementDisable(item)}>
+                    }}
+                  >
+                    <Button onClick={() => handleDecrement(item)} disabled={handleDecrementDisable(item)}>
                       <RemoveCircleOutlineOutlinedIcon />
                     </Button>
                     <TextField
@@ -572,9 +511,7 @@ const TakeInventory = () => {
                       }}
                       variant='outlined'
                     />
-                    <Button
-                      onClick={() => handleIncrement(item)}
-                      disabled={handleIncrementDisable(item)}>
+                    <Button onClick={() => handleIncrement(item)} disabled={handleIncrementDisable(item)}>
                       <AddCircleOutlineOutlinedIcon />
                     </Button>
                   </Box>
@@ -586,7 +523,8 @@ const TakeInventory = () => {
                     width: { xs: 1, md: 0 },
                     alignItems: 'center',
                     mb: 2,
-                  }}>
+                  }}
+                >
                   <CalendarMonthOutlinedIcon
                     sx={{
                       mr: 1,
@@ -601,7 +539,8 @@ const TakeInventory = () => {
                           display: 'flex',
                           flexDirection: 'column',
                           alignItems: 'center',
-                        }}>
+                        }}
+                      >
                         <Typography variant='h6'>Paskirtis</Typography>
                         <TextField
                           placeholder='Pvz.: Lietuvos Bėgimo Taurė'
@@ -612,9 +551,7 @@ const TakeInventory = () => {
                           type='text'
                           id='purposeComment'
                           autoComplete='purposeComment'
-                          onChange={(e) =>
-                            handleCommentChange(item, e.target.value)
-                          }
+                          onChange={(e) => handleCommentChange(item, e.target.value)}
                           sx={{ mb: 2 }}
                         />
                         <Select
@@ -626,7 +563,8 @@ const TakeInventory = () => {
                           sx={{
                             marginTop: '10px',
                             textAlign: 'center',
-                          }}>
+                          }}
+                        >
                           {message.map((item) => (
                             <MenuItem key={item.value} value={item.value}>
                               {item.label}
@@ -640,11 +578,7 @@ const TakeInventory = () => {
                         value={getReservedDate(item)}
                         selectRange={true}
                         minDate={new Date()}
-                        maxDate={
-                          new Date(
-                            new Date().setMonth(new Date().getMonth() + 6)
-                          )
-                        }
+                        maxDate={new Date(new Date().setMonth(new Date().getMonth() + 6))}
                         locale='lt'
                         format='yyyy-MM-dd'
                       />

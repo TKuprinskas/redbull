@@ -1,17 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useLocation } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
-import {
-  Container,
-  Box,
-  Typography,
-  Button,
-  TextField,
-  Tooltip,
-  Select,
-  MenuItem,
-  Pagination,
-} from '@mui/material';
+import { Container, Box, Typography, Button, TextField, Tooltip, Select, MenuItem, Pagination } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
 import { myInventory, returnCartItems, status } from '../state/selectors';
 import StorefrontOutlinedIcon from '@mui/icons-material/StorefrontOutlined';
@@ -234,19 +224,12 @@ const ReturnInventory = () => {
             display: 'flex',
             justifyContent: 'space-between',
             alignItems: 'center',
-          }}>
-          <Typography
-            sx={{ typography: { xs: 'h6', md: 'h4' } }}
-            component='div'
-            gutterBottom>
+          }}
+        >
+          <Typography sx={{ typography: { xs: 'h6', md: 'h4' } }} component='div' gutterBottom>
             Jūs esate negražinęs(-us) {totalCount} prekės(-ių)
           </Typography>
-          <Button
-            variant='contained'
-            color='primary'
-            sx={{ ml: 2 }}
-            disabled={checkDisabled() === true}
-            onClick={handleSubmit}>
+          <Button variant='contained' color='primary' sx={{ ml: 2 }} disabled={checkDisabled() === true} onClick={handleSubmit}>
             Grąžinti inventorių
           </Button>
         </Box>
@@ -257,76 +240,45 @@ const ReturnInventory = () => {
             width: '100%',
             justifyContent: 'space-between',
             borderBottom: '1px solid #1976d2',
-          }}>
+          }}
+        >
           <Tooltip title='Nuotrauka' placement='top'>
-            <Typography
-              variant='h6'
-              component='div'
-              gutterBottom
-              sx={{ flex: 1, width: 0, textAlign: 'center' }}>
+            <Typography variant='h6' component='div' gutterBottom sx={{ flex: 1, width: 0, textAlign: 'center' }}>
               <ImageOutlinedIcon sx={{ mr: 1, color: '#1976d2' }} />
             </Typography>
           </Tooltip>
           <Tooltip title='Paėmimo data' placement='top'>
-            <Typography
-              variant='h6'
-              component='div'
-              gutterBottom
-              sx={{ flex: 1, width: 0, textAlign: 'center' }}>
+            <Typography variant='h6' component='div' gutterBottom sx={{ flex: 1, width: 0, textAlign: 'center' }}>
               <CalendarMonthOutlinedIcon sx={{ mr: 1, color: '#1976d2' }} />
             </Typography>
           </Tooltip>
           <Tooltip title='Rezervuota nuo - iki' placement='top'>
-            <Typography
-              variant='h6'
-              component='div'
-              gutterBottom
-              sx={{ flex: 1, width: 0, textAlign: 'center' }}>
+            <Typography variant='h6' component='div' gutterBottom sx={{ flex: 1, width: 0, textAlign: 'center' }}>
               <DateRangeOutlinedIcon sx={{ mr: 1, color: '#1976d2' }} />
             </Typography>
           </Tooltip>
           <Tooltip title='Pavadinimas' placement='top'>
-            <Typography
-              variant='h6'
-              component='div'
-              gutterBottom
-              sx={{ flex: 1, width: 0, textAlign: 'center' }}>
+            <Typography variant='h6' component='div' gutterBottom sx={{ flex: 1, width: 0, textAlign: 'center' }}>
               <StorefrontOutlinedIcon sx={{ mr: 1, color: '#1976d2' }} />
             </Typography>
           </Tooltip>
           <Tooltip title='Paimtas kiekis' placement='top'>
-            <Typography
-              variant='h6'
-              component='div'
-              gutterBottom
-              sx={{ flex: 1, width: 0, textAlign: 'center' }}>
+            <Typography variant='h6' component='div' gutterBottom sx={{ flex: 1, width: 0, textAlign: 'center' }}>
               <ShoppingBasketOutlinedIcon sx={{ mr: 1, color: '#1976d2' }} />
             </Typography>
           </Tooltip>
           <Tooltip title='Grąžinamas kiekis' placement='top'>
-            <Typography
-              variant='h6'
-              component='div'
-              gutterBottom
-              sx={{ flex: 1, width: 0, textAlign: 'center' }}>
+            <Typography variant='h6' component='div' gutterBottom sx={{ flex: 1, width: 0, textAlign: 'center' }}>
               <ShoppingCartOutlinedIcon sx={{ mr: 1, color: '#1976d2' }} />
             </Typography>
           </Tooltip>
           <Tooltip title='Grąžinta būklė' placement='top'>
-            <Typography
-              variant='h6'
-              component='div'
-              gutterBottom
-              sx={{ flex: 1, width: 0, textAlign: 'center' }}>
+            <Typography variant='h6' component='div' gutterBottom sx={{ flex: 1, width: 0, textAlign: 'center' }}>
               <AssignmentLateOutlinedIcon sx={{ mr: 1, color: '#1976d2' }} />
             </Typography>
           </Tooltip>
           <Tooltip title='Komentaras' placement='top'>
-            <Typography
-              variant='h6'
-              component='div'
-              gutterBottom
-              sx={{ flex: 1, width: 0, textAlign: 'center' }}>
+            <Typography variant='h6' component='div' gutterBottom sx={{ flex: 1, width: 0, textAlign: 'center' }}>
               <ChatBubbleOutlineOutlinedIcon sx={{ mr: 1, color: '#1976d2' }} />
             </Typography>
           </Tooltip>
@@ -345,7 +297,8 @@ const ReturnInventory = () => {
                   width: '100%',
                   justifyContent: 'space-between',
                   borderBottom: '1px solid #1976d2',
-                }}>
+                }}
+              >
                 <Box
                   sx={{
                     display: 'flex',
@@ -353,7 +306,8 @@ const ReturnInventory = () => {
                     width: { xs: 1, md: 0 },
                     justifyContent: 'center',
                     alignItems: 'center',
-                  }}>
+                  }}
+                >
                   <Box
                     component='img'
                     sx={{
@@ -367,7 +321,7 @@ const ReturnInventory = () => {
                       objectPosition: 'center',
                     }}
                     alt='redbull'
-                    src={`https://redbullback.tenisopartneris.lt/public/images/${item.image}`}
+                    src={`https://backend.rbinv.lt/public/${item.image}`}
                   />
                 </Box>
                 <Box
@@ -377,7 +331,8 @@ const ReturnInventory = () => {
                     width: { xs: 1, md: 0 },
                     justifyContent: 'center',
                     alignItems: 'center',
-                  }}>
+                  }}
+                >
                   <CalendarMonthOutlinedIcon
                     sx={{
                       mr: 1,
@@ -396,7 +351,8 @@ const ReturnInventory = () => {
                       fontSize: { xs: 14, md: 16 },
                       marginBottom: 0,
                       padding: { xs: 0, md: 2 },
-                    }}>
+                    }}
+                  >
                     {dateTimeHandler(item.takenDateTime, item)}
                   </Typography>
                 </Box>
@@ -407,7 +363,8 @@ const ReturnInventory = () => {
                     width: { xs: 1, md: 0 },
                     justifyContent: 'center',
                     alignItems: 'center',
-                  }}>
+                  }}
+                >
                   <DateRangeOutlinedIcon
                     sx={{
                       mr: 1,
@@ -426,11 +383,9 @@ const ReturnInventory = () => {
                       fontSize: { xs: 14, md: 16 },
                       marginBottom: 0,
                       padding: { xs: 0, md: 2 },
-                    }}>
-                    {handleReservedFromUntil(
-                      item.reservedFrom,
-                      item.reservedUntil
-                    )}
+                    }}
+                  >
+                    {handleReservedFromUntil(item.reservedFrom, item.reservedUntil)}
                   </Typography>
                 </Box>
                 <Box
@@ -439,7 +394,8 @@ const ReturnInventory = () => {
                     flex: { xs: 0, md: 1 },
                     width: { xs: 1, md: 0 },
                     alignItems: 'center',
-                  }}>
+                  }}
+                >
                   <StorefrontOutlinedIcon
                     sx={{
                       mr: 1,
@@ -457,7 +413,8 @@ const ReturnInventory = () => {
                       textAlign: 'center',
                       fontSize: { xs: 14, md: 16 },
                       marginBottom: 0,
-                    }}>
+                    }}
+                  >
                     {item.name}
                   </Typography>
                 </Box>
@@ -467,7 +424,8 @@ const ReturnInventory = () => {
                     flex: { xs: 0, md: 1 },
                     width: { xs: 1, md: 0 },
                     alignItems: 'center',
-                  }}>
+                  }}
+                >
                   <ShoppingBasketOutlinedIcon
                     sx={{
                       mr: 1,
@@ -485,7 +443,8 @@ const ReturnInventory = () => {
                       textAlign: 'center',
                       fontSize: { xs: 14, md: 16 },
                       marginBottom: 0,
-                    }}>
+                    }}
+                  >
                     {item.quantityRemaining}
                   </Typography>
                 </Box>
@@ -496,7 +455,8 @@ const ReturnInventory = () => {
                     width: { xs: 1, md: 0 },
                     justifyContent: 'center',
                     alignItems: 'center',
-                  }}>
+                  }}
+                >
                   <ShoppingCartOutlinedIcon
                     sx={{
                       mr: 1,
@@ -511,10 +471,9 @@ const ReturnInventory = () => {
                       justifyContent: 'center',
                       alignItems: 'center',
                       mb: 1,
-                    }}>
-                    <Button
-                      onClick={() => handleDecrement(item)}
-                      disabled={handleDecrementDisable(item)}>
+                    }}
+                  >
+                    <Button onClick={() => handleDecrement(item)} disabled={handleDecrementDisable(item)}>
                       <RemoveCircleOutlineOutlinedIcon />
                     </Button>
                     <TextField
@@ -531,9 +490,7 @@ const ReturnInventory = () => {
                       }}
                       variant='outlined'
                     />
-                    <Button
-                      onClick={() => handleIncrement(item)}
-                      disabled={handleIncrementDisable(item)}>
+                    <Button onClick={() => handleIncrement(item)} disabled={handleIncrementDisable(item)}>
                       <AddCircleOutlineOutlinedIcon />
                     </Button>
                   </Box>
@@ -546,7 +503,8 @@ const ReturnInventory = () => {
                     justifyContent: 'center',
                     alignItems: 'center',
                     mb: 1,
-                  }}>
+                  }}
+                >
                   <AssignmentLateOutlinedIcon
                     sx={{
                       mr: 1,
@@ -561,7 +519,8 @@ const ReturnInventory = () => {
                     onChange={(e) => handleSelectChange(e, item)}
                     sx={{
                       width: { xs: '100%', md: 'auto', textAlign: 'center' },
-                    }}>
+                    }}
+                  >
                     {message.map((item) => (
                       <MenuItem key={item.value} value={item.value}>
                         {item.label}
@@ -577,7 +536,8 @@ const ReturnInventory = () => {
                     justifyContent: 'center',
                     alignItems: 'center',
                     mb: 1,
-                  }}>
+                  }}
+                >
                   <ChatBubbleOutlineOutlinedIcon
                     sx={{
                       mr: 1,
@@ -594,9 +554,7 @@ const ReturnInventory = () => {
                       type='text'
                       id='comment'
                       autoComplete='comment'
-                      onChange={(e) =>
-                        handleCommentChange(item, e.target.value)
-                      }
+                      onChange={(e) => handleCommentChange(item, e.target.value)}
                       sx={{ mb: 2 }}
                     />
                   )}

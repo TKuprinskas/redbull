@@ -1,14 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useLocation } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
-import {
-  Container,
-  Box,
-  Typography,
-  Pagination,
-  Button,
-  Tooltip,
-} from '@mui/material';
+import { Container, Box, Typography, Pagination, Button, Tooltip } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
 import { myHistory, status } from '../state/selectors';
 import StorefrontOutlinedIcon from '@mui/icons-material/StorefrontOutlined';
@@ -49,22 +42,13 @@ const MyInventory = () => {
   }, [location]);
 
   const filterTakenItems = (inv) => {
-    const filteredInventory = inv.filter(
-      (item) =>
-        item.isTaken === 1 || item.isReserved === 1 || item.isLended === 1
-    );
+    const filteredInventory = inv.filter((item) => item.isTaken === 1 || item.isReserved === 1 || item.isLended === 1);
     setActive('taken');
     setFilteredInventory(filteredInventory);
   };
 
   const filterReturnedItems = (inv) => {
-    const filteredInventory = inv.filter(
-      (item) =>
-        item.isTaken === 0 &&
-        item.isReserved === 0 &&
-        item.isLended === 0 &&
-        !item.isSponsored
-    );
+    const filteredInventory = inv.filter((item) => item.isTaken === 0 && item.isReserved === 0 && item.isLended === 0 && !item.isSponsored);
     setActive('returned');
     setFilteredInventory(filteredInventory);
   };
@@ -140,7 +124,8 @@ const MyInventory = () => {
             backgroundColor: active === 'all' ? '#1976d2' : '#fff',
             color: active === 'all' ? '#fff' : '#1976d2',
             width: { xs: '20%', md: 'auto' },
-          }}>
+          }}
+        >
           Visi
         </Button>
         <Button
@@ -152,7 +137,8 @@ const MyInventory = () => {
             backgroundColor: active === 'returned' ? '#1976d2' : '#fff',
             color: active === 'returned' ? '#fff' : '#1976d2',
             width: { xs: '30%', md: 'auto' },
-          }}>
+          }}
+        >
           Grąžinta
         </Button>
         <Button
@@ -164,7 +150,8 @@ const MyInventory = () => {
             backgroundColor: active === 'taken' ? '#1976d2' : '#fff',
             color: active === 'taken' ? '#fff' : '#1976d2',
             width: { xs: '40%', md: 'auto' },
-          }}>
+          }}
+        >
           Negrąžinta
         </Button>
       </Box>
@@ -176,78 +163,45 @@ const MyInventory = () => {
             width: '100%',
             justifyContent: 'space-between',
             borderBottom: '1px solid #1976d2',
-          }}>
+          }}
+        >
           <Tooltip title='Nuotrauka' placement='top'>
-            <Typography
-              variant='h6'
-              component='div'
-              gutterBottom
-              sx={{ flex: 1, width: 0, textAlign: 'center' }}>
+            <Typography variant='h6' component='div' gutterBottom sx={{ flex: 1, width: 0, textAlign: 'center' }}>
               <ImageOutlinedIcon sx={{ mr: 1, color: '#1976d2' }} />
             </Typography>
           </Tooltip>
           <Tooltip title='Paėmimo data' placement='top'>
-            <Typography
-              variant='h6'
-              component='div'
-              gutterBottom
-              sx={{ flex: 1, width: 0, textAlign: 'center' }}>
+            <Typography variant='h6' component='div' gutterBottom sx={{ flex: 1, width: 0, textAlign: 'center' }}>
               <CalendarMonthOutlinedIcon sx={{ mr: 1, color: '#1976d2' }} />
             </Typography>
           </Tooltip>
           <Tooltip title='Rezervuota nuo - iki' placement='top'>
-            <Typography
-              variant='h6'
-              component='div'
-              gutterBottom
-              sx={{ flex: 1, width: 0, textAlign: 'center' }}>
+            <Typography variant='h6' component='div' gutterBottom sx={{ flex: 1, width: 0, textAlign: 'center' }}>
               <DateRangeOutlinedIcon sx={{ mr: 1, color: '#1976d2' }} />
             </Typography>
           </Tooltip>
           <Tooltip title='Produktas' placement='top'>
-            <Typography
-              variant='h6'
-              component='div'
-              gutterBottom
-              sx={{ flex: 1, width: 0, textAlign: 'center' }}>
+            <Typography variant='h6' component='div' gutterBottom sx={{ flex: 1, width: 0, textAlign: 'center' }}>
               <StorefrontOutlinedIcon sx={{ mr: 1, color: '#1976d2' }} />
             </Typography>
           </Tooltip>
           <Tooltip title='Paimtas kiekis' placement='top'>
-            <Typography
-              variant='h6'
-              component='div'
-              gutterBottom
-              sx={{ flex: 1, width: 0, textAlign: 'center' }}>
+            <Typography variant='h6' component='div' gutterBottom sx={{ flex: 1, width: 0, textAlign: 'center' }}>
               <AddShoppingCartOutlinedIcon sx={{ mr: 1, color: '#1976d2' }} />
             </Typography>
           </Tooltip>
           <Tooltip title='Negrąžintas kiekis' placement='top'>
-            <Typography
-              variant='h6'
-              component='div'
-              gutterBottom
-              sx={{ flex: 1, width: 0, textAlign: 'center' }}>
-              <RemoveShoppingCartOutlinedIcon
-                sx={{ mr: 1, color: '#1976d2' }}
-              />
+            <Typography variant='h6' component='div' gutterBottom sx={{ flex: 1, width: 0, textAlign: 'center' }}>
+              <RemoveShoppingCartOutlinedIcon sx={{ mr: 1, color: '#1976d2' }} />
             </Typography>
           </Tooltip>
           <Tooltip title='Komentaras' placement='top'>
-            <Typography
-              variant='h6'
-              component='div'
-              gutterBottom
-              sx={{ flex: 1, width: 0, textAlign: 'center' }}>
+            <Typography variant='h6' component='div' gutterBottom sx={{ flex: 1, width: 0, textAlign: 'center' }}>
               <ChatBubbleOutlineOutlinedIcon sx={{ mr: 1, color: '#1976d2' }} />
             </Typography>
           </Tooltip>
           <Tooltip title='Grąžinimo data' placement='top'>
-            <Typography
-              variant='h6'
-              component='div'
-              gutterBottom
-              sx={{ flex: 1, width: 0, textAlign: 'center' }}>
+            <Typography variant='h6' component='div' gutterBottom sx={{ flex: 1, width: 0, textAlign: 'center' }}>
               <EventRepeatOutlinedIcon sx={{ mr: 1, color: '#1976d2' }} />
             </Typography>
           </Tooltip>
@@ -267,7 +221,8 @@ const MyInventory = () => {
                     width: '100%',
                     justifyContent: 'space-between',
                     borderBottom: '1px solid #1976d2',
-                  }}>
+                  }}
+                >
                   <Box
                     sx={{
                       display: 'flex',
@@ -275,7 +230,8 @@ const MyInventory = () => {
                       width: { xs: 1, md: 0 },
                       justifyContent: 'center',
                       alignItems: 'center',
-                    }}>
+                    }}
+                  >
                     <Box
                       component='img'
                       sx={{
@@ -289,7 +245,7 @@ const MyInventory = () => {
                         objectPosition: 'center',
                       }}
                       alt='redbull'
-                      src={`https://redbullback.tenisopartneris.lt/public/images/${item.image}`}
+                      src={`https://backend.rbinv.lt/public/${item.image}`}
                     />
                   </Box>
                   <Box
@@ -299,7 +255,8 @@ const MyInventory = () => {
                       width: { xs: 1, md: 0 },
                       justifyContent: 'center',
                       alignItems: 'center',
-                    }}>
+                    }}
+                  >
                     <CalendarMonthOutlinedIcon
                       sx={{
                         mr: 1,
@@ -318,7 +275,8 @@ const MyInventory = () => {
                         fontSize: { xs: 14, md: 16 },
                         padding: { xs: 0, md: 2 },
                         marginBottom: 0,
-                      }}>
+                      }}
+                    >
                       {dateTimeHandler(item.takenDateTime, item)}
                     </Typography>
                   </Box>
@@ -329,7 +287,8 @@ const MyInventory = () => {
                       width: { xs: 1, md: 0 },
                       justifyContent: 'center',
                       alignItems: 'center',
-                    }}>
+                    }}
+                  >
                     <DateRangeOutlinedIcon
                       sx={{
                         mr: 1,
@@ -348,11 +307,9 @@ const MyInventory = () => {
                         fontSize: { xs: 14, md: 16 },
                         padding: { xs: 0, md: 2 },
                         marginBottom: 0,
-                      }}>
-                      {handleReservedFromUntil(
-                        item.reservedFrom,
-                        item.reservedUntil
-                      )}
+                      }}
+                    >
+                      {handleReservedFromUntil(item.reservedFrom, item.reservedUntil)}
                     </Typography>
                   </Box>
                   <Box
@@ -362,7 +319,8 @@ const MyInventory = () => {
                       width: { xs: 1, md: 0 },
                       justifyContent: 'center',
                       alignItems: 'center',
-                    }}>
+                    }}
+                  >
                     <StorefrontOutlinedIcon
                       sx={{
                         mr: 1,
@@ -380,7 +338,8 @@ const MyInventory = () => {
                         textAlign: 'center',
                         fontSize: { xs: 14, md: 16 },
                         marginBottom: 0,
-                      }}>
+                      }}
+                    >
                       {item.name}
                     </Typography>
                   </Box>
@@ -391,7 +350,8 @@ const MyInventory = () => {
                       width: { xs: 1, md: 0 },
                       justifyContent: 'center',
                       alignItems: 'center',
-                    }}>
+                    }}
+                  >
                     <AddShoppingCartOutlinedIcon
                       sx={{
                         mr: 1,
@@ -409,7 +369,8 @@ const MyInventory = () => {
                         textAlign: 'center',
                         fontSize: { xs: 14, md: 16 },
                         marginBottom: 0,
-                      }}>
+                      }}
+                    >
                       {item.quantityTaken}
                     </Typography>
                   </Box>
@@ -420,7 +381,8 @@ const MyInventory = () => {
                       width: { xs: 1, md: 0 },
                       justifyContent: 'center',
                       alignItems: 'center',
-                    }}>
+                    }}
+                  >
                     <RemoveShoppingCartOutlinedIcon
                       sx={{
                         mr: 1,
@@ -438,7 +400,8 @@ const MyInventory = () => {
                         textAlign: 'center',
                         fontSize: { xs: 14, md: 16 },
                         marginBottom: 0,
-                      }}>
+                      }}
+                    >
                       {item.isSponsored ? 0 : item.quantityRemaining}
                     </Typography>
                   </Box>
@@ -449,7 +412,8 @@ const MyInventory = () => {
                       width: { xs: 1, md: 0 },
                       justifyContent: 'center',
                       alignItems: 'center',
-                    }}>
+                    }}
+                  >
                     <ChatBubbleOutlineOutlinedIcon
                       sx={{
                         mr: 1,
@@ -467,7 +431,8 @@ const MyInventory = () => {
                         textAlign: 'center',
                         fontSize: { xs: 14, md: 16 },
                         marginBottom: 0,
-                      }}>
+                      }}
+                    >
                       {handleComment(item.comment)}
                     </Typography>
                   </Box>
@@ -478,7 +443,8 @@ const MyInventory = () => {
                       width: { xs: 1, md: 0 },
                       justifyContent: 'center',
                       alignItems: 'center',
-                    }}>
+                    }}
+                  >
                     <EventRepeatOutlinedIcon
                       sx={{
                         mr: 1,
@@ -496,10 +462,9 @@ const MyInventory = () => {
                         textAlign: 'center',
                         fontSize: { xs: 14, md: 16 },
                         marginBottom: 0,
-                      }}>
-                      {item.isSponsored
-                        ? item.purpose
-                        : dateTimeHandler(item.returnedDateTime, item)}
+                      }}
+                    >
+                      {item.isSponsored ? item.purpose : dateTimeHandler(item.returnedDateTime, item)}
                     </Typography>
                   </Box>
                 </Box>

@@ -86,40 +86,25 @@ const UserInventory = () => {
             width: '100%',
             justifyContent: 'space-between',
             borderBottom: '1px solid #1976d2',
-          }}>
+          }}
+        >
           <Tooltip title='Nuotrauka' placement='top'>
-            <Typography
-              variant='h6'
-              component='div'
-              gutterBottom
-              sx={{ flex: 1, width: 0, textAlign: 'center' }}>
+            <Typography variant='h6' component='div' gutterBottom sx={{ flex: 1, width: 0, textAlign: 'center' }}>
               <ImageOutlinedIcon sx={{ mr: 1, color: '#1976d2' }} />
             </Typography>
           </Tooltip>
           <Tooltip title='Produktas' placement='top'>
-            <Typography
-              variant='h6'
-              component='div'
-              gutterBottom
-              sx={{ flex: 1, width: 0, textAlign: 'center' }}>
+            <Typography variant='h6' component='div' gutterBottom sx={{ flex: 1, width: 0, textAlign: 'center' }}>
               <StorefrontOutlinedIcon sx={{ mr: 1, color: '#1976d2' }} />
             </Typography>
           </Tooltip>
           <Tooltip title='Esamas likutis' placement='top'>
-            <Typography
-              variant='h6'
-              component='div'
-              gutterBottom
-              sx={{ flex: 1, width: 0, textAlign: 'center' }}>
+            <Typography variant='h6' component='div' gutterBottom sx={{ flex: 1, width: 0, textAlign: 'center' }}>
               <ShoppingBasketOutlinedIcon sx={{ mr: 1, color: '#1976d2' }} />
             </Typography>
           </Tooltip>
           <Tooltip title='Komentaras' placement='top'>
-            <Typography
-              variant='h6'
-              component='div'
-              gutterBottom
-              sx={{ flex: 1, width: 0, textAlign: 'center' }}>
+            <Typography variant='h6' component='div' gutterBottom sx={{ flex: 1, width: 0, textAlign: 'center' }}>
               <ChatBubbleOutlineOutlinedIcon sx={{ mr: 1, color: '#1976d2' }} />
             </Typography>
           </Tooltip>
@@ -135,7 +120,8 @@ const UserInventory = () => {
                 width: '100%',
                 justifyContent: 'space-between',
                 borderBottom: '1px solid #1976d2',
-              }}>
+              }}
+            >
               <Box
                 sx={{
                   display: 'flex',
@@ -143,7 +129,8 @@ const UserInventory = () => {
                   width: { xs: 1, md: 0 },
                   justifyContent: 'center',
                   alignItems: 'center',
-                }}>
+                }}
+              >
                 <Box
                   component='img'
                   sx={{
@@ -157,7 +144,7 @@ const UserInventory = () => {
                     objectPosition: 'center',
                   }}
                   alt='redbull'
-                  src={`https://redbullback.tenisopartneris.lt/public/images/${item.image}`}
+                  src={`https://backend.rbinv.lt/public/${item.image}`}
                 />
               </Box>
               <Box
@@ -167,7 +154,8 @@ const UserInventory = () => {
                   width: { xs: 1, md: 0 },
                   justifyContent: 'center',
                   alignItems: 'center',
-                }}>
+                }}
+              >
                 <StorefrontOutlinedIcon
                   sx={{
                     mr: 1,
@@ -185,7 +173,8 @@ const UserInventory = () => {
                     textAlign: 'center',
                     fontSize: { xs: 16, md: 18 },
                     marginBottom: 0,
-                  }}>
+                  }}
+                >
                   {item.name}
                 </Typography>
               </Box>
@@ -196,7 +185,8 @@ const UserInventory = () => {
                   width: { xs: 1, md: 0 },
                   justifyContent: 'center',
                   alignItems: 'center',
-                }}>
+                }}
+              >
                 <ShoppingBasketOutlinedIcon
                   sx={{
                     mr: 1,
@@ -214,7 +204,8 @@ const UserInventory = () => {
                     textAlign: 'center',
                     fontSize: { xs: 16, md: 18 },
                     marginBottom: 0,
-                  }}>
+                  }}
+                >
                   {updatedBalanceForToday(item)}
                 </Typography>
               </Box>
@@ -225,7 +216,8 @@ const UserInventory = () => {
                   width: { xs: 1, md: 0 },
                   justifyContent: 'center',
                   alignItems: 'center',
-                }}>
+                }}
+              >
                 <ChatBubbleOutlineOutlinedIcon
                   sx={{
                     mr: 1,
@@ -243,7 +235,8 @@ const UserInventory = () => {
                     textAlign: 'center',
                     fontSize: { xs: 16, md: 18 },
                     marginBottom: 0,
-                  }}>
+                  }}
+                >
                   {item.comment}
                 </Typography>
               </Box>

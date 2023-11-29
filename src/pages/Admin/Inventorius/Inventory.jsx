@@ -3,19 +3,9 @@ import { useLocation } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
 import { confirmAlert } from 'react-confirm-alert';
 import 'react-confirm-alert/src/react-confirm-alert.css';
-import {
-  Container,
-  Box,
-  Typography,
-  Button,
-  Pagination,
-  Tooltip,
-} from '@mui/material';
+import { Container, Box, Typography, Button, Pagination, Tooltip } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
-import {
-  inventoryItems,
-  inventoryBalanceForToday,
-} from '../../../state/selectors';
+import { inventoryItems, inventoryBalanceForToday } from '../../../state/selectors';
 import AddInventory from './AddInventory';
 import { getTokenFromStorage } from '../../../services/helpers';
 import { deleteInventoryAsync } from '../../../services/API';
@@ -30,10 +20,7 @@ import DeleteForeverOutlinedIcon from '@mui/icons-material/DeleteForeverOutlined
 import ImageOutlinedIcon from '@mui/icons-material/ImageOutlined';
 import EditInventory from './EditInventory';
 import usePagination from '../../../components/Pagination';
-import {
-  fetchInventory,
-  fetchInventoryBalanceForToday,
-} from '../../../state/thunks';
+import { fetchInventory, fetchInventoryBalanceForToday } from '../../../state/thunks';
 import { deleteInventoryItem } from '../../../state/slice';
 
 const AdminInventory = () => {
@@ -157,10 +144,7 @@ const AdminInventory = () => {
       {view === 'inventoryList' && (
         <>
           <Box sx={{ flexGrow: 1, width: '100%' }}>
-            <Button
-              variant='contained'
-              sx={{ mb: 2 }}
-              onClick={() => changeView()}>
+            <Button variant='contained' sx={{ mb: 2 }} onClick={() => changeView()}>
               <AddShoppingCartOutlinedIcon /> &nbsp; Pridėti inventorių
             </Button>
           </Box>
@@ -172,82 +156,45 @@ const AdminInventory = () => {
                 width: '100%',
                 justifyContent: 'space-between',
                 borderBottom: '1px solid #1976d2',
-              }}>
+              }}
+            >
               <Tooltip title='Nuotrauka' placement='top'>
-                <Typography
-                  variant='h6'
-                  component='div'
-                  gutterBottom
-                  sx={{ flex: 1, width: 0, textAlign: 'center' }}>
+                <Typography variant='h6' component='div' gutterBottom sx={{ flex: 1, width: 0, textAlign: 'center' }}>
                   <ImageOutlinedIcon sx={{ mr: 1, color: '#1976d2' }} />
                 </Typography>
               </Tooltip>
               <Tooltip title='Pavadinimas' placement='top'>
-                <Typography
-                  variant='h6'
-                  component='div'
-                  gutterBottom
-                  sx={{ flex: 1, width: 0, textAlign: 'center' }}>
+                <Typography variant='h6' component='div' gutterBottom sx={{ flex: 1, width: 0, textAlign: 'center' }}>
                   <StorefrontOutlinedIcon sx={{ mr: 1, color: '#1976d2' }} />
                 </Typography>
               </Tooltip>
               <Tooltip title='Pradinis likutis' placement='top'>
-                <Typography
-                  variant='h6'
-                  component='div'
-                  gutterBottom
-                  sx={{ flex: 1, width: 0, textAlign: 'center' }}>
-                  <ShoppingCartCheckoutOutlinedIcon
-                    sx={{ mr: 1, color: '#1976d2' }}
-                  />
+                <Typography variant='h6' component='div' gutterBottom sx={{ flex: 1, width: 0, textAlign: 'center' }}>
+                  <ShoppingCartCheckoutOutlinedIcon sx={{ mr: 1, color: '#1976d2' }} />
                 </Typography>
               </Tooltip>
               <Tooltip title='Esamas likutis' placement='top'>
-                <Typography
-                  variant='h6'
-                  component='div'
-                  gutterBottom
-                  sx={{ flex: 1, width: 0, textAlign: 'center' }}>
+                <Typography variant='h6' component='div' gutterBottom sx={{ flex: 1, width: 0, textAlign: 'center' }}>
                   <ShoppingCartOutlinedIcon sx={{ mr: 1, color: '#1976d2' }} />
                 </Typography>
               </Tooltip>
               <Tooltip title='Negrąžintas kiekis' placement='top'>
-                <Typography
-                  variant='h6'
-                  component='div'
-                  gutterBottom
-                  sx={{ flex: 1, width: 0, textAlign: 'center' }}>
-                  <RemoveShoppingCartOutlinedIcon
-                    sx={{ mr: 1, color: '#1976d2' }}
-                  />
+                <Typography variant='h6' component='div' gutterBottom sx={{ flex: 1, width: 0, textAlign: 'center' }}>
+                  <RemoveShoppingCartOutlinedIcon sx={{ mr: 1, color: '#1976d2' }} />
                 </Typography>
               </Tooltip>
               <Tooltip title='Komentaras' placement='top'>
-                <Typography
-                  variant='h6'
-                  component='div'
-                  gutterBottom
-                  sx={{ flex: 1, width: 0, textAlign: 'center' }}>
-                  <ChatBubbleOutlineOutlinedIcon
-                    sx={{ mr: 1, color: '#1976d2' }}
-                  />
+                <Typography variant='h6' component='div' gutterBottom sx={{ flex: 1, width: 0, textAlign: 'center' }}>
+                  <ChatBubbleOutlineOutlinedIcon sx={{ mr: 1, color: '#1976d2' }} />
                 </Typography>
               </Tooltip>
               <Tooltip title='Redaguoti' placement='top'>
-                <Typography
-                  variant='h6'
-                  component='div'
-                  gutterBottom
-                  sx={{ flex: 1, width: 0, textAlign: 'center' }}>
+                <Typography variant='h6' component='div' gutterBottom sx={{ flex: 1, width: 0, textAlign: 'center' }}>
                   <EditOutlinedIcon sx={{ mr: 1, color: '#1976d2' }} />
                 </Typography>
               </Tooltip>
               <Tooltip title='Ištrinti' placement='top'>
-                <Typography
-                  variant='h6'
-                  component='div'
-                  gutterBottom
-                  sx={{ flex: 1, width: 0, textAlign: 'center' }}>
+                <Typography variant='h6' component='div' gutterBottom sx={{ flex: 1, width: 0, textAlign: 'center' }}>
                   <DeleteForeverOutlinedIcon sx={{ mr: 1, color: '#1976d2' }} />
                 </Typography>
               </Tooltip>
@@ -263,7 +210,8 @@ const AdminInventory = () => {
                     width: '100%',
                     justifyContent: 'space-between',
                     borderBottom: '1px solid #1976d2',
-                  }}>
+                  }}
+                >
                   <Box
                     sx={{
                       display: 'flex',
@@ -271,7 +219,8 @@ const AdminInventory = () => {
                       width: { xs: 1, md: 0 },
                       justifyContent: 'center',
                       alignItems: 'center',
-                    }}>
+                    }}
+                  >
                     <Box
                       component='img'
                       sx={{
@@ -285,7 +234,7 @@ const AdminInventory = () => {
                         objectPosition: 'center',
                       }}
                       alt='redbull'
-                      src={`https://redbullback.tenisopartneris.lt/public/images/${item.image}`}
+                      src={`https://backend.rbinv.lt/public/${item.image}`}
                     />
                   </Box>
                   <Box
@@ -295,7 +244,8 @@ const AdminInventory = () => {
                       width: { xs: 1, md: 0 },
                       justifyContent: 'center',
                       alignItems: 'center',
-                    }}>
+                    }}
+                  >
                     <StorefrontOutlinedIcon
                       sx={{
                         mr: 1,
@@ -313,7 +263,8 @@ const AdminInventory = () => {
                         textAlign: 'center',
                         fontSize: { xs: 16, md: 18 },
                         marginBottom: 0,
-                      }}>
+                      }}
+                    >
                       {item.name}
                     </Typography>
                   </Box>
@@ -324,7 +275,8 @@ const AdminInventory = () => {
                       width: { xs: 1, md: 0 },
                       justifyContent: 'center',
                       alignItems: 'center',
-                    }}>
+                    }}
+                  >
                     <ShoppingCartOutlinedIcon
                       sx={{
                         mr: 1,
@@ -342,7 +294,8 @@ const AdminInventory = () => {
                         textAlign: 'center',
                         fontSize: { xs: 16, md: 18 },
                         marginBottom: 0,
-                      }}>
+                      }}
+                    >
                       {item.quantityAdded}
                     </Typography>
                   </Box>
@@ -353,7 +306,8 @@ const AdminInventory = () => {
                       width: { xs: 1, md: 0 },
                       justifyContent: 'center',
                       alignItems: 'center',
-                    }}>
+                    }}
+                  >
                     <StorefrontOutlinedIcon
                       sx={{
                         mr: 1,
@@ -371,7 +325,8 @@ const AdminInventory = () => {
                         textAlign: 'center',
                         fontSize: { xs: 16, md: 18 },
                         marginBottom: 0,
-                      }}>
+                      }}
+                    >
                       {updatedRemainingBalanceForToday(item)}
                     </Typography>
                   </Box>
@@ -382,7 +337,8 @@ const AdminInventory = () => {
                       width: { xs: 1, md: 0 },
                       justifyContent: 'center',
                       alignItems: 'center',
-                    }}>
+                    }}
+                  >
                     <RemoveShoppingCartOutlinedIcon
                       sx={{
                         mr: 1,
@@ -400,7 +356,8 @@ const AdminInventory = () => {
                         textAlign: 'center',
                         fontSize: { xs: 16, md: 18 },
                         marginBottom: 0,
-                      }}>
+                      }}
+                    >
                       {updatedTakenBalanceForToday(item)}
                     </Typography>
                   </Box>
@@ -411,7 +368,8 @@ const AdminInventory = () => {
                       width: { xs: 1, md: 0 },
                       justifyContent: 'center',
                       alignItems: 'center',
-                    }}>
+                    }}
+                  >
                     <ChatBubbleOutlineOutlinedIcon
                       sx={{
                         mr: 1,
@@ -429,7 +387,8 @@ const AdminInventory = () => {
                         textAlign: 'center',
                         fontSize: { xs: 16, md: 18 },
                         marginBottom: 0,
-                      }}>
+                      }}
+                    >
                       {item.comment}
                     </Typography>
                   </Box>
@@ -440,7 +399,8 @@ const AdminInventory = () => {
                       width: { xs: 1, md: 0 },
                       justifyContent: 'center',
                       alignItems: 'center',
-                    }}>
+                    }}
+                  >
                     <EditOutlinedIcon
                       sx={{
                         mr: 1,
@@ -449,10 +409,7 @@ const AdminInventory = () => {
                       }}
                     />
                     <Box sx={{ flex: 1, width: 0, textAlign: 'center' }}>
-                      <Button
-                        variant='contained'
-                        sx={{ mb: 2 }}
-                        onClick={() => handleEditInventory(item)}>
+                      <Button variant='contained' sx={{ mb: 2 }} onClick={() => handleEditInventory(item)}>
                         Redaguoti
                       </Button>
                     </Box>
@@ -464,7 +421,8 @@ const AdminInventory = () => {
                       width: { xs: 1, md: 0 },
                       justifyContent: 'center',
                       alignItems: 'center',
-                    }}>
+                    }}
+                  >
                     <DeleteForeverOutlinedIcon
                       sx={{
                         mr: 1,
@@ -473,10 +431,7 @@ const AdminInventory = () => {
                       }}
                     />
                     <Box sx={{ flex: 1, width: 0, textAlign: 'center' }}>
-                      <Button
-                        variant='contained'
-                        sx={{ mb: 2 }}
-                        onClick={() => confirmDelete(item.id)}>
+                      <Button variant='contained' sx={{ mb: 2 }} onClick={() => confirmDelete(item.id)}>
                         Ištrinti
                       </Button>
                     </Box>
@@ -487,9 +442,7 @@ const AdminInventory = () => {
         </>
       )}
       {view === 'addInventory' && <AddInventory setView={setView} />}
-      {view === 'editInventory' && (
-        <EditInventory setView={setView} selectedItem={selectedItem} />
-      )}
+      {view === 'editInventory' && <EditInventory setView={setView} selectedItem={selectedItem} />}
       {view !== 'addInventory' && view !== 'editInventory' && (
         <Pagination
           count={count}
